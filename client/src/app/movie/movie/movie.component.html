@@ -1,0 +1,9 @@
+<h4>{{ textLoad }}</h4>
+<ng-container *ngIf="loaded | async ">
+  <div class="container">
+    <video id="videoPlayer" controls>
+      <source src="{{link}}" type="video/mp4">
+    </video>
+  </div>
+  <app-comments [id_movie]="movie._id"></app-comments>
+</ng-container>
