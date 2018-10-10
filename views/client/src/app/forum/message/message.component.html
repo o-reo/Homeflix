@@ -1,0 +1,27 @@
+<ng-container *ngIf="loaded | async">
+  <div class="row">
+    <div class="left-message col-lg-2 col-md-2 col-sm-2 col-xs-2">
+
+      <div class="col-md-offset-2"><td>{{ user.username }}</td></div>
+      <div class="background-avatar col-md-offset-2">
+        <img class="avatar" src="#" />
+      </div>
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+      <td>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6"><p class="date">{{ time | date:'MM/dd/yy HH:mm:ss' }}</p></div>
+            <div class="col-lg-6"><a class="edit" [routerLink]="['/forum/message/edit', message_id]">Edit</a></div>
+          </div>
+        </div>
+        <div class="col-lg-8"><hr class="hr_date"></div>
+        <div class="content col-lg-8"><p [innerHTML]="content"></p></div>
+      </td>
+    </div>
+    <!--div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" *ngIf="isMine">
+      <a class="edit" [routerLink]="['/forum/message/edit', message_id]">Edit</a>
+    </div-->
+  </div>
+  <hr class="hr_end">
+</ng-container>

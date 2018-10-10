@@ -1,0 +1,42 @@
+<ng-container *ngIf="loaded | async">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8">
+             <a  [routerLink]="['/forum']"> > Retour aux forums</a>
+           </div>
+            <div class="col-lg-0">
+              <a  [routerLink]="['/forum', 'newtopic', id_sectionForum]">New Topic</a>
+            </div>
+          </div>
+       </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Forum</th>
+            <th>Last message</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let topic of topics"
+              app-topic
+              [title]="topic.title"
+              [content]="topic.content"
+              [id_user]="topic.id_author"
+              [id_topic]="topic._id"
+              [routerLink]="['/forum/messages', topic._id]">
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-container>

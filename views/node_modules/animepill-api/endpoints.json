@@ -1,0 +1,5 @@
+{
+  "search": "/api/animes",
+  "eps": "/anime/{slug}/episodes",
+  "ep": "/{slug}-episode-{episode}"
+}

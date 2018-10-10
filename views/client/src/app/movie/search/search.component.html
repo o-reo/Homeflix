@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group" id="adv-search">
+        <input type="text" class="form-control" [(ngModel)]="input_query" placeholder="Search movie" />
+        <div class="input-group-btn">
+          <div class="btn-group" role="group">
+            <div class="dropdown dropdown-lg">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+              <div class="dropdown-menu dropdown-menu-right" role="menu">
+                <form class="form-horizontal" role="form" [formGroup]="formGroupSearch" name="formSearch">
+                  <div class="form-group">
+                    <label for="genre">Genre</label>
+                    <select class="form-control" formControlName="inputGenre">
+                      <option value="all" selected>All</option>
+                      <option value="comedy">Comedy</option>
+                      <option value="sci-fi">Sci-fi</option>
+                      <option value="horror">Horror</option>
+                      <option value="romance">Romance</option>
+                      <option value="action">Action</option>
+                      <option value="thriller">Thriller</option>
+                      <option value="drama">Drama</option>
+                      <option value="mystery">Mystery</option>
+                      <option value="crime">Crime</option>
+                      <option value="animation">Animation</option>
+                      <option value="adventure">Adventure</option>
+                      <option value="fantasy">Fantasy</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="filter">Tri by</label>
+                    <select class="form-control" formControlName="inputTri">
+                      <option value="year_a" selected>Year (ASC)</option>
+                      <option value="year_d">Year (DES)</option>
+                      <option value="pop_a">Popularity (ASC)</option>
+                      <option value="pop_d">Popularity (DES)</option>
+                      <option value="runt_a">Runtime (ASC)</option>
+                      <option value="runt_d">Runtime (DES)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="contain">Author</label>
+                    <input class="form-control" type="text" />
+                  </div>
+                  <div class="form-group">
+                    <label for="contain">Contains the words</label>
+                    <input class="form-control" type="text" name="title">
+                  </div>
+                  <button type="submit" class="btn btn-primary" (click)="onSubmitSearch()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </form>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="onSubmitSearch()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

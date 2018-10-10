@@ -1,0 +1,30 @@
+<ng-container *ngIf="loaded | async">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Forum</th>
+              <th>Last message</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--app-forum *ngFor="let forumSection of forumSections"
+                   [title]="forumSection.title"
+                   [description]="forumSection.description"
+                   [id]="forumSection._id">
+           </app-forum-->
+            <tr *ngFor="let forumSection of forumSections"
+                app-forum
+                  [title]="forumSection.title"
+                  [description]="forumSection.description"
+                  [id]="forumSection._id"
+                [routerLink]="['/forum/forum_content', forumSection._id]">
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-container>

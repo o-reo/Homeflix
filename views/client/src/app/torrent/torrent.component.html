@@ -1,0 +1,34 @@
+<div class="movie-card">
+  <div class="movie-header">
+
+    <div [ngStyle]="getBgStyle()">
+        <i class="material-icons header-icon"></i>
+    </div>
+  </div><!--movie-header-->
+  <div class="movie-content">
+    <div class="movie-content-header">
+      <a href="#">
+        <h3 class="movie-title">{{ torrent.title }}</h3>
+      </a>
+      <!--div class="imax-logo"></div-->
+    </div>
+    <div class="movie-info">
+      <div class="info-section">
+        <label>Year & Time</label>
+        <span>{{ torrent.year }} - {{ torrent.runtime }}mn</span>
+      </div><!--date,time-->
+      <div class="info-section">
+        <label>Rating</label>
+        <span>{{ torrent.rating }}</span>
+      </div><!--screen-->
+      <div class="info-section">
+        <label>Lang</label>
+        <span>{{ torrent.language }}</span>
+      </div><!--row-->
+      <div class="info-section">
+        <label>Views</label>
+        <span>???</span>
+      </div><!--seat-->
+    </div>
+  </div><!--movie-content-->
+</div><!--movie-card-->

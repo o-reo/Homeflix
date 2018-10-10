@@ -1,0 +1,15 @@
+<!--form type="form" [formGroup]="formGroupSearch" name="formSearch" (ngSubmit)="onSubmitSearch()">
+  <input formControlName="inputSearch" type="text" name="title" />
+  <input type="submit" />
+</form-->
+<app-search></app-search>
+  <div class="container">
+    <!--div class="row"-->
+      <app-torrent *ngFor="let torrent of torrents"
+                   [torrent]="torrent"
+                   [routerLink]="['movie', torrent.id]"
+      ></app-torrent>
+    </div>
+
+<br />
+  <!--/div-->
