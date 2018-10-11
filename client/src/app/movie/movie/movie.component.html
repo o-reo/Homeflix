@@ -12,6 +12,7 @@
       <div class="col-lg-12">
        <video *ngIf="videoloaded | async" class="video-player" id="videoPlayer" controls>
           <source src="{{link}}" type="video/mp4">
+          <track src="{{ subtitle_path }}" kind="subtitles" srclang="en" label="English" default/>
       </video>
         <!--div class="embed-responsive embed-responsive-16by9">
           <iframe class="embed-responsive-item" src="{{link}}"></iframe>

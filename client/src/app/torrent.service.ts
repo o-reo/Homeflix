@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthsimpleService} from "./authsimple.service";
 import {Torrent} from "./torrent";
-import { Movie } from './movie';
+import {Movie} from './movie';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,10 @@ export class TorrentService {
 
   getTorrent(title, api) {
     return this.http.get<any>('http://localhost:3000/api/torrent/' + api + '/' + title);
+  }
+
+  getSubtitles(lang, imdbid) {
+    return this.http.get<any>('http://localhost:3000/api/subtitles/' + imdbid + '?lang=' + lang);
   }
 
   getImage(title) {
@@ -52,6 +56,7 @@ export class TorrentService {
       year: json.date,
       rating: json.completed,
       runtime: 0,
+      imdb_code: '',
       description_full: 'unvailable',
       synopsis: 'unvailable',
       language: 'unvailable',
@@ -67,7 +72,7 @@ export class TorrentService {
 
   convertNyaaPantsu_Array(json): Torrent[] {
     let torrents = new Array();
-    json.torrents.forEach(function(val) {
+    json.torrents.forEach(function (val) {
       const torrent: Torrent = ({
         title: val.name,
         year: val.date,

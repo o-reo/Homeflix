@@ -11,16 +11,15 @@ var morgan = require('morgan');
 var jsonwebtoken = require('jsonwebtoken');
 
 var app = express();
-const HorribleSubsApi = require('horriblesubs-api')
 
 
 const route = require('./routes/route');
 const port = 3000;
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     console.log('OKKK');
     if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] == 'JWT') {
-        jsonwebtoken.verify(req.headers.authorization.split(' ')[1], 'RESTFULAPIs', function(err, decode) {
+        jsonwebtoken.verify(req.headers.authorization.split(' ')[1], 'RESTFULAPIs', function (err, decode) {
             if (err) req.user = undefined;
             req.user = decode;
             next();
@@ -58,9 +57,7 @@ mongoose.connection.on('error', (err) => {
 
 
 //body - parser
-app.use(bodyparser.json({
-
-}));
+app.use(bodyparser.json({}));
 app.use(bodyparser.urlencoded({
     extended: true
 }));
@@ -70,7 +67,6 @@ app.set('view engine', 'ejs');
 
 //adding middleware - cors
 app.use(cors());
-
 
 //routes
 app.use('/api', route);
@@ -93,17 +89,22 @@ app.get('/streaming/:file', (req, res) => {
         var partialend = parts[1];
 
         var start = parseInt(partialstart, 10);
-        var end = partialend ? parseInt(partialend, 10) : total-1;
-        var chunksize = (end-start)+1;
+        var end = partialend ? parseInt(partialend, 10) : total - 1;
+        var chunksize = (end - start) + 1;
         console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
 
 
         var file = fs.createReadStream(path, {start: start, end: end});
-        res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': 'video/mp4' });
+        res.writeHead(206, {
+            'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': 'video/mp4'
+        });
         file.pipe(res);
     } else {
         console.log('ALL: ' + total);
-        res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'video/mp4' });
+        res.writeHead(200, {'Content-Length': total, 'Content-Type': 'video/mp4'});
         var file = fs.createReadStream(path);
         file.pipe(res);
     }
@@ -112,7 +113,7 @@ app.get('/streaming/:file', (req, res) => {
 app.get('/streaming/:directory/:file', (req, res) => {
     var film = req.params.file;
 
-    var path = './films/'  + req.params.directory + '/' + film;
+    var path = './films/' + req.params.directory + '/' + film;
     const stat = fs.statSync(path)
     const fileSize = stat.size
     const range = req.headers.range
@@ -121,8 +122,8 @@ app.get('/streaming/:directory/:file', (req, res) => {
         const start = parseInt(parts[0], 10)
         const end = parts[1]
             ? parseInt(parts[1], 10)
-            : fileSize-1
-        const chunksize = (end-start)+1
+            : fileSize - 1
+        const chunksize = (end - start) + 1
         const file = fs.createReadStream(path, {start, end})
         const head = {
             'Content-Range': `bytes ${start}-${end}/${fileSize}`,
@@ -142,6 +143,6 @@ app.get('/streaming/:directory/:file', (req, res) => {
     }
 })
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log('Server started atport:' + port);
 });
