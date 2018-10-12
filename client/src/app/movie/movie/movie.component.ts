@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TorrentService } from "../../torrent.service";
 import { Movie} from "../../movie";
 import { Torrent } from "../../torrent";
-import {promise} from "selenium-webdriver";
+import { Input } from "@angular/core";
 
 @Component({
   selector: 'app-movie',
@@ -19,6 +19,8 @@ export class MovieComponent implements OnInit {
   path: String;
   link: String;
   textLoad: String = 'Veuillez patienter ...';
+  //private subtitle = require('../../../assets/16663cd001b.vtt');
+  @Input() subtitle = './../../../assets/16663cd001b.vtt';
   /*= 'http://localhost:3000/streaming/Harry_Potter_and_the_Goblet_of_Fire_2005.mkv';*/
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService) { }

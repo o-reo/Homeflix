@@ -3,10 +3,11 @@ const torrentStream = require('torrent-stream');
 var request = require('request');
 const HorribleSubsApi = require('horriblesubs-api');
 const fs = require("fs"); //Load the filesystem module
+const MovieInfos = require('./../models/movie-infos');
 
 exports.getTorrent = function (req, res) {
     var get_query = '';
-    if (req.params.api === 'yts') {
+   /* if (req.params.api === 'yts') {
         if (req.params.title.charAt(0) != '*')
             get_query = 'https://yts.am/api/v2/list_movies.json?limit=48&query_term=' + req.params.title + '&with_images=true&with_cast=true';
         else {
@@ -18,29 +19,41 @@ exports.getTorrent = function (req, res) {
         else {
             get_query = 'https://nyaa.pantsu.cat/api/search?limit=48' + req.params.title.substring(1);
         }
-    }
-    console.log(get_query);
+    }*/
+    /*console.log(get_query);
     request(get_query, function (error, response, body) {
         console.log(body);
         res.json(body);
-    });
-   /* https.get(get_query, (resp) => {
-        let data = '';
-
-        // A chunk of data has been recieved.
-        resp.on('data', (chunk) => {
-            data += chunk;
-        });
-
-        // The whole response has been received. Print out the result.
-        resp.on('end', () => {
-            console.log(data);
-            res.json(data);
-        });
-
-    }).on("error", (err) => {
-        res.json(err);
-    }); */
+    });*/
+    var limit = 20;
+    var order = 1;
+    var sort = { title: 1 };
+    var page = 1;
+    var query = {};
+    if (req.params.title.charAt(0) != '*')
+        query = { title: {$regex: req.params.title, $options: 'i'}};
+    if (req.query.page)
+        page = Math.max(0, req.query.page);
+    if (req.query.limit && req.query.limit <= 50 && req.query.limit >= 1)
+        limit = req.query.limit;
+    if (req.query.order_by)
+        order = (req.query.order_by === 'asc') ? 1 : -1;
+    if (req.query.sort_by) {
+        console.log('sortBy');
+        if (req.query.sort_by === 'title')
+            sort = {title: order};
+        if (req.query.sort_by === 'year')
+            sort = {year: order};
+        if (req.query.sort_by === 'rating')
+            sort = {rating: order};
+    }
+    var q = MovieInfos.find(query).limit(limit).skip(limit * page).sort(sort);
+    q.exec (function(err, movie) {
+       if (movie) {
+          // console.log(movie);
+           res.json(movie)
+       }
+   })
 };
 
 exports.streamTorrent = function (req, res) {
@@ -65,17 +78,21 @@ exports.streamTorrent = function (req, res) {
 
     engine.on('download', function(data){
         console.log('--piece downloaded: ', data);
-        if (data > 20) {
-            const stats = fs.statSync('/Users/alruntz/Documents/Projects/web/test01/films/' + path);
-            const fileSizeInBytes = stats.size;
+        if (!sending) {
+            if (fs.existsSync(__dirname + '/../films/' + path)) {
+                const stats = fs.statSync(__dirname + '/../films/' + path);
+                const fileSizeInBytes = stats.size;
 //Convert the file size to megabytes (optional)
-            const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
-            if (fileSizeInMegabytes >= 50 && !sending) {
-                res.json({path: path});
-                sending = true;
-                console.log('piece telechargee, diffusion du stream !');
+                const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
+                if (fileSizeInMegabytes >= 25 && !sending) {
+                    sending = true;
+                    res.json({path: path});
+                    console.log('piece telechargee, diffusion du stream !');
+                }
+                console.log('SIZE: ', fileSizeInMegabytes);
+            } else {
+                console.log('fichier introuvable: ' + __dirname + '/../films/' + path);
             }
-            console.log('SIZE: ', fileSizeInMegabytes);
         }
     });
 

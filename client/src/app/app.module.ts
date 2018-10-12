@@ -38,12 +38,14 @@ import { CommentComponent } from './movie/comment/comment.component';
 import { PostCommentComponent } from './movie/post-comment/post-comment.component';
 import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider} from 'angularx-social-login';
+import {AuthguardService} from './authguard.service';
+import { LoaderComponent } from './loader/loader.component';
 
 const appRoutes: Routes = [
   { path: 'users', component: UsersComponent },
   { path: 'auth', component: AuthComponent },
   { path: '', component: AuthComponent },
-  { path: 'myprofile', component: ProfileComponent },
+  { path: 'myprofile', canActivate: [AuthguardService], component: ProfileComponent },
   { path: 'forum', component: IndexComponent },
   { path: 'forum/index', component: IndexComponent },
   { path: 'forum/forum_content/:id_sectionForum', component: TopicsComponent},
@@ -52,9 +54,9 @@ const appRoutes: Routes = [
   { path: 'forum/newtopic/:id_sectionForum', component: CreateTopicComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'connexion', component: ConnexionComponent },
-  { path: 'torrents', component: TorrentsComponent },
-  { path: 'torrents/:page', component: TorrentComponent},
-  { path: 'torrents/movie/:id_movie', component: MovieComponent },
+  { path: 'torrents', canActivate: [AuthguardService], component: TorrentsComponent },
+  { path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
+  { path: 'torrents/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent },
   { path: 'auth/:code', component: AuthComponent}
 ];
 
@@ -102,7 +104,8 @@ export function provideConfig() {
     SearchComponent,
     CommentsComponent,
     CommentComponent,
-    PostCommentComponent
+    PostCommentComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -116,7 +119,7 @@ export function provideConfig() {
     NgxPaginationModule,
     SocialLoginModule
   ],
-  providers: [AuthsimpleService, { provide: AuthServiceConfig, useFactory: provideConfig }],
+  providers: [AuthsimpleService, { provide: AuthServiceConfig, useFactory: provideConfig }, AuthguardService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

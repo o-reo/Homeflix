@@ -113,4 +113,8 @@ router.route('/movie_comments/:id_movie')
 router.route('/movie_comment')
     .post(authController.loginRequired, movieController.postComment);
 
+
+router.route('/dlmovies')
+    .get(movieController.dlAllMovies);
+
 module.exports = router;
