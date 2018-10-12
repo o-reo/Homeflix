@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {TorrentService} from "../../torrent.service";
-import {Movie} from "../../movie";
-import {Torrent} from "../../torrent";
-import {promise} from "selenium-webdriver";
-
+import {TorrentService} from '../../torrent.service';
+import {Movie} from '../../movie';
+import {Torrent} from '../../torrent';
+import {promise} from 'selenium-webdriver';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-movie',
@@ -19,11 +19,12 @@ export class MovieComponent implements OnInit {
   torrent: Torrent;
   path: String;
   link: String;
-  subtitle_path: String;
   textLoad: String = 'Veuillez patienter ...';
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService) {
   }
+
+  @Input() subtitle_path;
 
   ngOnInit() {
     this.torrentService.getMovie(this.torrentService.api, this.route.snapshot.params['id_movie'])
@@ -41,8 +42,9 @@ export class MovieComponent implements OnInit {
             this.loaded = Promise.resolve(true);
             this.torrentService.getSubtitles('fre', this.torrent.imdb_code)
               .subscribe(subtitles => {
-                this.subtitle_path = 'http://localhost:3000/' + subtitles.path;
-                console.log(this.subtitle_path);
+                 this.subtitle_path = './../../../' + subtitles.path;
+                // this.subtitle_path = 'http://localhost:3000/' + subtitles.path;
+                // console.log(this.subtitle_path);
               });
           });
         this.torrentService.startStreaming(movie)

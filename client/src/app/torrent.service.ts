@@ -74,6 +74,7 @@ export class TorrentService {
     let torrents = new Array();
     json.torrents.forEach(function (val) {
       const torrent: Torrent = ({
+        imdb_code: '',
         title: val.name,
         year: val.date,
         rating: val.completed,
