@@ -20,11 +20,10 @@ export class MovieComponent implements OnInit {
   path: String;
   link: String;
   textLoad: String = 'Veuillez patienter ...';
+  @Input() subtitle_path_en;
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService) {
   }
-
-  @Input() subtitle_path;
 
   ngOnInit() {
     this.torrentService.getMovie(this.torrentService.api, this.route.snapshot.params['id_movie'])
@@ -33,19 +32,17 @@ export class MovieComponent implements OnInit {
         this.movie = movie;
         this.torrentService.getMovieInfos(this.torrentService.api, movie.id_api)
           .subscribe(torrent => {
-            console.log(torrent);
+            console.log('torrent', torrent);
+            this.torrentService.getSubtitles('eng', torrent.data.movie.imdb_code, torrent.data.movie.torrents[0].size_bytes)
+              .subscribe(subtitles => {
+                this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
+              });
             if (this.torrentService.api === 'yts') {
               this.torrent = torrent.data.movie;
             } else if (this.torrentService.api === 'nyaapantsu') {
               this.torrent = this.torrentService.convertNyaaPantsu(torrent.torrents[0]);
             }
             this.loaded = Promise.resolve(true);
-            this.torrentService.getSubtitles('fre', this.torrent.imdb_code)
-              .subscribe(subtitles => {
-                 this.subtitle_path = './../../../' + subtitles.path;
-                // this.subtitle_path = 'http://localhost:3000/' + subtitles.path;
-                // console.log(this.subtitle_path);
-              });
           });
         this.torrentService.startStreaming(movie)
           .subscribe(data => {

@@ -15,9 +15,14 @@ exports.getSubtitles = function (req, res) {
     if (req.query.lang){
         lang = req.query.lang;
     }
+    let filesize = '';
+    if (req.query.filesize){
+        filesize = req.query.filesize;
+    }
     let search_array = {
         imdbid: req.params.imdbid,
         sublanguageid: lang,
+        filesize: filesize,
         extensions: ['srt']
     };
     OpenSubtitles.login()
@@ -25,13 +30,13 @@ exports.getSubtitles = function (req, res) {
             OpenSubtitles.search(search_array)
                 .then(subtitles => {
                     let uniqid = (new Date().getTime() + Math.floor((Math.random()*10000)+1)).toString(16);
-                    let sub_file = fs.createWriteStream('subtitles/'+ uniqid +'.vtt');
+                    let sub_file = fs.createWriteStream('client/src/assets/subtitles/'+ uniqid +'.vtt');
                     req = http.get(subtitles[Object.keys(subtitles)[0]]['url'], function (response) {
                         response
                             .pipe(srt2vtt())
                             .pipe(sub_file);
                     });
-                    console.log('debug output:', {path: 'subtitles/'+ uniqid +'.vtt', lang: lang});
+                    console.log('debug output:', {path: 'client/src/assets/subtitles/'+ uniqid +'.vtt', lang: lang});
                     res.json({path: 'subtitles/'+ uniqid +'.vtt', lang: lang});
                 })
                 .catch(error => {

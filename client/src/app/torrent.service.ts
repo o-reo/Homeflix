@@ -25,8 +25,8 @@ export class TorrentService {
     return this.http.get<any>('http://localhost:3000/api/torrent/' + api + '/' + title);
   }
 
-  getSubtitles(lang, imdbid) {
-    return this.http.get<any>('http://localhost:3000/api/subtitles/' + imdbid + '?lang=' + lang);
+  getSubtitles(lang, imdbid, filesize) {
+    return this.http.get<any>('http://localhost:3000/api/subtitles/' + imdbid + '?lang=' + lang + '&filesize=' + filesize);
   }
 
   getImage(title) {
