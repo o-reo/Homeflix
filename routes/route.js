@@ -95,6 +95,9 @@ router.route('/auth/sign_in/:social')
 router.route('/torrent/:api/:title')
     .get(torrentController.getTorrent);
 
+router.route('/subtitles/:imdbid')
+    .get(torrentController.getSubtitles);
+
 router.route('/stream/:hash')
     .get(torrentController.streamTorrent);
 

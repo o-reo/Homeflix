@@ -4,6 +4,7 @@ export class Torrent {
   rating: number;
   runtime: number;
   description_full: string;
+  imdb_code: string;
   synopsis: string;
   language: string;
   background_image: string;
