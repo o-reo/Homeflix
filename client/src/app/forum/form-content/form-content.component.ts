@@ -3,7 +3,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 import { ForumService } from '../../forum.service';
 import { Input } from '@angular/core';
 import { Router } from '@angular/router';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-form-content',

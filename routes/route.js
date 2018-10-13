@@ -92,8 +92,8 @@ router.route('/auth/sign_in')
 router.route('/auth/sign_in/:social')
     .post(authController.sign_in_social);
 
-router.route('/torrent/:api/:title')
-    .get(torrentController.getTorrent);
+router.route('/torrents/:title')
+    .get(torrentController.getTorrents);
 
 router.route('/subtitles/:imdbid')
     .get(torrentController.getSubtitles);
@@ -101,8 +101,11 @@ router.route('/subtitles/:imdbid')
 router.route('/stream/:hash')
     .get(torrentController.streamTorrent);
 
-router.route('/movie/:api/:id_api')
-    .get(movieController.accessMovie);
+/*router.route('/movie/:api/:id_api')
+    .get(movieController.accessMovie);*/
+
+router.route('/movie/:id')
+    .get(movieController.getMovieInfos);
 
 router.route('/movie_comment/:id_comment')
     .get(movieController.getComment);
@@ -116,8 +119,14 @@ router.route('/movie_comments/:id_movie')
 router.route('/movie_comment')
     .post(authController.loginRequired, movieController.postComment);
 
-
+/* tools */
 router.route('/dlmovies')
     .get(movieController.dlAllMovies);
+
+router.route('/updateimages')
+    .get(movieController.UpdateImages);
+
+router.route('/updateusers')
+    .get(userController.UpdateUsers);
 
 module.exports = router;

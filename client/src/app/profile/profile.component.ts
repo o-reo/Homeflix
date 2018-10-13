@@ -15,7 +15,8 @@ export class ProfileComponent implements OnInit {
   formGroup = new FormGroup({
     input_lastName: new FormControl(),
     input_firstName: new FormControl(),
-    input_email: new FormControl()
+    input_email: new FormControl(),
+    input_lang: new FormControl()
   });
 
   formGroupPhoto = new FormGroup( {
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit {
     this.formGroup.controls['input_lastName'].setValue(this.authService.myUser.last_name);
     this.formGroup.controls['input_firstName'].setValue(this.authService.myUser.first_name);
     this.formGroup.controls['input_email'].setValue(this.authService.myUser.mail);
+    this.formGroup.controls['input_lang'].setValue(this.authService.myUser.lang);
   }
 
   changeListener($event): void {
@@ -56,7 +58,8 @@ export class ProfileComponent implements OnInit {
   onSubmit() {
     const user = {
       first_name: this.formGroup.value.input_firstName,
-      last_name: this.formGroup.value.input_lastName
+      last_name: this.formGroup.value.input_lastName,
+      lang: this.formGroup.value.input_lang
     };
     this.userService.updateMyUser(user)
       .subscribe(msg => {

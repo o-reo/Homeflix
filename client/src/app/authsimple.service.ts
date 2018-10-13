@@ -25,16 +25,6 @@ export class AuthsimpleService {
   }
 
   signIn42(code: string) {
-    /*let token = '';
-    const credentials = {
-      grant_type: 'client_credentials',
-      client_id: '5ce22ae173d5c328029ee542afc8fe162935f4698642f91afe77a747dac61523',
-      client_secret: 'b82a3dbdec7522f57b01cfc3e17cee54ddbce81021555ddacb130a13a6ee8dbc'
-    };
-    this.http.post<any>('https://api.intra.42.fr/oauth/token', credentials)
-      .subscribe(response => {
-        token = response.access_token;
-      })*/
     const auth = {
       grant_type: 'authorization_code',
       client_id: '5ce22ae173d5c328029ee542afc8fe162935f4698642f91afe77a747dac61523',

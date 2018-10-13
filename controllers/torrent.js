@@ -12,7 +12,8 @@ const OpenSubtitles = new OS({
 });
 
 exports.getSubtitles = function (req, res) {
-    let lang = 'eng';
+    let lang = 'fre';
+    console.log(req.query);
     if (req.query.lang){
         lang = req.query.lang;
     }
@@ -37,7 +38,7 @@ exports.getSubtitles = function (req, res) {
                             .pipe(srt2vtt())
                             .pipe(sub_file);
                     });
-                    console.log('debug output:', {path: 'client/src/assets/subtitles/'+ uniqid +'.vtt', lang: lang});
+                    console.log('debug output:', {path: './../client/src/assets/subtitles/'+ uniqid +'.vtt', lang: lang});
                     res.json({path: 'subtitles/'+ uniqid +'.vtt', lang: lang});
                 })
                 .catch(error => {
@@ -46,11 +47,12 @@ exports.getSubtitles = function (req, res) {
                 })
         })
         .catch(error => {
+            console.log('error');
             res.json({error: error, imdbid: req.params.imdbid, lang: lang});
         })
 };
 
-exports.getTorrent = function (req, res) {
+exports.getTorrents = function (req, res) {
     var get_query = '';
    /* if (req.params.api === 'yts') {
         if (req.params.title.charAt(0) != '*')
@@ -70,13 +72,22 @@ exports.getTorrent = function (req, res) {
         console.log(body);
         res.json(body);
     });*/
+    console.log(req.query);
     var limit = 20;
     var order = 1;
     var sort = { title: 1 };
     var page = 1;
     var query = {};
+    var genre = '*';
+    if (req.query.genre)
+        genre = req.query.genre;
     if (req.params.title.charAt(0) != '*')
-        query = { title: {$regex: req.params.title, $options: 'i'}};
+        query = {title: {$regex: req.params.title, $options: 'i'}};
+    if (genre != '*') {
+        console.log('GENRE:', genre);
+        query.genres = {$all: [genre]};
+    }
+    console.log('QUERY', query);
     if (req.query.page)
         page = Math.max(0, req.query.page);
     if (req.query.limit && req.query.limit <= 50 && req.query.limit >= 1)
@@ -92,13 +103,15 @@ exports.getTorrent = function (req, res) {
         if (req.query.sort_by === 'rating')
             sort = {rating: order};
     }
-    var q = MovieInfos.find(query).limit(limit).skip(limit * page).sort(sort);
-    q.exec (function(err, movie) {
-       if (movie) {
-          // console.log(movie);
-           res.json(movie)
-       }
-   })
+    var options = {
+        sort: sort,
+        page: page,
+        limit: limit
+    }
+    MovieInfos.paginate(query, options, function(err, movies){
+        //console.log(movies.docs);
+        res.json(movies.docs);
+    });
 };
 
 exports.streamTorrent = function (req, res) {
@@ -142,6 +155,22 @@ exports.streamTorrent = function (req, res) {
     });
 
     engine.on('idle', function() {
+        if (!sending) {
+            if (fs.existsSync(__dirname + '/../films/' + path)) {
+                const stats = fs.statSync(__dirname + '/../films/' + path);
+                const fileSizeInBytes = stats.size;
+//Convert the file size to megabytes (optional)
+                const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
+                if (fileSizeInMegabytes >= 25 && !sending) {
+                    sending = true;
+                    res.json({path: path});
+                    console.log('piece telechargee, diffusion du stream !');
+                }
+                console.log('SIZE: ', fileSizeInMegabytes);
+            } else {
+                console.log('fichier introuvable: ' + __dirname + '/../films/' + path);
+            }
+        }
         console.log('end download');
     });
 };

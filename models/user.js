@@ -36,6 +36,9 @@ const UserSchema = mongoose.Schema({
     },
     photo: {
         type: String
+    },
+    lang : {
+        type: String
     }
 });
 

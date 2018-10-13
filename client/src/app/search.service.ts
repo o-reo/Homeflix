@@ -27,8 +27,9 @@ export class SearchService {
       year = 'year'; rating = 'rating';
       runtime = 'runtime'; asc = 'asc';
       desc = 'desc';
+      console.log('genre', genre);
       if (genre !== 'all') {
-        query += '&genre=' + genre;
+        query += '?genre=' + genre;
       }
     } else if (api === 'nyaapantsu') {
       sort = 'sort'; order = 'order';
@@ -36,28 +37,39 @@ export class SearchService {
       runtime = '1'; asc = 'true';
       desc = 'false';
     }
+    if (genre !== 'all') {
+      query += '&';
+    } else {
+      query += '?';
+    }
       switch (tri) {
         case 'year_a':
-          query += '?' + sort + '=' + year + '&' + order + '=' + asc;
+          query += sort + '=' + year + '&' + order + '=' + asc;
           break;
         case 'year_d':
-          query += '?' + sort + '=' + year + '&' + order + '=' + desc;
+          query += sort + '=' + year + '&' + order + '=' + desc;
           break;
         case 'pop_a':
-          query += '?' + sort + '=' + rating + '&' + order + '=' + asc;
+          query += sort + '=' + rating + '&' + order + '=' + asc;
           break;
         case 'pop_d':
-          query += '?' + sort + '=' + rating + '&' + order + '=' + desc;
+          query += sort + '=' + rating + '&' + order + '=' + desc;
           break;
         case 'runt_a':
-          query += '?' + sort + '=' + runtime + '&' + order + '=' + asc;
+          query += sort + '=' + runtime + '&' + order + '=' + asc;
           break;
         case 'runt_d':
-          query += '?' + sort + '=' + runtime + '&' + order + '=' + desc;
+          query += sort + '=' + runtime + '&' + order + '=' + desc;
           break;
-      };
-    query += '&page=' + page;
-    this.torrentService.getTorrent(encodeURI(query), api)
+      }
+      if (tri || (genre || genre !== 'all')) {
+        query += '&';
+      } else {
+        query += '?';
+      }
+    query += 'page=' + page;
+      console.log('QUERY', query);
+    this.torrentService.getTorrents(encodeURI(query))
       .subscribe(torrents => {
         console.log(torrents);
         if (async) {
@@ -67,26 +79,26 @@ export class SearchService {
               torrents.forEach(function (val) {
                 torrentService.torrents.push(val);
               });
-            } else if (api === 'nyaapantsu') {
+            } /* else if (api === 'nyaapantsu') {
               this.torrentService.convertNyaaPantsu_Array(JSON.parse(torrents)).forEach(function (val) {
                 torrentService.torrents.push(val);
               });
-            }
+            } */
           } else {
             if (api === 'yts') {
               this.torrentService.torrents = JSON.parse(torrents);
-            } else if (api === 'nyaapantsu') {
+            } /* else if (api === 'nyaapantsu') {
               this.torrentService.torrents = this.torrentService.convertNyaaPantsu_Array(JSON.parse(torrents));
-            }
+            } */
           }
         } else {
           if (api === 'yts') {
             console.log('torrents', torrents);
             this.torrentService.torrents = torrents;
-          } else if (api === 'nyaapantsu') {
+          } /* else if (api === 'nyaapantsu') {
             console.log(torrents);
             this.torrentService.torrents = this.torrentService.convertNyaaPantsu_Array(JSON.parse(torrents));
-          }
+          } */
         }
         this.title = title;
         this.genre = genre;

@@ -3,6 +3,7 @@ const MovieComment = require('../models/movie-comment');
 const https = require('https');
 const request = require('request');
 const MovieInfos = require('../models/movie-infos');
+const imdb = require('imdb-api');
 
 exports.accessMovie = function (req, res) {
     console.log('1');
@@ -66,6 +67,15 @@ exports.accessMovie = function (req, res) {
     });
 }
 
+exports.getMovieInfos = function (req, res) {
+  MovieInfos.findOne({_id : req.params.id}, function(err, movie){
+      if (err)
+          res.json(err);
+      else
+          res.json(movie);
+  });
+}
+
 /*  get.api/movie_comments */
 exports.getAllComments = function (req, res) {
     MovieComment.find(function(err, comments){
@@ -120,7 +130,7 @@ function dlPage(page) {
         }
         request(options, function (error, response, body) {
             //console.log('SousReq');
-            data = JSON.parse(body);
+            let data = JSON.parse(body);
             if (!error) {
                 data.data.movies.forEach(function (val) {
                     console.log(val);
@@ -144,6 +154,41 @@ function dlPage(page) {
         });
         dlPage(page + 1);
     }, 1500);
+}
+
+function getImage(imdb_code) {
+    console.log('imdb code:', imdb_code);
+    imdb.get({id: imdb_code}, {apiKey: 'be761138'}).then((rep) => {
+        let request = {
+            background_image: rep.poster,
+            background_image_original: rep.poster,
+            small_cover_image: rep.poster,
+            medium_cover_image: rep.poster,
+            large_cover_image: rep.poster
+        };
+        MovieInfos.updateOne(
+            { imdb_code: imdb_code },
+            { $set: request },
+            function(err, result) {
+                if (err)
+                    console.log('error lors de lupdate');
+                console.log('image updated');
+            });
+
+    });
+}
+
+exports.UpdateImages = function(req, res) {
+    var q = MovieInfos.find().limit(950).skip(950);
+    q.exec (function(err, movie) {
+        if (movie) {
+           // console.log(movie[0].imdb_code);
+            movie.forEach(function(val) {
+                getImage(val.imdb_code);
+            });
+            res.json('finish');
+        }
+    })
 }
 
 exports.dlAllMovies = function (req, res) {

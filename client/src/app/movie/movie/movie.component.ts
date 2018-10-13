@@ -5,6 +5,8 @@ import {Movie} from '../../movie';
 import {Torrent} from '../../torrent';
 import {promise} from 'selenium-webdriver';
 import { Input } from '@angular/core';
+import * as bytes from 'bytes';
+import { AuthsimpleService } from '../../authsimple.service';
 
 @Component({
   selector: 'app-movie',
@@ -15,44 +17,37 @@ export class MovieComponent implements OnInit {
 
   videoloaded: Promise<boolean>;
   loaded: Promise<boolean>;
-  movie: Movie;
   torrent: Torrent;
   path: String;
   link: String;
   textLoad: String = 'Veuillez patienter ...';
+  lang: String;
   @Input() subtitle_path_en;
 
-  constructor(private route: ActivatedRoute, private torrentService: TorrentService) {
+  constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: AuthsimpleService) {
   }
 
   ngOnInit() {
-    this.torrentService.getMovie(this.torrentService.api, this.route.snapshot.params['id_movie'])
-      .subscribe(movie => {
-        console.log(JSON.stringify(movie));
-        this.movie = movie;
-        this.torrentService.getMovieInfos(this.torrentService.api, movie.id_api)
-          .subscribe(torrent => {
-            console.log('torrent', torrent);
-            this.torrentService.getSubtitles('eng', torrent.data.movie.imdb_code, torrent.data.movie.torrents[0].size_bytes)
-              .subscribe(subtitles => {
-                this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
-              });
-            if (this.torrentService.api === 'yts') {
-              this.torrent = torrent.data.movie;
-            } else if (this.torrentService.api === 'nyaapantsu') {
-              this.torrent = this.torrentService.convertNyaaPantsu(torrent.torrents[0]);
-            }
+    this.torrentService.getTorrent(this.route.snapshot.params['id_movie'])
+      .subscribe(torrent => {
+        this.torrent = torrent
+        this.lang = 'eng';
+        if (this.authService.myUser.lang && this.authService.myUser.lang !== undefined) {
+          this.lang = this.authService.myUser.lang;
+        }
+        this.torrentService.getSubtitles(this.lang, torrent.imdb_code, bytes(torrent.torrents[0].size))
+          .subscribe(subtitles => {
+            console.log('sub', subtitles);
+            this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
             this.loaded = Promise.resolve(true);
-          });
-        this.torrentService.startStreaming(movie)
-          .subscribe(data => {
-            this.path = data.path;
-            this.link = 'http://localhost:3000/streaming/' + data.path;
-            console.log(data.path);
-            this.videoloaded = Promise.resolve(true);
-            this.textLoad = '';
-            //this.loaded = Promise.resolve(true);
-            //setTimeout(function() { this.loaded = Promise.resolve(true); console.log('test');  }, 50);
+            this.torrentService.startStreaming(this.torrent)
+              .subscribe(data => {
+                this.path = data.path;
+                this.link = 'http://localhost:3000/streaming/' + data.path;
+                console.log(data.path);
+                this.videoloaded = Promise.resolve(true);
+                this.textLoad = '';
+              });
           });
       });
   }

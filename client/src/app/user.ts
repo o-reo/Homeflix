@@ -6,4 +6,5 @@ export class User{
     mail: string;
     username: string;
     photo: string;
+    lang: string;
 }

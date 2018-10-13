@@ -51,9 +51,11 @@ exports.getMyUser = function (req, res) {
 };
 
 exports.modifyMyUser = function (req, res) {
+    console.log(req.body);
     let request = {
         first_name: req.body.first_name,
-        last_name: req.body.last_name
+        last_name: req.body.last_name,
+        lang: req.body.lang
     };
     User.updateOne(
         { _id: req.user._id },
@@ -85,13 +87,16 @@ exports.removeUser = function (req, res) {
 };
 
 exports.modifyUser = function (req, res) {
+    console.log('HELLO');
+    console.log('LANG', req.body.lang);
     let request = {
         first_name: req.first_name,
         last_name: req.last_name,
         password: req.body.password,
         mail: req.body.mail,
         username: req.body.username,
-        grant: req.body.grant
+        grant: req.body.grant,
+        lang: req.body.lang
     };
     User.updateOne(
         { _id: req.params.id },
@@ -102,3 +107,15 @@ exports.modifyUser = function (req, res) {
             res.json(request);
     });
 };
+
+exports.UpdateUsers = function (req, res) {
+    let request = {
+        lang: 'fre'
+    };
+    User.update({$set: request}, function(err, user) {
+       if(err)
+           res.json(err);
+       else
+           res.json({msg: 'finish'});
+    });
+}

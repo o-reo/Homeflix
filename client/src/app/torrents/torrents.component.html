@@ -7,7 +7,7 @@
     <!--div class="row"-->
       <app-torrent *ngFor="let torrent of torrents"
                    [torrent]="torrent"
-                   [routerLink]="['movie', torrent.id]"
+                   [routerLink]="['movie', torrent._id]"
       ></app-torrent>
     </div>
 

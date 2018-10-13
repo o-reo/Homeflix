@@ -11,6 +11,6 @@ export class Torrent {
   large_cover_image: string;
   medium_cover_image: string;
   summary: string;
-  id: number;
+  _id: string;
   hash: string;
 }

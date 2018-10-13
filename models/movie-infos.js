@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 var MovieInfosSchema = new mongoose.Schema({
     imdb_code: {type:String, required: true},
@@ -26,4 +27,5 @@ var MovieInfosSchema = new mongoose.Schema({
 });
 
 // Export the Mongoose model
+MovieInfosSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('MovieInfos', MovieInfosSchema);

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AuthsimpleService} from "./authsimple.service";
-import {Torrent} from "./torrent";
+import {AuthsimpleService} from './authsimple.service';
+import {Torrent} from './torrent';
 import {Movie} from './movie';
 
 @Injectable({
@@ -21,8 +21,12 @@ export class TorrentService {
     this.api = 'yts';
   }
 
-  getTorrent(title, api) {
-    return this.http.get<any>('http://localhost:3000/api/torrent/' + api + '/' + title);
+  getTorrents(title) {
+    return this.http.get<any>('http://localhost:3000/api/torrents/' + title);
+  }
+
+  getTorrent(id) {
+    return this.http.get<any>('http://localhost:3000/api/movie/' + id);
   }
 
   getSubtitles(lang, imdbid, filesize) {
@@ -34,23 +38,23 @@ export class TorrentService {
       + encodeURI(title));
   }
 
-  startStreaming(movie: Movie) {
-    return this.http.get<any>('http://localhost:3000/api/stream/' + movie.hash);
+  startStreaming(movie) {
+    return this.http.get<any>('http://localhost:3000/api/stream/' + movie.torrents[0].hash);
   }
 
-  getMovie(api, id) {
-    return this.http.get<Movie>('http://localhost:3000/api/movie/' + api + '/' + id);
-  }
+  /* getMovie(id) {
+    return this.http.get<Movie>('http://localhost:3000/api/movie/' + id);
+  } */
 
-  getMovieInfos(api, id) {
+  /*getMovieInfos(api, id) {
     if (api === 'yts') {
       return this.http.get<any>('https://yts.am/api/v2/movie_details.json?movie_id=' + id);
     } else if (api === 'nyaapantsu') {
       return this.http.get<any>('https://nyaa.pantsu.cat/api/search?id=' + id);
     }
-  }
+  }*/
 
-  convertNyaaPantsu(json) {
+  /* convertNyaaPantsu(json) {
     const torrent: Torrent = ({
       title: json.name,
       year: json.date,
@@ -92,6 +96,6 @@ export class TorrentService {
       torrents.push(torrent);
     });
     return torrents;
-  }
+  } */
 
 }

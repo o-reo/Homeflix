@@ -40,11 +40,11 @@ export class UserService {
   }
 
   updateMyUser(newUser) {
-    if ('mail' in localStorage && 'passwd' in localStorage) {
-      const headers = this.authService.getHeader_authBasic('application/json');
+    if ('isLog' in localStorage) {
+      const headers = this.authService.getHeader_token('application/json');
       return this.http.put<User>('http://localhost:3000/api/myuser', newUser, {headers: headers});
     } else {
-      console.log('ERREUR PAS d USERNAME ET DE PASS');
+      console.log('PAS LOG');
     }
   }
 
