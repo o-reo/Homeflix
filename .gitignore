@@ -1,0 +1,6 @@
+films/*
+!films/.empty
+node_modules/*
+client/node_modules/*
+client/src/assets/subtitles/*
+!client/src/assets/subtitles/.empty
