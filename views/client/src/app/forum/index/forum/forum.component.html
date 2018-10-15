@@ -1,6 +1,0 @@
-<ng-container *ngIf="loaded | async">
-  <td><h4>{{ title }}</h4> <hr> <br/> <p>{{ description }}</p></td>
-  <ng-container *ngIf="topic">
-    <td> Topic: {{ topic.title }} <br /> De: {{ user.username }} <br /> Le: {{ message.time | date:'MM/dd/yy HH:mm:ss' }} </td>
-  </ng-container>
-</ng-container>
