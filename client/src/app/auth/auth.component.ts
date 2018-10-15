@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthsimpleService} from '../authsimple.service';
 import {Router} from '@angular/router';
-import {AuthService, FacebookLoginProvider, GoogleLoginProvider, LinkedInLoginProvider} from 'angularx-social-login';
-import {SocialUser} from 'angularx-social-login';
+import {AuthService, FacebookLoginProvider, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({

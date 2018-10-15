@@ -4,7 +4,7 @@ const torrentStream = require('torrent-stream');
 var request = require('request');
 const OS = require('opensubtitles-api');
 const fs = require("fs"); //Load the filesystem module
-const MovieInfos = require('./../models/movie-infos');
+const MovieInfos = require('../models/movie-infos');
 var srt2vtt = require('srt-to-vtt');
 
 const OpenSubtitles = new OS({

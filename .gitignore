@@ -1,6 +1,7 @@
-films/*
-!films/.empty
-node_modules/*
+server/films/*
+!server/films/.empty
+server/node_modules/*
 client/node_modules/*
 client/src/assets/subtitles/*
 !client/src/assets/subtitles/.empty
+database/*
