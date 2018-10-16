@@ -17,7 +17,8 @@ import {
   MatDividerModule,
   MatGridListModule,
   MatProgressSpinnerModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 import {AppComponent} from './app.component';
@@ -133,6 +134,7 @@ export function provideConfig() {
     MatGridListModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     HttpClientModule,
     FormsModule,
     StorageServiceModule,

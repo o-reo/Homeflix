@@ -3,6 +3,7 @@ import {AuthsimpleService} from '../authsimple.service';
 import {Router} from '@angular/router';
 import {AuthService, FacebookLoginProvider, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-auth',
@@ -14,9 +15,11 @@ export class AuthComponent implements OnInit {
   username: string;
   password: string;
   user: SocialUser;
+  error: string;
 
   constructor(private authSimpleService: AuthsimpleService, private router: Router,
-              private authService: AuthService, private http: HttpClient) {
+              private authService: AuthService, private http: HttpClient,
+              public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -44,7 +47,6 @@ export class AuthComponent implements OnInit {
           localStorage.setItem('isLog', 'true');
           localStorage.setItem('token', response.token);
           this.authSimpleService.myUser = response.user;
-          console.log('resp: ', response.user);
           this.router.navigate(['torrents']);
         } else {
           localStorage.removeItem('isLog');
@@ -71,17 +73,14 @@ export class AuthComponent implements OnInit {
     .subscribe(response => {
       let headers = new HttpHeaders();
       headers = headers.append('Authorization', 'Bearer ' + response.access_token);
-      console.log('TOKEN: ', response.access_token);
       this.http.get<any>('https://api.intra.42.fr/v2/me', {headers: headers})
         .subscribe(user => {
           this.authSimpleService.goAuthWith42(user)
             .subscribe(res => {
-              console.log('RESPONSE: ', res);
               if (res.success === true) {
                 localStorage.setItem('isLog', 'true');
                 localStorage.setItem('token', res.token);
                 this.authSimpleService.myUser = res.user;
-                console.log('resp: ', res.user);
                 this.router.navigate(['torrents']);
               } else {
                 localStorage.removeItem('isLog');
@@ -92,26 +91,29 @@ export class AuthComponent implements OnInit {
   }
 
   goAuth() {
-    const newAuth = {
+    if (!this.username || !this.password) {
+      this.snackBar.open('Please fill the fields required', 'X', {
+        duration: 2000
+      });
+      return;
+    }
+      const newAuth = {
       username: this.username,
       password: this.password
     };
-    console.log('User form credentials:', newAuth);
     this.authSimpleService.goAuth(newAuth)
       .subscribe(response => {
-        console.log('Loggin response', response);
         if (response.success === true) {
           localStorage.setItem('isLog', 'true');
           localStorage.setItem('token', response.token);
           this.authSimpleService.myUser = response.user;
-          console.log('resp: ', response.user);
           this.router.navigate(['torrents']);
         } else {
           localStorage.removeItem('isLog');
-          console.log('Log status:', 'failure');
+          this.snackBar.open('Login failed', 'Error', {
+            duration: 2000
+          });
         }
-        console.log('Log status:', localStorage);
       });
   }
-
 }
