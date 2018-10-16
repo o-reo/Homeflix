@@ -14,28 +14,33 @@
             </button>
           </mat-grid-tile>
           <mat-grid-tile>
-            <button mat-mini-fab color="primary">42</button>
+            <button mat-mini-fab color="primary" (click)="redirectTo42()">42</button>
           </mat-grid-tile>
         </mat-grid-list>
       </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
-      <div>
-        <mat-form-field>
-          <mat-icon matSuffix>account_box</mat-icon>
-          <input matInput placeholder="Username" required [(ngModel)]="username">
-        </mat-form-field>
-        <br/>
-        <mat-form-field>
-          <mat-icon matSuffix>lock</mat-icon>
-          <input matInput type="password" placeholder="Password" required [(ngModel)]="password">
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="goAuth()">Go</button>
-      <button mat-button color="primary">Forgot password?</button>
-    </mat-card-actions>
+    <form (submit)="goAuth()">
+      <mat-card-content>
+        <div>
+          <mat-form-field>
+            <mat-icon matSuffix>account_box</mat-icon>
+            <input matInput placeholder="Email" name="email" required [(ngModel)]="username">
+          </mat-form-field>
+          <br/>
+          <mat-form-field>
+            <mat-icon matSuffix>lock</mat-icon>
+            <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button type="submit" color="primary">Go</button>
+        <button mat-button color="primary">Forgot password?</button>
+      </mat-card-actions>
+      <mat-card-footer>
+        <span class="help-block"></span>
+      </mat-card-footer>
+    </form>
   </mat-card>
 </div>
 
