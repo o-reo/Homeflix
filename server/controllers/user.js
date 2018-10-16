@@ -26,7 +26,7 @@ exports.postUsers = function (req, res) {
             });
         }
     });
-}
+};
 
 exports.getUsers = function (req, res) {
     User.find(function(err, users){
@@ -118,4 +118,4 @@ exports.UpdateUsers = function (req, res) {
        else
            res.json({msg: 'finish'});
     });
-}
+};

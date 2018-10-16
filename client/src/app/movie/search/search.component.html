@@ -1,12 +1,32 @@
 <div class="container">
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput type="text" class="form-control" [(ngModel)]="input_query" placeholder="Search movie"/>
+      </mat-form-field>
+      <button mat-icon-button [matMenuTriggerFor]="searchMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #searchMenu="matMenu">
+        <button mat-menu-item>
+            <mat-select>
+              <mat-option>test</mat-option>
+            </mat-select>
+        </button>
+        <button mat-menu-item>Help</button>
+      </mat-menu>
+    </mat-card-content>
+  </mat-card>
+
+
   <div class="row">
     <div class="col-md-12">
       <div class="input-group" id="adv-search">
-        <input type="text" class="form-control" [(ngModel)]="input_query" placeholder="Search movie" />
         <div class="input-group-btn">
           <div class="btn-group" role="group">
             <div class="dropdown dropdown-lg">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                      aria-expanded="false"><span class="caret"></span></button>
               <div class="dropdown-menu dropdown-menu-right" role="menu">
                 <form class="form-horizontal" role="form" [formGroup]="formGroupSearch" name="formSearch">
                   <div class="form-group">
@@ -40,17 +60,19 @@
                   </div>
                   <div class="form-group">
                     <label for="contain">Author</label>
-                    <input class="form-control" type="text" />
+                    <input class="form-control" type="text"/>
                   </div>
                   <div class="form-group">
                     <label for="contain">Contains the words</label>
                     <input class="form-control" type="text" name="title">
                   </div>
-                  <button type="submit" class="btn btn-primary" (click)="onSubmitSearch()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                  <button type="submit" class="btn btn-primary" (click)="onSubmitSearch()"><span
+                    class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                 </form>
               </div>
             </div>
-            <button type="button" class="btn btn-primary" (click)="onSubmitSearch()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            <button type="button" class="btn btn-primary" (click)="onSubmitSearch()"><span
+              class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
           </div>
         </div>
       </div>

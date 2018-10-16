@@ -1,4 +1,4 @@
-const Movie = require('../models//movie');
+const Movie = require('../models/movie');
 const MovieComment = require('../models/movie-comment');
 const https = require('https');
 const request = require('request');
@@ -7,98 +7,117 @@ const imdb = require('imdb-api');
 
 exports.accessMovie = function (req, res) {
     console.log('1');
-    Movie.findOne( { $and: [ { id_api: req.params.id_api }, { api: req.params.api } ] }, function (err, movie) {
-        if (err) { res.json(err) }
+    Movie.findOne({$and: [{id_api: req.params.id_api}, {api: req.params.api}]}, function (err, movie) {
+        if (err) {
+            res.json(err)
+        }
         else if (movie) {
             res.json(movie);
             console.log('2');
         } else {
             //Creer le movie
-            if (req.params.api == "yts") {
+            if (req.params.api === "yts") {
                 request('https://yts.am/api/v2/movie_details.json?movie_id=' + req.params.id_api, function (error, response, body) {
-                   if (error) { res.json(error) }
-                   else {
-                       data = JSON.parse(body);
-                       let newMovie = Movie({
-                           id_api: req.params.id_api,
-                           api: req.params.api,
-                           hash: data.data.movie.torrents[0].hash
-                       });
-                       console.log('Sauvegarde ...');
-                       newMovie.save((err2, movie) => {
-                           console.log('SAVING');
-                           if (err2) {
-                               console.log('ERROR:', err2);
-                               res.json(err2)
-                           }
-                           else {
-                               console.log('ENVOIE DU MOVIE --------');
-                               res.json(movie);
-                           }
-                       });
-                   };
+                    if (error) {
+                        res.json(error)
+                    }
+                    else {
+                        data = JSON.parse(body);
+                        let newMovie = Movie({
+                            id_api: req.params.id_api,
+                            api: req.params.api,
+                            hash: data.data.movie.torrents[0].hash
+                        });
+                        console.log('Sauvegarde ...');
+                        newMovie.save((err2, movie) => {
+                            console.log('SAVING');
+                            if (err2) {
+                                console.log('ERROR:', err2);
+                                res.json(err2)
+                            }
+                            else {
+                                console.log('ENVOIE DU MOVIE --------');
+                                res.json(movie);
+                            }
+                        });
+                    }
+                    ;
                 });
-            } else if (req.params.api == 'nyaapantsu') {
-                    request('https://nyaa.pantsu.cat/api/search?id=' + req.params.id_api, function (error, response, body) {
-                        if (error) { res.json(error) }
-                        else {
-                            data = JSON.parse(body);
-                            let newMovie = Movie({
-                                id_api: req.params.id_api,
-                                api: req.params.api,
-                                hash: data.torrents[0].hash
-                            });
-                            console.log('Sauvegarde ...');
-                            newMovie.save((err2, movie) => {
-                                console.log('SAVING');
-                                if (err2) {
-                                    console.log('ERROR:', err2);
-                                    res.json(err2)
-                                }
-                                else {
-                                    console.log('ENVOIE DU MOVIE --------');
-                                    res.json(movie);
-                                }
-                            });
-                        };
-                    });
+            } else if (req.params.api === 'nyaapantsu') {
+                request('https://nyaa.pantsu.cat/api/search?id=' + req.params.id_api, function (error, response, body) {
+                    if (error) {
+                        res.json(error)
+                    }
+                    else {
+                        data = JSON.parse(body);
+                        let newMovie = Movie({
+                            id_api: req.params.id_api,
+                            api: req.params.api,
+                            hash: data.torrents[0].hash
+                        });
+                        console.log('Sauvegarde ...');
+                        newMovie.save((err2, movie) => {
+                            console.log('SAVING');
+                            if (err2) {
+                                console.log('ERROR:', err2);
+                                res.json(err2)
+                            }
+                            else {
+                                console.log('ENVOIE DU MOVIE --------');
+                                res.json(movie);
+                            }
+                        });
+                    }
+                });
             }
         }
     });
-}
+};
 
 exports.getMovieInfos = function (req, res) {
-  MovieInfos.findOne({_id : req.params.id}, function(err, movie){
-      if (err)
-          res.json(err);
-      else
-          res.json(movie);
-  });
-}
+    MovieInfos.findOne({_id: req.params.id}, function (err, movie) {
+        if (err)
+            res.json(err);
+        else
+            res.json(movie);
+    });
+};
 
 /*  get.api/movie_comments */
 exports.getAllComments = function (req, res) {
-    MovieComment.find(function(err, comments){
-       if (err) { res.json(err) }
-       else if (comments) { res.json(comments) }
+    MovieComment.find(function (err, comments) {
+        if (err) {
+            res.json(err)
+        }
+        else if (comments) {
+            res.json(comments)
+        }
     });
-}
+};
 
 /* get.api/movie_comments/:id_movie */
 exports.getComments = function (req, res) {
-    MovieComment.find({ id_movie: req.params.id_movie}, function(err, comments){
-        if (err) { res.json(err) }
-        else if (comments) { res.json(comments) }
+    MovieComment.find({id_movie: req.params.id_movie}, function (err, comments) {
+        if (err) {
+            res.json(err)
+        }
+        else if (comments) {
+            res.json(comments)
+        }
     });
-}
+};
 
 /*  get.api/movie_comment/:id_comment */
 exports.getComment = function (req, res) {
-    MovieComment.findOne({ _id: req.params.id_comment}, function(err, comment){
-        if (err) { res.json(err) }
-        else if (comment) { res.json(comment) }
+    MovieComment.findOne({_id: req.params.id_comment}, function (err, comment) {
+        if (err) {
+            res.json(err)
+        }
+        else if (comment) {
+            res.json(comment)
+        }
     });
-}
+};
 
 /* post.api/movie_comment/:id_movie */
 exports.postComment = function (req, res) {
@@ -115,12 +134,12 @@ exports.postComment = function (req, res) {
             res.json(comment)
         }
     });
-}
+};
 
 function dlPage(page) {
     if (dlPage >= 170)
         return;
-    setTimeout(function(){
+    setTimeout(function () {
         var options = {
             url: 'https://yts.am/api/v2/list_movies.json?limit=50&page=' + page + '&with_images=true&with_cast=true',
             headers: {
@@ -167,9 +186,9 @@ function getImage(imdb_code) {
             large_cover_image: rep.poster
         };
         MovieInfos.updateOne(
-            { imdb_code: imdb_code },
-            { $set: request },
-            function(err, result) {
+            {imdb_code: imdb_code},
+            {$set: request},
+            function (err, result) {
                 if (err)
                     console.log('error lors de lupdate');
                 console.log('image updated');
@@ -178,19 +197,19 @@ function getImage(imdb_code) {
     });
 }
 
-exports.UpdateImages = function(req, res) {
+exports.UpdateImages = function (req, res) {
     var q = MovieInfos.find().limit(950).skip(950);
-    q.exec (function(err, movie) {
+    q.exec(function (err, movie) {
         if (movie) {
-           // console.log(movie[0].imdb_code);
-            movie.forEach(function(val) {
+            // console.log(movie[0].imdb_code);
+            movie.forEach(function (val) {
                 getImage(val.imdb_code);
             });
             res.json('finish');
         }
     })
-}
+};
 
 exports.dlAllMovies = function (req, res) {
     dlPage(1);
-}
+};

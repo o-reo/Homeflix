@@ -155,7 +155,7 @@ exports.sign_in = function (req, res) {
             res.json({ success: false, message: 'Authentication failed. User not found.' });
             console.log('USERNAME: ', req.body.username);
         } else if (user) {
-            if (user.password != '') {
+            if (user.password !== '') {
                 // check if password matches
                 bcrypt.compare(req.body.password, user.password, function (err, rs) {
                     if (err)
@@ -265,7 +265,7 @@ exports.loginRequired = function(req, res, next) {
     } else {
         return res.json({success: false, msg: 'Unauthorize'});
     }
-}
+};
 
 
 exports.authGoogle = passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/plus.profile.emails.read'] });

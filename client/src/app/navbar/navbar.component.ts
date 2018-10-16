@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthsimpleService } from '../authsimple.service';
 import {Router} from '@angular/router';
 import { User} from '../user';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-navbar',
@@ -22,7 +23,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('2: ', this.myUser);
+    console.log(this.myUser);
   }
 
   logOut() {

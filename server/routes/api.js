@@ -6,8 +6,9 @@ const oauth2Controller = require('../controllers/oauth2');
 const forumController = require('../controllers/forum');
 const torrentController = require('../controllers/torrent');
 const movieController = require('../controllers/movie');
+const streamController = require('../controllers/stream');
 
-const router = express.Router();
+const router = express.Router({});
 
 /* Users */
 router.route('/auth')
@@ -128,5 +129,11 @@ router.route('/updateimages')
 
 router.route('/updateusers')
     .get(userController.UpdateUsers);
+
+router.route('/streaming/:file')
+    .get(streamController.getStream);
+
+router.route('/streaming/:directory/:file')
+    .get(streamController.getStreamDirectory);
 
 module.exports = router;

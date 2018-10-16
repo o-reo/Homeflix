@@ -37,7 +37,7 @@ export class ConnexionComponent implements OnInit {
           this.router.navigate(['forum']);
         } else {
           localStorage.removeItem('isLog');
-          this.textInfos = 'Connexion Imposible !';
+          this.textInfos = 'Connection error';
         }
       });
   }

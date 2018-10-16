@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TorrentService} from '../../torrent.service';
-import {Movie} from '../../movie';
 import {Torrent} from '../../torrent';
-import {promise} from 'selenium-webdriver';
 import { Input } from '@angular/core';
 import * as bytes from 'bytes';
 import { AuthsimpleService } from '../../authsimple.service';
@@ -20,7 +18,7 @@ export class MovieComponent implements OnInit {
   torrent: Torrent;
   path: String;
   link: String;
-  textLoad: String = 'Veuillez patienter ...';
+  textLoad: String = 'Please Wait...';
   lang: String;
   @Input() subtitle_path_en;
 
@@ -30,7 +28,7 @@ export class MovieComponent implements OnInit {
   ngOnInit() {
     this.torrentService.getTorrent(this.route.snapshot.params['id_movie'])
       .subscribe(torrent => {
-        this.torrent = torrent
+        this.torrent = torrent;
         this.lang = 'eng';
         if (this.authService.myUser.lang && this.authService.myUser.lang !== undefined) {
           this.lang = this.authService.myUser.lang;
@@ -43,7 +41,7 @@ export class MovieComponent implements OnInit {
             this.torrentService.startStreaming(this.torrent)
               .subscribe(data => {
                 this.path = data.path;
-                this.link = 'http://localhost:3000/streaming/' + data.path;
+                this.link = 'http://localhost:3000/api/streaming/' + data.path;
                 console.log(data.path);
                 this.videoloaded = Promise.resolve(true);
                 this.textLoad = '';

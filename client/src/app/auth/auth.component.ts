@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthsimpleService} from '../authsimple.service';
 import {Router} from '@angular/router';
 import {AuthService, FacebookLoginProvider, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',
@@ -15,16 +15,17 @@ export class AuthComponent implements OnInit {
   password: string;
   user: SocialUser;
 
-  constructor(private authSimpleService: AuthsimpleService, private router: Router, private authService: AuthService, private http: HttpClient) { }
+  constructor(private authSimpleService: AuthsimpleService, private router: Router, private authService: AuthService, private http: HttpClient) {
+  }
 
   ngOnInit() {
     this.authService.authState.subscribe((user) => {
       this.user = user;
     });
-    var parts = window.location.search.substr(1).split("&");
+    var parts = window.location.search.substr(1).split('&');
     var $_GET = {};
     for (var i = 0; i < parts.length; i++) {
-      var temp = parts[i].split("=");
+      var temp = parts[i].split('=');
       $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
     }
     if ('code' in $_GET && (('isLog' in localStorage) === false
@@ -42,7 +43,7 @@ export class AuthComponent implements OnInit {
           localStorage.setItem('isLog', 'true');
           localStorage.setItem('token', response.token);
           this.authSimpleService.myUser = response.user;
-          console.log('rresp: ', response.user);
+          console.log('resp: ', response.user);
           this.router.navigate(['torrents']);
         } else {
           localStorage.removeItem('isLog');
@@ -73,7 +74,7 @@ export class AuthComponent implements OnInit {
                   localStorage.setItem('isLog', 'true');
                   localStorage.setItem('token', res.token);
                   this.authSimpleService.myUser = res.user;
-                  console.log('rresp: ', res.user);
+                  console.log('resp: ', res.user);
                   this.router.navigate(['torrents']);
                 } else {
                   localStorage.removeItem('isLog');
@@ -85,16 +86,16 @@ export class AuthComponent implements OnInit {
 
   goAuth() {
     const newAuth = {
-        username: this.username,
-        password: this.password
-    }
+      username: this.username,
+      password: this.password
+    };
     this.authSimpleService.goAuth(newAuth)
       .subscribe(response => {
         if (response.success == true) {
           localStorage.setItem('isLog', 'true');
           localStorage.setItem('token', response.token);
           this.authSimpleService.myUser = response.user;
-          console.log('rresp: ', response.user);
+          console.log('resp: ', response.user);
           this.router.navigate(['torrents']);
         } else {
           localStorage.removeItem('isLog');
