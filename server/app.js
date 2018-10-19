@@ -3,39 +3,18 @@ let mongoose = require('mongoose');
 let bodyparser = require('body-parser');
 let cors = require('cors');
 let path = require('path');
-// let session = require('express-session');
 const passport = require('passport');
 const config = require('./config/database');
 const route_user = require('./routes/user');
-const route_api = require('./routes/api');
+const route_movie = require('./routes/api');
 
 let app = express();
 
 const port = 3000;
 
-// app.use(function (req, res, next) {
-//     console.log('Log: API is being accessed');
-//     if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
-//         jsonwebtoken.verify(req.headers.authorization.split(' ')[1], 'RESTFULAPIs', function (err, decode) {
-//             if (err) req.user = undefined;
-//             req.user = decode;
-//             next();
-//         });
-//     } else {
-//         req.user = undefined;
-//         next();
-//     }
-// });
-
 //static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Use express session support for OAuth2 require it
-// app.use(session({
-//     secret: 'secret',
-//     saveUninitialized: true,
-//     resave: true
-// }));
 
 mongoose.set('useCreateIndex', true);
 
@@ -67,13 +46,11 @@ app.use(passport.session({}));
 
 require('./config/passport_setup')(passport);
 
-// app.set('view engine', 'ejs');
-
 //adding middleware - cors for cross origin
 app.use(cors());
 
 //routes
-app.use('/api', route_api);
+app.use('/movie', route_movie);
 app.use('/user', route_user);
 
 app.listen(port, () => {

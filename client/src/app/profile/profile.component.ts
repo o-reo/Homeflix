@@ -25,18 +25,18 @@ export class ProfileComponent implements OnInit {
 
   profilePhoto: any;
 
-  get myUser(): User {
-    return this.authService.myUser;
-  }
+  // get myUser(): User {
+  //   return this.authService.getUser();
+  // }
 
   constructor(private authService: AuthService, private router: Router, private userService: UserService) {
   }
 
   ngOnInit() {
-    this.formGroup.controls['input_lastName'].setValue(this.authService.myUser.last_name);
-    this.formGroup.controls['input_firstName'].setValue(this.authService.myUser.first_name);
-    this.formGroup.controls['input_email'].setValue(this.authService.myUser.mail);
-    this.formGroup.controls['input_lang'].setValue(this.authService.myUser.lang);
+    // this.formGroup.controls['input_lastName'].setValue(this.authService.profile.last_name);
+    // this.formGroup.controls['input_firstName'].setValue(this.authService.profi.first_name);
+    // this.formGroup.controls['input_email'].setValue(this.authService.myUser.mail);
+    // this.formGroup.controls['input_lang'].setValue(this.authService.myUser.lang);
   }
 
   changeListener($event): void {
@@ -48,9 +48,9 @@ export class ProfileComponent implements OnInit {
     const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      this.profilePhoto = myReader.result;
-      this.userService.UpdateMyPhoto(myReader.result)
-        .subscribe();
+      // this.profilePhoto = myReader.result;
+      // this.userService.UpdateMyPhoto(myReader.result)
+      //   .subscribe();
     };
     myReader.readAsDataURL(file);
   }

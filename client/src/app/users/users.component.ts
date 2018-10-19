@@ -21,26 +21,24 @@ export class UsersComponent implements OnInit {
   isLog: boolean = false;
 
   constructor(private userService: UserService, private authService: AuthService) {
-    this.isLog = authService.isLog;
+    this.isLog = authService.isLoggedIn();
   }
 
   ngOnInit() {
-    if (this.authService.isLog === true)
-    {
+    if (this.authService.isLoggedIn() === true) {
         this.userService.getUsers()
             .subscribe(users => this.users = users);
     }
   }
 
-  addUser()
-  {
+  addUser() {
     const newUser = {
       first_name: this.first_name,
       last_name: this.last_name,
       password: this.password,
       mail: this.mail,
       username: this.username
-    }
+    };
     this.userService.addUser(newUser)
       .subscribe(user => {
         this.users.push(user);
@@ -51,16 +49,16 @@ export class UsersComponent implements OnInit {
 
   deleteUser(id: any)
   {
-  	var users = this.users;
-  	this.userService.deleteUser(id)
-		  .subscribe(data => {
-				for (var i = 0; i < users.length; i++)
-				{
-					if (users[i]._id == id)
-					{
-						users.splice(i, 1);
-					}
-			}
-		});
+  	// var users = this.users;
+  	// this.userService.deleteUser(id)
+		//   .subscribe(data => {
+		// 		for (var i = 0; i < users.length; i++)
+		// 		{
+		// 			if (users[i]._id == id)
+		// 			{
+		// 				users.splice(i, 1);
+		// 			}
+		// 	}
+		// });
   }
 }

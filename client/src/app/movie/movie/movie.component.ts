@@ -30,9 +30,9 @@ export class MovieComponent implements OnInit {
       .subscribe(torrent => {
         this.torrent = torrent;
         this.lang = 'eng';
-        if (this.authService.myUser.lang && this.authService.myUser.lang !== undefined) {
-          this.lang = this.authService.myUser.lang;
-        }
+        // if (this.authService.myUser.lang && this.authService.myUser.lang !== undefined) {
+        //   this.lang = this.authService.myUser.lang;
+        // }
         this.torrentService.getSubtitles(this.lang, torrent.imdb_code, bytes(torrent.torrents[0].size))
           .subscribe(subtitles => {
             console.log('sub', subtitles);

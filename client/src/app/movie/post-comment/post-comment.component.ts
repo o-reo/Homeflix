@@ -26,11 +26,11 @@ export class PostCommentComponent implements OnInit {
       id_movie: this.id_movie,
       content: this.formGroup.value.form1
     };
-    this.commentService.postComment(newComment)
-      .subscribe(msg => {
-        this.commentService.comments.push(msg);
-        /* location.reload(); */
-      });
+    // this.commentService.postComment(newComment)
+    //   .subscribe(msg => {
+    //     this.commentService.comments.push(msg);
+    //     /* location.reload(); */
+    //   });
   }
 
 }

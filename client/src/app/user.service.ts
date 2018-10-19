@@ -21,16 +21,16 @@ export class UserService {
 
   getMyUser() {
     if ('isLog' in localStorage) {
-      const headers = this.authService.getHeader_token('application/x-www-form-urlencoded');
-      return this.http.get<User>('http://localhost:3000/api/myuser', {headers: headers});
-    } else {
-      console.log('ERREUR PAS d USERNAME ET DE PASS');
+      // const headers = this.authService.getHeader_token('application/x-www-form-urlencoded');
+      // return this.http.get<User>('http://localhost:3000/api/myuser', {headers: headers});
+    // } else {
+    //   console.log('ERREUR PAS d USERNAME ET DE PASS');
     }
   }
 
   deleteUser(id) {
-    const headers = this.authService.getHeader_authBasic('application/x-www-form-urlencoded');
-    return this.http.delete<User>('http://localhost:3000/api/user/' + id, {headers: headers});
+    // const headers = this.authService.getHeader_authBasic('application/x-www-form-urlencoded');
+    // return this.http.delete<User>('http://localhost:3000/api/user/' + id, {headers: headers});
   }
 
   addUser(newUser) {
@@ -41,7 +41,8 @@ export class UserService {
 
   updateMyUser(newUser) {
     if ('isLog' in localStorage) {
-      const headers = this.authService.getHeader_token('application/json');
+      const headers = {};
+      // const headers = this.authService.getHeader_token('application/json');
       return this.http.put<User>('http://localhost:3000/api/myuser', newUser, {headers: headers});
     } else {
       console.log('PAS LOG');
@@ -49,11 +50,11 @@ export class UserService {
   }
 
   UpdateMyPhoto(photo) {
-    if ('mail' in localStorage && 'passwd' in localStorage) {
-      const headers = this.authService.getHeader_authBasic('application/json');
-      return this.http.put<any>('http://localhost:3000/api/myuserphoto', photo, {headers: headers});
-    } else {
-      console.log('ERREUR PAS d USERNAME ET DE PASS');
-    }
+    // if ('mail' in localStorage && 'passwd' in localStorage) {
+    //   const headers = this.authService.getHeader_authBasic('application/json');
+    //   return this.http.put<any>('http://localhost:3000/api/myuserphoto', photo, {headers: headers});
+    // } else {
+    //   console.log('ERREUR PAS d USERNAME ET DE PASS');
+    // }
   }
 }

@@ -23,25 +23,25 @@ import {
 } from '@angular/material';
 
 import {AppComponent} from './app.component';
-import {UsersComponent} from './users/users.component';
+// import {UsersComponent} from './users/users.component';
 import {AuthComponent} from './auth/auth.component';
-import {StorageServiceModule} from 'angular-webstorage-service';
+// import {StorageServiceModule} from 'angular-webstorage-service';
 import {Routes} from '@angular/router';
 import {RouterModule} from '@angular/router';
 import {NavbarComponent} from './navbar/navbar.component';
 import {ProfileComponent} from './profile/profile.component';
-import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
+// import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {RegisterComponent} from './register/register.component';
-import {TorrentsComponent} from './torrents/torrents.component';
-import {TorrentComponent} from './torrent/torrent.component';
-import {MovieComponent} from './movie/movie/movie.component';
-import {SearchComponent} from './movie/search/search.component';
-import {CommentsComponent} from './movie/comments/comments.component';
-import {CommentComponent} from './movie/comment/comment.component';
-import {PostCommentComponent} from './movie/post-comment/post-comment.component';
-import {LoaderComponent} from './loader/loader.component';
+// import {TorrentsComponent} from './torrents/torrents.component';
+// import {TorrentComponent} from './torrent/torrent.component';
+// import {MovieComponent} from './movie/movie/movie.component';
+// import {SearchComponent} from './movie/search/search.component';
+// import {CommentsComponent} from './movie/comments/comments.component';
+// import {CommentComponent} from './movie/comment/comment.component';
+// import {PostCommentComponent} from './movie/post-comment/post-comment.component';
+// import {LoaderComponent} from './loader/loader.component';
 import {AuthService} from './auth.service';
 import {AuthguardService} from './authguard.service';
 
@@ -50,7 +50,7 @@ const appRoutes: Routes = [
   {path: '', component: AuthComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', canActivate: [AuthguardService], component: ProfileComponent},
-  {path: 'torrents', canActivate: [AuthguardService], component: TorrentsComponent},
+  // {path: 'torrents', canActivate: [AuthguardService], component: TorrentsComponent},
   // {path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
   // {path: 'torrents/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent},
   {path: 'auth/:code', component: AuthComponent}
@@ -59,19 +59,19 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    UsersComponent,
+    // UsersComponent,
     AuthComponent,
     NavbarComponent,
     ProfileComponent,
     RegisterComponent,
-    TorrentsComponent,
-    TorrentComponent,
-    MovieComponent,
-    SearchComponent,
-    CommentsComponent,
-    CommentComponent,
-    PostCommentComponent,
-    LoaderComponent
+    // TorrentsComponent,
+    // TorrentComponent,
+    // MovieComponent,
+    // SearchComponent,
+    // CommentsComponent,
+    // CommentComponent,
+    // PostCommentComponent,
+    // LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -92,10 +92,10 @@ const appRoutes: Routes = [
     MatSidenavModule,
     HttpClientModule,
     FormsModule,
-    StorageServiceModule,
+    // StorageServiceModule,
     RouterModule.forRoot(appRoutes),
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
+    // FroalaEditorModule.forRoot(),
+    // FroalaViewModule.forRoot(),
     ReactiveFormsModule,
     NgxPaginationModule
   ],
