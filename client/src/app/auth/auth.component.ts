@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -14,7 +15,8 @@ export class AuthComponent implements OnInit {
   user: any;
 
   constructor(private authService: AuthService,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -26,6 +28,8 @@ export class AuthComponent implements OnInit {
         this.snackBar.open(res['msg'], 'X', {
           duration: 2000
         });
+      } else {
+        this.router.navigate(['/profile']);
       }
     });
   }

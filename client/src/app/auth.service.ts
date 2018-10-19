@@ -69,12 +69,12 @@ export class AuthService {
   }
 
   public getUser(): {} {
-    const user = this.user;
-    if (user) {
-      return user;
-    } else {
-      return null;
+    let user = this.user;
+    if (!user) {
+      user = localStorage.getItem('user');
+      this.user = user;
     }
+    return user;
   }
 
   public isLoggedIn(): boolean {

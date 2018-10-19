@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
-import {User} from '../user';
+// import {User} from '../user';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
@@ -12,6 +12,7 @@ import {Router} from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
+  user = null;
   formGroup = new FormGroup({
     input_lastName: new FormControl(),
     input_firstName: new FormControl(),
@@ -19,7 +20,7 @@ export class ProfileComponent implements OnInit {
     input_lang: new FormControl()
   });
 
-  formGroupPhoto = new FormGroup( {
+  formGroupPhoto = new FormGroup({
     uploadImg: new FormControl()
   });
 
@@ -29,14 +30,15 @@ export class ProfileComponent implements OnInit {
   //   return this.authService.getUser();
   // }
 
-  constructor(private authService: AuthService, private router: Router, private userService: UserService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
-    // this.formGroup.controls['input_lastName'].setValue(this.authService.profile.last_name);
-    // this.formGroup.controls['input_firstName'].setValue(this.authService.profi.first_name);
-    // this.formGroup.controls['input_email'].setValue(this.authService.myUser.mail);
-    // this.formGroup.controls['input_lang'].setValue(this.authService.myUser.lang);
+    this.user = this.authService.getUser();
+    this.formGroup.controls['input_lastName'].setValue(this.user['last_name']);
+    this.formGroup.controls['input_firstName'].setValue(this.user['first_name']);
+    this.formGroup.controls['input_email'].setValue(this.user['mail']);
+    this.formGroup.controls['input_lang'].setValue(this.user['lang']);
   }
 
   changeListener($event): void {
@@ -61,11 +63,11 @@ export class ProfileComponent implements OnInit {
       last_name: this.formGroup.value.input_lastName,
       lang: this.formGroup.value.input_lang
     };
-    this.userService.updateMyUser(user)
-      .subscribe(msg => {
-        console.log(msg);
-        location.reload();
-      });
+    // this.userService.updateMyUser(user)
+    //   .subscribe(msg => {
+    //     console.log(msg);
+    //     location.reload();
+    //   });
   }
 
   onSubmitPhoto() {

@@ -47,18 +47,19 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  deleteUser(id: any)
-  {
-  	// var users = this.users;
-  	// this.userService.deleteUser(id)
-		//   .subscribe(data => {
-		// 		for (var i = 0; i < users.length; i++)
-		// 		{
-		// 			if (users[i]._id == id)
-		// 			{
-		// 				users.splice(i, 1);
-		// 			}
-		// 	}
-		// });
+  deleteUser(id: any) {
+    /*
+ var users = this.users;
+  	 this.userService.deleteUser(id)
+		   .subscribe(data => {
+		 		for (var i = 0; i < users.length; i++)
+		 		{
+		 			if (users[i]._id == id)
+		 			{
+		 				users.splice(i, 1);
+		 			}
+		 	}
+		 });
+*/
   }
 }

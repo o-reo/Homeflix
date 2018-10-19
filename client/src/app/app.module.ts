@@ -29,15 +29,16 @@ import {AuthComponent} from './auth/auth.component';
 import {Routes} from '@angular/router';
 import {RouterModule} from '@angular/router';
 import {NavbarComponent} from './navbar/navbar.component';
+import {FooterComponent} from './footer/footer.component';
 import {ProfileComponent} from './profile/profile.component';
 // import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {RegisterComponent} from './register/register.component';
-// import {TorrentsComponent} from './torrents/torrents.component';
-// import {TorrentComponent} from './torrent/torrent.component';
+import {TorrentsComponent} from './torrents/torrents.component';
+import {TorrentComponent} from './torrent/torrent.component';
 // import {MovieComponent} from './movie/movie/movie.component';
-// import {SearchComponent} from './movie/search/search.component';
+import {SearchComponent} from './movie/search/search.component';
 // import {CommentsComponent} from './movie/comments/comments.component';
 // import {CommentComponent} from './movie/comment/comment.component';
 // import {PostCommentComponent} from './movie/post-comment/post-comment.component';
@@ -50,7 +51,7 @@ const appRoutes: Routes = [
   {path: '', component: AuthComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', canActivate: [AuthguardService], component: ProfileComponent},
-  // {path: 'torrents', canActivate: [AuthguardService], component: TorrentsComponent},
+  {path: 'watch', canActivate: [AuthguardService], component: TorrentsComponent},
   // {path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
   // {path: 'torrents/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent},
   {path: 'auth/:code', component: AuthComponent}
@@ -62,12 +63,14 @@ const appRoutes: Routes = [
     // UsersComponent,
     AuthComponent,
     NavbarComponent,
+    FooterComponent,
     ProfileComponent,
     RegisterComponent,
-    // TorrentsComponent,
+    FooterComponent,
+    TorrentsComponent,
+    SearchComponent,
     // TorrentComponent,
     // MovieComponent,
-    // SearchComponent,
     // CommentsComponent,
     // CommentComponent,
     // PostCommentComponent,

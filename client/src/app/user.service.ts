@@ -20,7 +20,7 @@ export class UserService {
   }
 
   getMyUser() {
-    if ('isLog' in localStorage) {
+    if (this.authService.isLoggedIn()) {
       // const headers = this.authService.getHeader_token('application/x-www-form-urlencoded');
       // return this.http.get<User>('http://localhost:3000/api/myuser', {headers: headers});
     // } else {
