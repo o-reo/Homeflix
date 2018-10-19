@@ -20,47 +20,64 @@ const UserSchema = mongoose.Schema({
     },
     username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     grant: {
         type: Number,
-        default: 0
+        default: 0,
+        required: false
     },
-    googleId: {
+    token_google: {
         type: Number,
         required: false
     },
-    Id42: {
+    token_42: {
         type: Number,
         required: false
     },
     photo: {
-        type: String
+        type: String,
+        required: false
     },
-    lang : {
-        type: String
+    lang: {
+        type: String,
+        required: false
     }
 });
 
-UserSchema.pre('save', function(callback) {
-    var user = this;
+const User = module.exports = mongoose.model('User', UserSchema);
 
-    if (!user.isModified('password')) return callback();
-
-    bcrypt.hash(user.password, 10, function(err, hash) {
-        if (err) return callback(err);
-        user.password = hash;
-        callback();
-    });
-});
-
-UserSchema.methods.verifyPassword = function(password, callback) {
-    bcrypt.compare(password, this.password, function(err, isMatch) {
-       if (err) {
-           return callback(err);
-       }
-       callback(null, isMatch);
-    });
+module.exports.getUserById = function (id, callback) {
+    User.findById(id, callback);
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports.getUserByUsername = function (username, callback) {
+    const query = {username: username};
+    User.findOne(query, callback);
+};
+
+module.exports.addUser = function (newUserData, callback) {
+    // Here you check the user
+    const newUser = User({
+        first_name: newUserData.first_name,
+        last_name: newUserData.last_name,
+        username: newUserData.username,
+        mail: newUserData.mail,
+        password: newUserData.password
+    });
+    bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                newUser.password = hash;
+                newUser.save(callback);
+            })
+        }
+    )
+};
+
+module.exports.comparePassword = function(candidatePassword, hash, callback){
+  bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
+      if (err) throw err;
+      callback(null, isMatch);
+  });
+};

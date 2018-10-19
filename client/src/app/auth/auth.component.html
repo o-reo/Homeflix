@@ -2,24 +2,26 @@
   <mat-card class="auth-container">
     <mat-card-header>
       <mat-card-title>Please login or <a href="/register">Sign up</a></mat-card-title>
-      <mat-card-subtitle>
-        <mat-grid-list cols="3">
-          <mat-grid-tile>
-            <button mat-mini-fab color="warn" (click)="signInWithGoogle()"><i
-              class="fa fa-google-plus visible-xs"></i>
-            </button>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <button mat-mini-fab color="primary"><i class="fa fa-facebook visible-xs"></i>
-            </button>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <button mat-mini-fab color="primary" (click)="redirectTo42()">42</button>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </mat-card-subtitle>
     </mat-card-header>
-    <form (submit)="goAuth()">
+    <mat-grid-list cols="4">
+      <mat-grid-tile>
+        <button mat-mini-fab color="warn" (click)="signInWithGoogle()"><i
+          class="fa fa-google-plus visible-xs"></i>
+        </button>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-mini-fab color="primary" (click)="signInWithTwitter()"><i class="fa fa-twitter visible-xs"></i>
+        </button>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-mini-fab color="accent"  (click)="redirectToOutlook()"><i class="fa fa-windows visible-xs"></i>
+        </button>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-mini-fab color="primary" (click)="redirectTo42()">42</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <form (submit)="login()" method="post">
       <mat-card-content>
         <div>
           <mat-form-field>
@@ -40,52 +42,3 @@
     </form>
   </mat-card>
 </div>
-
-<!--<div class="container">-->
-<!--<div class="omb_login">-->
-<!--<h3 class="omb_authTitle">Login or <a href="#">Sign up</a></h3>-->
-<!--<div class="row omb_row-sm-offset-3 omb_socialButtons">-->
-<!--<div class="col-xs-4 col-sm-2">-->
-<!--<a-->
-<!--href="https://api.intra.42.fr/oauth/authorize?client_id=5ce22ae173d5c328029ee542afc8fe162935f4698642f91afe77a747dac61523&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fauth%2F&response_type=code"-->
-<!--class="btn btn-lg btn-block omb_btn-facebook">-->
-<!--<img src="assets/img/42.png"/>-->
-<!--</a>-->
-<!--</div>-->
-<!--<div class="col-xs-4 col-sm-2">-->
-<!--<a (click)="signInWithGoogle()" class="btn btn-lg btn-block omb_btn-google">-->
-<!--<i class="fa fa-google-plus visible-xs"></i>-->
-<!--</a>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="row omb_row-sm-offset-3">-->
-<!--<div class="col-xs-12 col-sm-6">-->
-<!--<form (submit)="goAuth()" class="omb_loginForm">-->
-<!--<div class="input-group">-->
-<!--<span class="input-group-addon"><i class="fa fa-user"></i></span>-->
-<!--<input title="username" type="text" [(ngModel)]="username" name="login" class="form-control">-->
-<!--</div>-->
-<!--<span class="help-block"></span>-->
-
-<!--<div class="input-group">-->
-<!--<span class="input-group-addon"><i class="fa fa-lock"></i></span>-->
-<!--<input title="password" type="text" [(ngModel)]="password" name="password" class="form-control"/>-->
-<!--</div>-->
-<!--<span class="help-block"></span>-->
-
-<!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->
-<!--</form>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="row omb_row-sm-offset-3">-->
-<!--<div class="col-xs-12 col-sm-3">-->
-<!--<input type="checkbox" value="remember-me"/>Remember Me-->
-<!--</div>-->
-<!--<div class="col-xs-12 col-sm-3">-->
-<!--<p class="omb_forgotPwd">-->
-<!--<a href="#">Forgot password?</a>-->
-<!--</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->

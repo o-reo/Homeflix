@@ -10,4 +10,3 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(PizzaPartyAppModule)
   .catch(err => console.log(err));
-

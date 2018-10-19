@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../user';
-import {AuthsimpleService} from '../authsimple.service';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-users',
@@ -20,7 +20,7 @@ export class UsersComponent implements OnInit {
 
   isLog: boolean = false;
 
-  constructor(private userService: UserService, private authService: AuthsimpleService) {
+  constructor(private userService: UserService, private authService: AuthService) {
     this.isLog = authService.isLog;
   }
 

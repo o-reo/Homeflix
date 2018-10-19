@@ -4,7 +4,7 @@ import {TorrentService} from '../../torrent.service';
 import {Torrent} from '../../torrent';
 import { Input } from '@angular/core';
 import * as bytes from 'bytes';
-import { AuthsimpleService } from '../../authsimple.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-movie',
@@ -22,7 +22,7 @@ export class MovieComponent implements OnInit {
   lang: String;
   @Input() subtitle_path_en;
 
-  constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: AuthsimpleService) {
+  constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: AuthService) {
   }
 
   ngOnInit() {

@@ -1,6 +1,0 @@
-<ng-container *ngIf="loaded | async">
-  <td><h5>{{ title }}</h5><hr><br/><p>De : {{ user.username }}</p></td>
-  <ng-container *ngIf="lastMessage_User">
-    <td>De: {{ lastMessage_User.username }} <br/> Date: {{ lastMessage.time | date:'MM/dd/yy HH:mm:ss' }} </td>
-  </ng-container>
-</ng-container>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../user';
 import {FormControl, FormGroup} from '@angular/forms';
-import {AuthsimpleService} from '../authsimple.service';
+import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit {
     return this.authService.myUser;
   }
 
-  constructor(private authService: AuthsimpleService, private router: Router, private userService: UserService) {
+  constructor(private authService: AuthService, private router: Router, private userService: UserService) {
   }
 
   ngOnInit() {
@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit {
       this.profilePhoto = myReader.result;
       this.userService.UpdateMyPhoto(myReader.result)
         .subscribe();
-    }
+    };
     myReader.readAsDataURL(file);
   }
 

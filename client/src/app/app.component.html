@@ -1,6 +1,4 @@
-<!--app-users></app-users>
-<app-auth></app-auth-->
-<ng-container *ngIf="loaded | async ">
-<app-navbar *ngIf="logged"></app-navbar>
+<ng-container>
+<app-navbar *ngIf="authService.isLoggedIn()"></app-navbar>
 <router-outlet></router-outlet>
 </ng-container>

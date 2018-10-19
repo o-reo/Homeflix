@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthsimpleService } from '../authsimple.service';
+import { AuthService } from '../auth.service';
 import {Router} from '@angular/router';
-import { User} from '../user';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-navbar',
@@ -11,24 +9,10 @@ import * as $ from 'jquery';
 })
 export class NavbarComponent implements OnInit {
 
-  get isLog(): any {
-    return this.authService.isLog;
-  }
-
-  get myUser(): User {
-    return this.authService.myUser;
-  }
-
-  constructor(private authService: AuthsimpleService, private router: Router) {
+  constructor(public authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
-    console.log(this.myUser);
-  }
-
-  logOut() {
-    this.authService.logOut();
-    this.router.navigate(['auth']);
   }
 
 }

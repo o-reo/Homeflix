@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {User} from './user';
-import {AuthsimpleService} from './authsimple.service';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import {AuthsimpleService} from './authsimple.service';
 
 export class UserService {
 
-  constructor(private http: HttpClient, private authService: AuthsimpleService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getUsers() {
       return this.http.get<User[]>('http://localhost:3000/api/users');

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import { ForumService } from '../../forum.service';
 import { Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommentService} from "../../comment.service";

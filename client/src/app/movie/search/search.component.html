@@ -1,20 +1,17 @@
 <div class="container">
   <mat-card>
     <mat-card-content>
-      <mat-form-field>
-        <input matInput type="text" class="form-control" [(ngModel)]="input_query" placeholder="Search movie"/>
-      </mat-form-field>
-      <button mat-icon-button [matMenuTriggerFor]="searchMenu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #searchMenu="matMenu">
-        <button mat-menu-item>
-            <mat-select>
-              <mat-option>test</mat-option>
-            </mat-select>
-        </button>
-        <button mat-menu-item>Help</button>
-      </mat-menu>
+      <mat-sidenav-container>
+        <mat-sidenav mode="side" #sidenav [(opened)]="opened">
+          test
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <mat-form-field>
+            <input matInput type="text" class="form-control" [(ngModel)]="input_query" placeholder="Search movie"/>
+          </mat-form-field>
+          <mat-checkbox [(ngModel)]="opened">More</mat-checkbox>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
     </mat-card-content>
   </mat-card>
 
