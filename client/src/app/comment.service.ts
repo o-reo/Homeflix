@@ -12,15 +12,15 @@ export class CommentService {
   comments: Comment[];
 
   getAllComments() {
-    return this.http.get<Comment[]>('http://localhost:3000/api/movie_comments');
+    return this.http.get<Comment[]>('http://localhost:3000/comments');
   }
 
   getComments(id_movie) {
-    return this.http.get<Comment[]>('http://localhost:3000/api/movie_comments/' + id_movie);
+    return this.http.get<Comment[]>('http://localhost:3000/comments/' + id_movie);
   }
 
   getComment(id_comment) {
-    return this.http.get<Comment>('http://localhost:3000/api/movie_comment/' + id_comment);
+    return this.http.get<Comment>('http://localhost:3000/comment/' + id_comment);
   }
 
   // postComment(data) {

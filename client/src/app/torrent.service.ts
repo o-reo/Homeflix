@@ -26,7 +26,7 @@ export class TorrentService {
   }
 
   getTorrent(id) {
-    return this.http.get<any>('http://localhost:3000/movie/' + id);
+    return this.http.get<any>('http://localhost:3000/torrent/' + id);
   }
 
   getSubtitles(lang, imdbid, filesize) {

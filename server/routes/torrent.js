@@ -7,6 +7,10 @@ const streamController = require('../controllers/stream');
 
 const router = express.Router({});
 
+
+router.route('/:id')
+    .get(movieController.getMovieInfos);
+
 router.route('/stream/:hash')
     .get(torrentController.streamTorrent);
 

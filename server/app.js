@@ -9,6 +9,8 @@ const route_user = require('./routes/user');
 const route_torrent = require('./routes/torrent');
 const route_torrents = require('./routes/torrents');
 const route_subtitles = require('./routes/subtitles');
+const route_comments = require('./routes/comments');
+const route_comment = require('./routes/comment');
 
 let app = express();
 
@@ -56,6 +58,8 @@ app.use('/torrent', route_torrent);
 app.use('/torrents', route_torrents);
 app.use('/subtitles', route_subtitles);
 app.use('/user', route_user);
+app.use('/comment', route_comment);
+app.use('/comments', route_comments);
 
 app.listen(port, () => {
     console.log('Log: Server listening on port: ' + port);

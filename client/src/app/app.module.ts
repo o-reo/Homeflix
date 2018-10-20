@@ -37,10 +37,10 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {RegisterComponent} from './register/register.component';
 import {TorrentsComponent} from './torrents/torrents.component';
 import {TorrentComponent} from './torrent/torrent.component';
-// import {MovieComponent} from './movie/movie/movie.component';
+import {MovieComponent} from './movie/movie/movie.component';
 import {SearchComponent} from './movie/search/search.component';
-// import {CommentsComponent} from './movie/comments/comments.component';
-// import {CommentComponent} from './movie/comment/comment.component';
+import {CommentsComponent} from './movie/comments/comments.component';
+import {CommentComponent} from './movie/comment/comment.component';
 // import {PostCommentComponent} from './movie/post-comment/post-comment.component';
 // import {LoaderComponent} from './loader/loader.component';
 import {AuthService} from './auth.service';
@@ -53,7 +53,7 @@ const appRoutes: Routes = [
   {path: 'profile', canActivate: [AuthguardService], component: ProfileComponent},
   {path: 'watch', canActivate: [AuthguardService], component: TorrentsComponent},
   // {path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
-  // {path: 'torrents/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent},
+  {path: 'watch/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent},
   {path: 'auth/:code', component: AuthComponent}
 ];
 
@@ -70,9 +70,9 @@ const appRoutes: Routes = [
     TorrentsComponent,
     SearchComponent,
     TorrentComponent,
-    // MovieComponent,
-    // CommentsComponent,
-    // CommentComponent,
+    MovieComponent,
+    CommentsComponent,
+    CommentComponent,
     // PostCommentComponent,
     // LoaderComponent
   ],
