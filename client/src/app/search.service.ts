@@ -14,7 +14,7 @@ export class SearchService {
   title: string;
 
   search(title, tri, genre, page, async: boolean, api: string) {
-    let query = title;
+    let query = '?title=' + title;
     let sort = '';
     let order = '';
     let year = '';
@@ -29,7 +29,7 @@ export class SearchService {
       desc = 'desc';
       console.log('genre', genre);
       if (genre !== 'all') {
-        query += '?genre=' + genre;
+        query += '&genre=' + genre;
       }
     } else if (api === 'nyaapantsu') {
       sort = 'sort'; order = 'order';
@@ -37,11 +37,7 @@ export class SearchService {
       runtime = '1'; asc = 'true';
       desc = 'false';
     }
-    if (genre !== 'all') {
       query += '&';
-    } else {
-      query += '?';
-    }
       switch (tri) {
         case 'year_a':
           query += sort + '=' + year + '&' + order + '=' + asc;

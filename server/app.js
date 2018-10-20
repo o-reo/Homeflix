@@ -6,7 +6,9 @@ let path = require('path');
 const passport = require('passport');
 const config = require('./config/database');
 const route_user = require('./routes/user');
-const route_movie = require('./routes/api');
+const route_torrent = require('./routes/torrent');
+const route_torrents = require('./routes/torrents');
+const route_subtitles = require('./routes/subtitles');
 
 let app = express();
 
@@ -36,9 +38,9 @@ mongoose.connection.on('error', (err) => {
 
 //body - parser
 app.use(bodyparser.json({}));
-// app.use(bodyparser.urlencoded({
-//     extended: true
-// }));
+app.use(bodyparser.urlencoded({
+    extended: true
+}));
 
 // Passport Middleware
 app.use(passport.initialize({}));
@@ -50,7 +52,9 @@ require('./config/passport_setup')(passport);
 app.use(cors());
 
 //routes
-app.use('/movie', route_movie);
+app.use('/torrent', route_torrent);
+app.use('/torrents', route_torrents);
+app.use('/subtitles', route_subtitles);
 app.use('/user', route_user);
 
 app.listen(port, () => {

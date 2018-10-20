@@ -21,16 +21,16 @@ export class TorrentService {
     this.api = 'yts';
   }
 
-  getTorrents(title) {
-    return this.http.get<any>('http://localhost:3000/api/torrents/' + title);
+  getTorrents(query) {
+    return this.http.get<any>('http://localhost:3000/torrents' + query);
   }
 
   getTorrent(id) {
-    return this.http.get<any>('http://localhost:3000/api/movie/' + id);
+    return this.http.get<any>('http://localhost:3000/movie/' + id);
   }
 
   getSubtitles(lang, imdbid, filesize) {
-    return this.http.get<any>('http://localhost:3000/api/subtitles/' + imdbid + '?lang=' + lang + '&filesize=' + filesize);
+    return this.http.get<any>('http://localhost:3000/subtitles/?imdbid=' + imdbid + '&lang=' + lang + '&filesize=' + filesize);
   }
 
   getImage(title) {
@@ -39,7 +39,7 @@ export class TorrentService {
   }
 
   startStreaming(movie) {
-    return this.http.get<any>('http://localhost:3000/api/stream/' + movie.torrents[0].hash);
+    return this.http.get<any>('http://localhost:3000/torrent/stream/' + movie.torrents[0].hash);
   }
 
   /* getMovie(id) {

@@ -4,12 +4,12 @@
 </form-->
 <app-search></app-search>
   <div class="container">
-    <!--div class="row"-->
+    <!-- div class="row" -->
       <app-torrent *ngFor="let torrent of torrents"
                    [torrent]="torrent"
-                   [routerLink]="['movie', torrent._id]"
-      ></app-torrent>
+                   [routerLink]="['movie', torrent._id]">
+                 </app-torrent>
     </div>
 
 <br />
-  <!--/div-->
+  <!-- /div -->
