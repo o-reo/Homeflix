@@ -31,6 +31,7 @@ export class RegisterComponent implements OnInit {
         first_name: this.formGroup.value.input_firstName,
         last_name: this.formGroup.value.input_lastName,
         password: this.formGroup.value.input_password,
+        password2: this.formGroup.value.input_password2,
         mail: this.formGroup.value.input_email,
         username: this.formGroup.value.input_username
       }

@@ -36,7 +36,7 @@ export class UserService {
   addUser(newUser) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post<any>('http://localhost:3000/api/users', newUser, {headers: headers});
+    return this.http.post<any>('http://localhost:3000/user/register', newUser, {headers: headers});
   }
 
   updateMyUser(newUser) {
