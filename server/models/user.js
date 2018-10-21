@@ -14,9 +14,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    mail: {
+    email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     username: {
         type: String,
@@ -40,9 +41,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: false
     },
-    lang: {
+    language: {
         type: String,
-        required: false
+        default: 'english'
     }
 });
 
@@ -58,21 +59,23 @@ module.exports.getUserByUsername = function (username, callback) {
 };
 
 module.exports.addUser = function (newUserData, callback) {
-    // Here you check the user
+    /* Creates object from data passed by router. */
     const newUser = User({
-        first_name: newUserData.first_name,
-        last_name: newUserData.last_name,
+        first_name: newUserData.firstname,
+        last_name: newUserData.lastname,
         username: newUserData.username,
-        mail: newUserData.mail,
-        password: newUserData.password
+        email: newUserData.email,
+        password: newUserData.password,
+        language: newUserData.language
     });
+    /* Hashes and add user to database or returns error if user couldn't be added to database. */
     bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
                 newUser.password = hash;
                 newUser.save(callback);
             })
         }
-    )
+    );
 };
 
 module.exports.comparePassword = function(candidatePassword, hash, callback){

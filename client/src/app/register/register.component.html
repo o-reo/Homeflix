@@ -1,48 +1,86 @@
 <div class="container">
+  <mat-card class="auth-container">
+    <mat-card-header>
+      <mat-card-title>Register</mat-card-title>
+      <p>{{text}}</p>
+    </mat-card-header>
 
-  <div class="row">
-    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-      <form role="form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-        <h2>Please Sign Up <small>It's free and always will be.</small></h2>
-        <br /> <small>{{ textInfos }}</small>
-        <hr class="colorgraph">
-        <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="form-group">
-              <input type="text" formControlName="input_firstName" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="form-group">
-              <input type="text" formControlName="input_lastName" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2">
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <input type="text" formControlName="input_username" name="display_name" id="display_name" class="form-control input-lg" placeholder="Display Name" tabindex="3">
-        </div>
-        <div class="form-group">
-          <input type="email" formControlName="input_email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4">
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="form-group">
-              <input type="password" formControlName="input_password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="form-group">
-              <input type="password" formControlName="input_password2" name="password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="6">
-            </div>
-          </div>
-        </div>
+    <form (submit)="register()" method="post">
+      <mat-card-content>
+        <div>
 
-        <hr class="colorgraph">
-        <div class="row">
-          <div class="col-xs-12 col-md-6"><input type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7"></div>
-          <div class="col-xs-12 col-md-6"><a href="#" class="btn btn-success btn-block btn-lg">Sign In</a></div>
+          <mat-form-field class="register-input">
+            <mat-icon matSuffix>account_box</mat-icon>
+            <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="firstname">
+          </mat-form-field>
+          <br/>
+          <small class="error-msg">{{ err_firstname }}</small>
+          <br/>
+
+          <mat-form-field class="register-input">
+            <mat-icon matSuffix>account_box</mat-icon>
+            <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="lastname">
+          </mat-form-field>
+          <br/>
+          <small class="error-msg">{{ err_lastname }}</small>
+          <br/>
+
+          <mat-form-field class="register-input">
+            <mat-icon matSuffix>account_box</mat-icon>
+            <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
+          </mat-form-field>
+          <br/>
+          <small class="error-msg">{{ err_username }}</small>
+          <br/>
+
+          <mat-form-field class="register-input">
+            <mat-icon matSuffix>account_box</mat-icon>
+            <input matInput placeholder="Email" name="email" required [(ngModel)]="email">
+          </mat-form-field>
+          <br/>
+          <small class="error-msg">{{ err_email }}</small>
+          <br/>
+
+          <mat-form-field class="register-input">
+            <mat-icon matSuffix>lock</mat-icon>
+            <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
+          </mat-form-field>
+          <br/>
+          <small class="error-msg">{{ err_password }}</small>
+          <br/>
+
+          <mat-form-field class="register-input">
+            <mat-icon matSuffix>lock</mat-icon>
+            <input matInput type="password" placeholder="Password confirmation" name="password2" required [(ngModel)]="password2">
+          </mat-form-field>
+          <br/>
+          <small class="error-msg">{{ err_password2 }}</small>
+          <br/>
+
+
+
+          <button ngf-select="destDetCtrl.setDestinationImage($file)" ngf-pattern="'image/*'" class="btn">
+            Upload image
+          </button>
+          <br>
+
+
+
+
+          <mat-form-field class="register-input">
+            <mat-select [(ngModel)]="language" name="language" placeholder="Language">
+              <mat-option value="english" >English</mat-option>
+              <mat-option value="french">French</mat-option>
+              <mat-option value="spanish">Spanish</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
         </div>
-      </form>
-    </div>
-  </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button type="submit" color="primary">Register</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
 </div>
