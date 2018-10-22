@@ -7,44 +7,18 @@
 
       <form class="form" [formGroup]="formGroupPhoto" (ngSubmit)="onSubmitPhoto()" enctype="multipart/form-data"
             id="photoForm">
-        <div class="text-center">
-          <img *ngIf="(user !== null) && (user.photo !== null)" [src]="user.photo" class="avatar img-responsive img-circle img-thumbnail" alt="avatar">
+        <div class="text-center" *ngIf="(user !== null) && user.photo" >
+          <img [src]="user.photo" class="avatar img-responsive img-circle img-thumbnail" alt="avatar">
           <h6>Upload a different photo...</h6>
           <input type="file" formControlName="uploadImg" class="text-center center-block file-upload" accept="image/*"
                  (change)="changeListener($event)">
         </div>
-        <hr>
         <br>
       </form>
-
-      <ul class="list-group">
-        <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
-      </ul>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">Social Media</div>
-        <div class="panel-body">
-          <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i
-          class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
-        </div>
-      </div>
-
     </div><!--/col-3-->
     <div class="col-sm-9">
-      <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-        <li><a data-toggle="tab" href="#messages">Menu 1</a></li>
-        <li><a data-toggle="tab" href="#settings">Menu 2</a></li>
-      </ul>
-
-
       <div class="tab-content">
         <div class="tab-pane active" id="home">
-          <hr>
           <form class="form" [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="registrationForm">
             <div class="form-group">
               <div class="col-xs-6">
