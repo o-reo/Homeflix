@@ -1,78 +1,50 @@
 <div class="container">
-  <mat-card>
+  <mat-card class="search-container">
     <mat-card-content>
-      <mat-sidenav-container>
-        <mat-sidenav mode="side" #sidenav [(opened)]="opened">
-          test
-        </mat-sidenav>
-        <mat-sidenav-content>
-          <mat-form-field>
-            <input matInput type="text" class="form-control" [(ngModel)]="input_query" placeholder="Search movie"/>
-          </mat-form-field>
-          <mat-checkbox [(ngModel)]="opened">More</mat-checkbox>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="input_query" placeholder="Title"/>
+      </mat-form-field>
+      <form role="form" [formGroup]="formGroupSearch" name="formSearch">
+        <mat-form-field>
+          <mat-select formControlName="inputGenre" placeholder="Genre">
+            <mat-option value="all" select>All</mat-option>
+            <mat-option value="Comedy">Comedy</mat-option>
+            <mat-option value="Sci-Fi">Sci-Fi</mat-option>
+            <mat-option value="Horror">Horror</mat-option>
+            <mat-option value="Romance">Romance</mat-option>
+            <mat-option value="Action">Action</mat-option>
+            <mat-option value="Thriller">Thriller</mat-option>
+            <mat-option value="Drama">Drama</mat-option>
+            <mat-option value="Mystery">Mystery</mat-option>
+            <mat-option value="Crime">Crime</mat-option>
+            <mat-option value="Animation">Animation</mat-option>
+            <mat-option value="Adventure">Adventure</mat-option>
+            <mat-option value="Fantasy">Fantasy</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <mat-select formControlName="inputTri" placeholder="Sort by">
+            <mat-option value="year_a" selected>Year (ASC)</mat-option>
+            <mat-option value="year_d">Year (DES)</mat-option>
+            <mat-option value="pop_a">Popularity (ASC)</mat-option>
+            <mat-option value="pop_d">Popularity (DES)</mat-option>
+            <mat-option value="runt_a">Runtime (ASC)</mat-option>
+            <mat-option value="runt_d">Runtime (DES)</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <input matInput type="text" placeholder="Author"/>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <input matInput type="text" name="title" placeholder="Contains the words"/>
+        </mat-form-field>
+      </form>
     </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type="submit" (click)="onSubmitSearch()"><mat-icon>search</mat-icon></button>
+    </mat-card-actions>
   </mat-card>
-
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="input-group" id="adv-search">
-        <div class="input-group-btn">
-          <div class="btn-group" role="group">
-            <div class="dropdown dropdown-lg">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                      aria-expanded="false"><span class="caret"></span></button>
-              <div class="dropdown-menu dropdown-menu-right" role="menu">
-                <form class="form-horizontal" role="form" [formGroup]="formGroupSearch" name="formSearch">
-                  <div class="form-group">
-                    <label for="genre">Genre</label>
-                    <select class="form-control" formControlName="inputGenre">
-                      <option value="all" selected>All</option>
-                      <option value="Comedy">Comedy</option>
-                      <option value="Sci-Fi">Sci-fi</option>
-                      <option value="Horror">Horror</option>
-                      <option value="Romance">Romance</option>
-                      <option value="Action">Action</option>
-                      <option value="Thriller">Thriller</option>
-                      <option value="Drama">Drama</option>
-                      <option value="Mystery">Mystery</option>
-                      <option value="Crime">Crime</option>
-                      <option value="Animation">Animation</option>
-                      <option value="Adventure">Adventure</option>
-                      <option value="Fantasy">Fantasy</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="filter">Tri by</label>
-                    <select class="form-control" formControlName="inputTri">
-                      <option value="year_a" selected>Year (ASC)</option>
-                      <option value="year_d">Year (DES)</option>
-                      <option value="pop_a">Popularity (ASC)</option>
-                      <option value="pop_d">Popularity (DES)</option>
-                      <option value="runt_a">Runtime (ASC)</option>
-                      <option value="runt_d">Runtime (DES)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="contain">Author</label>
-                    <input class="form-control" type="text"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="contain">Contains the words</label>
-                    <input class="form-control" type="text" name="title">
-                  </div>
-                  <button type="submit" class="btn btn-primary" (click)="onSubmitSearch()"><span
-                    class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                </form>
-              </div>
-            </div>
-            <button type="button" class="btn btn-primary" (click)="onSubmitSearch()"><span
-              class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
