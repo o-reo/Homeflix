@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
 import {MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';
-import {FileUploader, FileSelectDirective} from 'ng2-file-upload/ng2-file-upload';
+import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
+import * as $ from 'jquery';
 
 const URL = 'http://localhost:3000/upload';
 
@@ -37,11 +38,20 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:uploaded:', item, status, response);
     };
-  }
+    $('#file-upload').click(() => {
+      $('#file-upload_back').click();
+    });
+    $('#file-upload_back').change(function(el) {
+      const filelist = $(this).val().split('\\');
+      $('#file-upload_file').val(filelist[filelist.length - 1]);
+    });
+    }
 
   register() {
     /* Puts all inputs into new object. */

@@ -51,21 +51,26 @@
 
           <mat-form-field class="register-input">
             <mat-icon matSuffix>lock</mat-icon>
-            <input matInput type="password" placeholder="Password confirmation" name="password2" required [(ngModel)]="password2">
+            <input matInput type="password" placeholder="Password confirmation" name="password2" required
+                   [(ngModel)]="password2">
           </mat-form-field>
           <br/>
           <small class="error-msg">{{ err_password2 }}</small>
           <br/>
 
-          <input type="file" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" />
-          <br>
-          <br>
+          <input type="file" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" id="file-upload_back" hidden>
+              <mat-form-field>
+                <input matInput type="text" id="file-upload_file" disabled/>
+              </mat-form-field>
+                <button mat-mini-fab type="button" id="file-upload">
+                  <mat-icon>add_a_photo</mat-icon>
+                </button>
           <small class="error-msg">{{ err_photo }}</small>
           <br/>
 
           <mat-form-field class="register-input">
             <mat-select [(ngModel)]="language" name="language" placeholder="Language">
-              <mat-option value="english" >English</mat-option>
+              <mat-option value="english">English</mat-option>
               <mat-option value="french">French</mat-option>
               <mat-option value="spanish">Spanish</mat-option>
             </mat-select>
