@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
 import {MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';
+import {FileUploader, FileSelectDirective} from 'ng2-file-upload/ng2-file-upload';
+
+const URL = 'http://localhost:3000/upload';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +19,7 @@ export class RegisterComponent implements OnInit {
   err_email: string;
   err_password: string;
   err_password2: string;
+  err_photo: string;
   firstname: string;
   lastname: string;
   username: string;
@@ -23,6 +27,9 @@ export class RegisterComponent implements OnInit {
   password: string;
   password2: string;
   language: string;
+  photo: string;
+
+  public uploader: FileUploader = new FileUploader({url: URL, itemAlias: 'photo'});
 
   constructor(private userService: UserService,
               public snackBar: MatSnackBar,
@@ -30,6 +37,10 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      console.log('ImageUpload:uploaded:', item, status, response);
+    };
   }
 
   register() {
@@ -41,6 +52,7 @@ export class RegisterComponent implements OnInit {
       password2: this.password2,
       email: this.email,
       username: this.username,
+      photo: this.photo,
     };
     /* Adds language into object if it was given in inputs. */
     if (this.language) {
@@ -59,13 +71,17 @@ export class RegisterComponent implements OnInit {
         /* Empty form if request was successful. */
         if (msg['success'] === true) {
           this.emptyForm();
+          this.uploader.uploadAll();
         } else {
-          this.throwError(msg['errors']);
+          this.throwError(msg['err']);
         }
       });
   }
 
   throwError(errors) {
+    if (errors['no_photo']) {
+      this.err_photo = 'You must add a picture.';
+    }
     if (errors['firstname_undefined'] === true) {
       this.err_firstname = 'Firstname is empty.';
     }
@@ -103,6 +119,7 @@ export class RegisterComponent implements OnInit {
     this.err_password = null;
     this.err_password2 = null;
     this.err_firstname = null;
+    this.err_photo = null;
   }
 
   emptyForm() {
@@ -113,5 +130,6 @@ export class RegisterComponent implements OnInit {
     this.password2 = null;
     this.language = null;
     this.email = null;
+    this.photo = null;
   }
 }

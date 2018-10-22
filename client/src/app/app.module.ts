@@ -3,6 +3,7 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
+import { FileSelectDirective } from 'ng2-file-upload';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
@@ -73,6 +74,7 @@ const appRoutes: Routes = [
     MovieComponent,
     CommentsComponent,
     CommentComponent,
+    FileSelectDirective
     // PostCommentComponent,
     // LoaderComponent
   ],

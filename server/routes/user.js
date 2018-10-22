@@ -15,13 +15,14 @@ router.post('/register', (req, res, next) => {
         password: req.body.password,
         password2: req.body.password2,
         language: req.body.language,
+        photo: req.body.photo,
         username: req.body.username
     };
     /* Looks for errors into inputs. */
     let errors = lookErrors(newUserData);
     /* Return message containing all errors if some were found. */
     if (Object.getOwnPropertyNames(errors).length !== 0)
-        res.json({success: false, errors: errors});
+        res.json({success: false, err: errors});
     /* Sends data to model if no errors were found. */
     else {
         User.addUser(newUserData, (err) => {
@@ -103,14 +104,9 @@ function lookErrors(user) {
         errors['username_undefined'] = true;
     if (user.language && user.language !== 'english' && user.language !== 'french' && user.language !== 'spanish')
         errors['language_uncorrect'] = true;
+    if (!user.photo)
+        errors['no_photo'] = true;
     return (errors);
-}
-
-function isEmptyObject(obj) {
-    for (var key in obj) {
-        return false;
-    }
-    return true;
 }
 
 module.exports = router;

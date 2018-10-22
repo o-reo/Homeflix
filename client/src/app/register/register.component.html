@@ -57,15 +57,11 @@
           <small class="error-msg">{{ err_password2 }}</small>
           <br/>
 
-
-
-          <button ngf-select="destDetCtrl.setDestinationImage($file)" ngf-pattern="'image/*'" class="btn">
-            Upload image
-          </button>
+          <input type="file" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" />
           <br>
-
-
-
+          <br>
+          <small class="error-msg">{{ err_photo }}</small>
+          <br/>
 
           <mat-form-field class="register-input">
             <mat-select [(ngModel)]="language" name="language" placeholder="Language">
@@ -74,7 +70,6 @@
               <mat-option value="spanish">Spanish</mat-option>
             </mat-select>
           </mat-form-field>
-
 
         </div>
       </mat-card-content>
