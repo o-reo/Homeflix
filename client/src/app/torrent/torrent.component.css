@@ -59,6 +59,7 @@ a:hover {
   margin: 2em;
   border-radius: 10px;
   display: inline-block;
+  cursor: pointer;
 }
 
 .movie-header {
