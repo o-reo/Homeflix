@@ -13,7 +13,7 @@ export class CommentComponent implements OnInit {
 
   loaded: Promise<boolean>;
   @Input() comment: Comment;
-  user: User;
+  user: any;
 
   constructor(private userService: UserService) { }
 

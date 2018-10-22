@@ -4,3 +4,7 @@
   height: 330px;
   text-align: center;
 }
+
+.search-container button{
+  width: 100%;
+}
