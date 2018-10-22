@@ -73,7 +73,13 @@ router.post('/authenticate', (req, res, next) => {
 
 // Profile
 router.get('/profile', passport.authenticate('jwt', {session: false}), function (req, res) {
-    res.json({user: req.user});
+    res.json({success: true, user: {
+            username: req.user.username,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            language: req.user.language,
+            mail: req.user.mail
+        }});
 });
 
 /* Function that looks for errors into inputs. */

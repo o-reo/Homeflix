@@ -34,11 +34,14 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.authService.getUser();
-    this.formGroup.controls['input_lastName'].setValue(this.user['last_name']);
-    this.formGroup.controls['input_firstName'].setValue(this.user['first_name']);
-    this.formGroup.controls['input_email'].setValue(this.user['mail']);
-    this.formGroup.controls['input_lang'].setValue(this.user['lang']);
+    this.authService.profile().subscribe(resp => {
+      console.log(resp);
+      this.user = resp['user'];
+      this.formGroup.controls['input_lastName'].setValue(this.user['last_name']);
+      this.formGroup.controls['input_firstName'].setValue(this.user['first_name']);
+      this.formGroup.controls['input_email'].setValue(this.user['mail']);
+      this.formGroup.controls['input_lang'].setValue(this.user['language']);
+    });
   }
 
   changeListener($event): void {

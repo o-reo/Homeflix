@@ -37,16 +37,8 @@ export class AuthService {
       );
   }
 
-  public profile(user){
-    this.http.get('http://localhost:3000/user/profile', user)
-      .subscribe(resp => {
-          if (resp['success']) {
-            console.log(resp);
-          } else {
-            console.log(resp['msg']);
-          }
-        }
-      );
+  public profile() {
+    return this.http.get('http://localhost:3000/user/profile', { headers : { Authorization: this.getToken()}});
   }
 
   private saveToken() {
