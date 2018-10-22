@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Request} from '@angular/http'
+import {Request} from '@angular/http';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 export class AuthService {
   private authToken: string;
   private user: any;
+
   constructor(private http: HttpClient, private router: Router) {
   }
 
@@ -38,15 +39,15 @@ export class AuthService {
   }
 
   public profile() {
-    return this.http.get('http://localhost:3000/user/profile', { headers : { Authorization: this.getToken()}});
+    return this.http.get('http://localhost:3000/user/profile', {headers: {Authorization: this.getToken()}});
   }
 
   private saveToken() {
     localStorage.setItem('id_token', this.authToken);
-    localStorage.setItem('user', this.user);
+    localStorage.setItem('user', JSON.stringify(this.user));
   }
 
-  private getToken(): string {
+  public getToken(): string {
     if (!this.authToken) {
       this.authToken = localStorage.getItem('id_token');
     }
@@ -63,7 +64,7 @@ export class AuthService {
   public getUser(): {} {
     let user = this.user;
     if (!user) {
-      user = localStorage.getItem('user');
+      user = JSON.parse(localStorage.getItem('user'));
       this.user = user;
     }
     return user;

@@ -32,7 +32,7 @@ import {RouterModule} from '@angular/router';
 import {NavbarComponent} from './navbar/navbar.component';
 import {FooterComponent} from './footer/footer.component';
 import {ProfileComponent} from './profile/profile.component';
-// import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
+import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {RegisterComponent} from './register/register.component';
@@ -42,7 +42,7 @@ import {MovieComponent} from './movie/movie/movie.component';
 import {SearchComponent} from './movie/search/search.component';
 import {CommentsComponent} from './movie/comments/comments.component';
 import {CommentComponent} from './movie/comment/comment.component';
-// import {PostCommentComponent} from './movie/post-comment/post-comment.component';
+import {PostCommentComponent} from './movie/post-comment/post-comment.component';
 // import {LoaderComponent} from './loader/loader.component';
 import {AuthService} from './auth.service';
 import {AuthguardService} from './authguard.service';
@@ -74,8 +74,8 @@ const appRoutes: Routes = [
     MovieComponent,
     CommentsComponent,
     CommentComponent,
-    FileSelectDirective
-    // PostCommentComponent,
+    FileSelectDirective,
+    PostCommentComponent
     // LoaderComponent
   ],
   imports: [
@@ -99,8 +99,8 @@ const appRoutes: Routes = [
     FormsModule,
     // StorageServiceModule,
     RouterModule.forRoot(appRoutes),
-    // FroalaEditorModule.forRoot(),
-    // FroalaViewModule.forRoot(),
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
     ReactiveFormsModule,
     NgxPaginationModule
   ],

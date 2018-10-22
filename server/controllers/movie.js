@@ -123,7 +123,7 @@ exports.getComment = function (req, res) {
 exports.postComment = function (req, res) {
     const newComment = MovieComment({
         id_movie: req.body.id_movie,
-        id_user: req.user._id,
+        id_user: req.body.user.id,
         content: req.body.content
     });
     newComment.save((err, comment) => {
@@ -140,13 +140,13 @@ function dlPage(page) {
     if (dlPage >= 170)
         return;
     setTimeout(function () {
-        var options = {
+        let options = {
             url: 'https://yts.am/api/v2/list_movies.json?limit=50&page=' + page + '&with_images=true&with_cast=true',
             headers: {
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36',
                 'cookie': '__cfduid=df636e11815501063a8271a09ea634e271539350245; PHPSESSID=5seuhn4gbp8o5df0h5ftibe9s6; __test; __atuvc=4%7C41; cf_clearance=ef6c8834664556c48bd215b322e2a7b77ac6e863-1539354307-3600-150'
             }
-        }
+        };
         request(options, function (error, response, body) {
             //console.log('SousReq');
             let data = JSON.parse(body);

@@ -12,11 +12,11 @@ export class UserService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getUsers() {
-      return this.http.get<User[]>('http://localhost:3000/api/users');
+      return this.http.get<User[]>('http://localhost:3000/users');
   }
 
   getUser(id) {
-    return this.http.get<User>('http://localhost:3000/api/user/' + id);
+    return this.http.get('http://localhost:3000/user/' + id, {headers: {Authorization: this.authService.getToken()}});
   }
 
   getMyUser() {

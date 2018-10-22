@@ -9,6 +9,6 @@ router.route('/')
     .get(movieController.getAllComments);
 
 router.route('/:id_movie')
-.get(movieController.getComments);
+    .get(movieController.getComments);
 
 module.exports = router;

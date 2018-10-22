@@ -6,6 +6,20 @@ const User = require('../models/user');
 
 const router = express.Router({});
 
+// User info
+router.get('/:user_id', passport.authenticate('jwt', {session: false}), function (req, res) {
+    console.log('req', req);
+    res.json({success: true, user: {
+            _id: req.user._id,
+            username: req.user.username,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            language: req.user.language,
+            photo: req.user.photo
+        }});
+});
+
+
 // Register
 router.post('/register', (req, res, next) => {
     let newUserData = {
@@ -74,6 +88,7 @@ router.post('/authenticate', (req, res, next) => {
 // Profile
 router.get('/profile', passport.authenticate('jwt', {session: false}), function (req, res) {
     res.json({success: true, user: {
+            _id: req.user._id,
             username: req.user.username,
             first_name: req.user.first_name,
             last_name: req.user.last_name,

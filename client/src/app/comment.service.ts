@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Comment } from "./comment";
-import { HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Comment} from './comment';
+import {HttpClient} from '@angular/common/http';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authservice: AuthService) {
+  }
 
   comments: Comment[];
 
@@ -23,8 +25,10 @@ export class CommentService {
     return this.http.get<Comment>('http://localhost:3000/comment/' + id_comment);
   }
 
-  // postComment(data) {
-  //   let headers = this.authSimpleService.getHeader_token('application/json');
-  //   return this.http.post<any>('http://localhost:3000/api/movie_comment', data, {headers: headers});
-  // }
+  postComment(data) {
+    const headers = {authorization: this.authservice.getToken()};
+    data.user = {id: this.authservice.getUser()['id']};
+    console.log(data);
+    return this.http.post<any>('http://localhost:3000/comment', data, {headers: headers});
+  }
 }
