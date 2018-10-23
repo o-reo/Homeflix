@@ -5,20 +5,29 @@
     </mat-card-header>
     <mat-grid-list cols="4">
       <mat-grid-tile>
-        <button mat-mini-fab color="warn" (click)="signInWithGoogle()"><i
-          class="fa fa-google-plus visible-xs"></i>
-        </button>
+        <a href="http://localhost:3000/user/authenticate/google">
+          <button mat-mini-fab color="warn">
+            <i class="fa fa-google-plus visible-xs"></i>
+        </button></a>
       </mat-grid-tile>
       <mat-grid-tile>
-        <button mat-mini-fab color="primary" (click)="signInWithTwitter()"><i class="fa fa-twitter visible-xs"></i>
-        </button>
+        <a href="http://localhost:3000/user/authenticate/twitter">
+          <button mat-mini-fab color="primary">
+            <i class="fa fa-twitter visible-xs"></i>
+          </button>
+        </a>
       </mat-grid-tile>
       <mat-grid-tile>
-        <button mat-mini-fab color="accent"  (click)="redirectToOutlook()"><i class="fa fa-windows visible-xs"></i>
-        </button>
+        <a href="http://localhost:3000/user/authenticate/outlook">
+          <button mat-mini-fab color="accent">
+          <i class="fa fa-windows visible-xs"></i>
+          </button>
+        </a>
       </mat-grid-tile>
       <mat-grid-tile>
-        <button mat-mini-fab color="primary" (click)="redirectTo42()">42</button>
+        <a href="http://localhost:3000/user/authenticate/42">
+          <button mat-mini-fab color="primary">42</button>
+        </a>
       </mat-grid-tile>
     </mat-grid-list>
     <form (submit)="login()" method="post">

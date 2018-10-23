@@ -30,11 +30,11 @@ const UserSchema = mongoose.Schema({
         required: false
     },
     token_google: {
-        type: Number,
+        type: String,
         required: false
     },
     token_42: {
-        type: Number,
+        type: String,
         required: false
     },
     photo: {
@@ -84,4 +84,38 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
       if (err) throw err;
       callback(null, isMatch);
   });
+};
+
+
+/* Function that looks for errors into inputs. */
+module.exports.lookErrors = function(user) {
+    let errors = {};
+    /* Looks for errors in passwords. */
+    if (!user.password || user.password === null)
+        errors['password1_empty'] = true;
+    if (!user.password2 || user.password2 === null)
+        errors['password2_empty'] = true;
+    if (user.password !== null && user.password2 !== null && user.password !== user.password2)
+        errors['passwords_dont_match'] = true;
+    let regex = new RegExp('^(?=.*[^a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+    if (Object.getOwnPropertyNames(errors).length === 0 && regex.test(user.password) === false)
+        errors['password_uncorrect'] = true;
+    /* Looks for errors in email. */
+    if (!user.email || user.email === null)
+        errors['mail_undefined'] = true;
+    let regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    if (regexp.test(user.email) === false)
+        errors['mail_uncorrect'] = true;
+    /* Looks for other errors. */
+    if (!user.firstname || user.firstname === null)
+        errors['firstname_undefined'] = true;
+    if (!user.lastname || user.lastname === null)
+        errors['lastname_undefined'] = true;
+    if (!user.username || user.username === null)
+        errors['username_undefined'] = true;
+    if (user.language && user.language !== 'english' && user.language !== 'french' && user.language !== 'spanish')
+        errors['language_uncorrect'] = true;
+    if (!user.path_picture || user.path_picture === null)
+        errors['no_photo'] = true;
+    return (errors);
 };

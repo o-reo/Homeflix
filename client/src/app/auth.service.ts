@@ -42,6 +42,11 @@ export class AuthService {
     return this.http.get('http://localhost:3000/user/profile', {headers: {Authorization: this.getToken()}});
   }
 
+  public setToken(token) {
+    this.authToken = token;
+    this.saveToken();
+  }
+
   private saveToken() {
     localStorage.setItem('id_token', this.authToken);
     localStorage.setItem('user', JSON.stringify(this.user));

@@ -128,34 +128,34 @@ const credentials = require('../config/credentials');
 //         passReqToCallback: true
 //     },() => {
 //     }
-    // function (request, accessToken, refreshToken, profile, done) {
-    //     process.nextTick(function () {
-    //         User.find({googleId: profile.id}, function (err, user) {
-    //             if (!user) {
-    //                 let newUser = new User({
-    //                     first_name: profile.name.givenName,
-    //                     last_name: profile.name.familyName,
-    //                     password: 'pass',
-    //                     mail: profile.email,
-    //                     username: 'hellotest',
-    //                     googleId: profile.id
-    //                 });
-    //
-    //                 newUser.save((err, userSave) => {
-    //                     if (err) {
-    //                         console.log(err);
-    //                         return done(err);
-    //                     } else {
-    //                         return done(null, userSave);
-    //                     }
-    //                 });
-    //             }
-    //             else {
-    //                 return done(null, user);
-    //             }
-    //         });
-    //     });
-    // }
+//     function (request, accessToken, refreshToken, profile, done) {
+//         process.nextTick(function () {
+//             User.find({googleId: profile.id}, function (err, user) {
+//                 if (!user) {
+//                     let newUser = new User({
+//                         first_name: profile.name.givenName,
+//                         last_name: profile.name.familyName,
+//                         password: 'pass',
+//                         mail: profile.email,
+//                         username: 'hellotest',
+//                         googleId: profile.id
+//                     });
+//
+//                     newUser.save((err, userSave) => {
+//                         if (err) {
+//                             console.log(err);
+//                             return done(err);
+//                         } else {
+//                             return done(null, userSave);
+//                         }
+//                     });
+//                 }
+//                 else {
+//                     return done(null, user);
+//                 }
+//             });
+//         });
+//     }
 // ));
 //
 // exports.isAuth = function (req, res) {

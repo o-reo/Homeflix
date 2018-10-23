@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -16,10 +16,19 @@ export class AuthComponent implements OnInit {
 
   constructor(private authService: AuthService,
               public snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.route
+      .queryParams
+      .subscribe(params => {
+        if (params['code']) {
+          this.authService.setToken(params['code']);
+          this.router.navigate(['profile']);
+        }
+      });
   }
 
   login() {
