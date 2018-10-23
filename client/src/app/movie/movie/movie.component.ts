@@ -41,7 +41,7 @@ export class MovieComponent implements OnInit {
             this.torrentService.startStreaming(this.torrent)
               .subscribe(data => {
                 this.path = data.path;
-                this.link = 'http://localhost:3000/api/streaming/' + data.path;
+                this.link = 'http://localhost:3000/torrent/streaming/' + data.path;
                 console.log(data.path);
                 this.videoloaded = Promise.resolve(true);
                 this.textLoad = '';

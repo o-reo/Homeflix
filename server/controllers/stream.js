@@ -3,7 +3,7 @@ const fs = require("fs"); //Load the filesystem module
 exports.getStream = function (req, res) {
     let film = req.params.file;
 
-    let path = './films/' + film;
+    let path = './../films/' + film;
     let stat = fs.statSync(path);
     let total = stat.size;
     if (req.headers['range']) {
@@ -37,7 +37,7 @@ exports.getStream = function (req, res) {
 exports.getStreamDirectory = function (req, res) {
     let film = req.params.file;
 
-    let path = './films/' + req.params.directory + '/' + film;
+    let path = './../films/' + req.params.directory + '/' + film;
     const stat = fs.statSync(path);
     const fileSize = stat.size;
     const range = req.headers.range;

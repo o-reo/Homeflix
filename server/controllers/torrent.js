@@ -71,7 +71,7 @@ exports.streamTorrent = function (req, res) {
     var magnet = 'magnet:?xt=urn:btih:'
         + req.params.hash
         + '&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce';
-    var engine = torrentStream(magnet, {path: './films'});
+    var engine = torrentStream(magnet, {path: './../films'});
     console.log('Waiting download ... ');
     engine.on('ready', function () {
         console.log('Start Download ...');
@@ -88,8 +88,8 @@ exports.streamTorrent = function (req, res) {
     engine.on('download', function (data) {
         console.log('--piece downloaded: ', data);
         if (!sending) {
-            if (fs.existsSync(__dirname + '/../films/' + path)) {
-                const stats = fs.statSync(__dirname + '/../films/' + path);
+            if (fs.existsSync(__dirname + '/../../films/' + path)) {
+                const stats = fs.statSync(__dirname + '/../../films/' + path);
                 const fileSizeInBytes = stats.size;
 //Convert the file size to megabytes (optional)
                 const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
@@ -100,15 +100,15 @@ exports.streamTorrent = function (req, res) {
                 }
                 console.log('SIZE: ', fileSizeInMegabytes);
             } else {
-                console.log('fichier introuvable: ' + __dirname + '/../films/' + path);
+                console.log('fichier introuvable: ' + __dirname + '/../../films/' + path);
             }
         }
     });
 
     engine.on('idle', function () {
         if (!sending) {
-            if (fs.existsSync(__dirname + '/../films/' + path)) {
-                const stats = fs.statSync(__dirname + '/../films/' + path);
+            if (fs.existsSync(__dirname + '/../../films/' + path)) {
+                const stats = fs.statSync(__dirname + '/../../films/' + path);
                 const fileSizeInBytes = stats.size;
 //Convert the file size to megabytes (optional)
                 const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
@@ -119,7 +119,7 @@ exports.streamTorrent = function (req, res) {
                 }
                 console.log('SIZE: ', fileSizeInMegabytes);
             } else {
-                console.log('fichier introuvable: ' + __dirname + '/../films/' + path);
+                console.log('fichier introuvable: ' + __dirname + '/../../films/' + path);
             }
         }
         console.log('end download');
