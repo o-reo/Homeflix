@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
 import * as $ from 'jquery';
 
-const URL = 'http://localhost:3000/upload';
+const URL = 'http://localhost:3000/user/upload/';
 
 @Component({
   selector: 'app-register',
@@ -29,8 +29,13 @@ export class RegisterComponent implements OnInit {
   password2: string;
   language: string;
   photo: string;
+  req: boolean;
 
-  public uploader: FileUploader = new FileUploader({url: URL, itemAlias: 'photo'});
+  public uploader: FileUploader = new FileUploader({
+    url: URL,
+    itemAlias: 'photo',
+    allowedMimeType: ['image/png', 'image/jpeg', 'image/jpg']
+  });
 
   constructor(private userService: UserService,
               public snackBar: MatSnackBar,
@@ -41,17 +46,18 @@ export class RegisterComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
     };
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      console.log('ImageUpload:uploaded:', item, status, response);
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.file.name = this.username;
     };
     $('#file-upload').click(() => {
       $('#file-upload_back').click();
     });
-    $('#file-upload_back').change(function(el) {
+    $('#file-upload_back').change(function () {
       const filelist = $(this).val().split('\\');
       $('#file-upload_file').val(filelist[filelist.length - 1]);
     });
-    }
+
+  }
 
   register() {
     /* Puts all inputs into new object. */
@@ -61,12 +67,19 @@ export class RegisterComponent implements OnInit {
       password: this.password,
       password2: this.password2,
       email: this.email,
-      username: this.username,
-      photo: this.photo,
+      username: this.username
     };
     /* Adds language into object if it was given in inputs. */
     if (this.language) {
       newUser['language'] = this.language;
+    }
+    /* Create path of the profil picture. */
+    if (this.photo) {
+      let extension = this.photo.split('.')[this.photo.split('.').length - 1];
+      if (extension === 'JPG') {
+        extension = 'jpeg';
+      }
+      newUser['path_picture'] = 'profil_pictures/' + this.username + '.' + extension;
     }
     /* Cleans errors if some were displayed. */
     this.cleanErrors();
@@ -78,10 +91,10 @@ export class RegisterComponent implements OnInit {
             duration: 3000,
           });
         }
-        /* Empty form if request was successful. */
+        /* If request succeeded upload picture and empty form, if not throw error messages.*/
         if (msg['success'] === true) {
-          this.emptyForm();
           this.uploader.uploadAll();
+          this.emptyForm();
         } else {
           this.throwError(msg['err']);
         }
@@ -89,7 +102,7 @@ export class RegisterComponent implements OnInit {
   }
 
   throwError(errors) {
-    if (errors['no_photo']) {
+    if (errors['no_photo'] === true) {
       this.err_photo = 'You must add a picture.';
     }
     if (errors['firstname_undefined'] === true) {
@@ -110,11 +123,11 @@ export class RegisterComponent implements OnInit {
     if (errors['password1_empty'] === true) {
       this.err_password = 'Password is empty.';
     }
-    if (errors['password2_empty'] === true) {
-      this.err_password2 = 'Password confirmation is empty.';
-    }
     if (errors['passwords_dont_match'] === true) {
       this.err_password2 = 'Passwords don\'t match.';
+    }
+    if (errors['password2_empty'] === true) {
+      this.err_password2 = 'Password confirmation is empty.';
     }
     if (errors['password_uncorrect'] === true) {
       this.err_password2 = 'The password should contain a letter, a digit, a special character and contain 8 characters.';

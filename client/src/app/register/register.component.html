@@ -58,13 +58,14 @@
           <small class="error-msg">{{ err_password2 }}</small>
           <br/>
 
-          <input type="file" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" id="file-upload_back" hidden>
-              <mat-form-field>
-                <input matInput type="text" id="file-upload_file" disabled/>
-              </mat-form-field>
-                <button mat-mini-fab type="button" id="file-upload">
-                  <mat-icon>add_a_photo</mat-icon>
-                </button>
+          <mat-form-field>
+            <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" id="file-upload_back" hidden>
+            <input matInput type="text" name="path" id="file-upload_file" disabled/>
+          </mat-form-field>
+          <button mat-mini-fab type="button" id="file-upload">
+            <mat-icon>add_a_photo</mat-icon>
+          </button>
+          <br>
           <small class="error-msg">{{ err_photo }}</small>
           <br/>
 

@@ -3,8 +3,13 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
+const fs = require('fs');
+const multer = require('multer');
+let path = require('path');
 
 const router = express.Router({});
+
+const DIR = './profil_pictures';
 
 // User info
 router.get('/:user_id', passport.authenticate('jwt', {session: false}), function (req, res) {
@@ -29,7 +34,7 @@ router.post('/register', (req, res, next) => {
         password: req.body.password,
         password2: req.body.password2,
         language: req.body.language,
-        photo: req.body.photo,
+        path_picture: req.body.path_picture,
         username: req.body.username
     };
     /* Looks for errors into inputs. */
@@ -48,6 +53,7 @@ router.post('/register', (req, res, next) => {
         });
     }
 });
+
 
 // Login
 router.post('/authenticate', (req, res, next) => {
@@ -97,6 +103,34 @@ router.get('/profile', passport.authenticate('jwt', {session: false}), function 
         }});
 });
 
+/* Creates storage for uploader. */
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname + '.' + file.mimetype.split('/')[1]);
+    }
+});
+
+/* Creates uploader. */
+let upload = multer({
+    storage: storage
+});
+
+/* Request to send picture. */
+router.post('/upload', upload.single('photo'), function (req, res) {
+    if (!req.file) {
+        return res.send({
+            success: false
+        });
+    } else {
+        return res.send({
+            success: true
+        })
+    }
+});
+
 /* Function that looks for errors into inputs. */
 function lookErrors(user) {
     let errors = {};
@@ -125,7 +159,7 @@ function lookErrors(user) {
         errors['username_undefined'] = true;
     if (user.language && user.language !== 'english' && user.language !== 'french' && user.language !== 'spanish')
         errors['language_uncorrect'] = true;
-    if (!user.photo)
+    if (!user.path_picture || user.path_picture === null)
         errors['no_photo'] = true;
     return (errors);
 }

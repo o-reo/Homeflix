@@ -66,6 +66,7 @@ module.exports.addUser = function (newUserData, callback) {
         username: newUserData.username,
         email: newUserData.email,
         password: newUserData.password,
+        photo: newUserData.path_picture,
         language: newUserData.language
     });
     /* Hashes and add user to database or returns error if user couldn't be added to database. */

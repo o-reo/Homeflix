@@ -25,10 +25,10 @@
 
 .auth-container{
   position: absolute;
-  top: calc(50% - 275px);
+  top: calc(50% - 340px);
   left: calc(50% - 190px);
   width: 350px;
-  height: 600px;
+  height: 630px;
   text-align: center;
 }
 
