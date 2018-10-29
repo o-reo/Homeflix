@@ -3,7 +3,6 @@ let mongoose = require('mongoose');
 let bodyparser = require('body-parser');
 let cors = require('cors');
 let path = require('path');
-const passport = require('passport');
 const config = require('./config/database');
 const route_user = require('./routes/user');
 const route_torrent = require('./routes/torrent');
@@ -48,10 +47,6 @@ app.use(bodyparser.urlencoded({
 }));
 
 app.use(require('morgan')('combined'));
-
-// Passport Middleware
-app.use(passport.initialize({}));
-app.use(passport.session());
 
 // Session config
 const sess = { secret: credentials.session.secret,
