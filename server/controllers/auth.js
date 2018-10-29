@@ -10,7 +10,7 @@ module.exports.validJWT = (req, res, next) => {
             res.json({success: false, msg: err})
         }
         else {
-            User.findOne({_id: decoded._id, password: decoded.password}, (err, user) => {
+            User.findOne({_id: decoded._id}, (err, user) => {
                 if (err || !user) {
                     res.json({success: false, msg: err})
                 }
