@@ -43,6 +43,27 @@ exports.getUser = function (req, res) {
     }
 };
 
+// Updating user info, may need corrections
+exports.updateUser = function (req, res) {
+    let request = {
+        first_name: req.first_name,
+        last_name: req.last_name,
+        password: req.body.password,
+        mail: req.body.mail,
+        username: req.body.username,
+        grant: req.body.grant,
+        lang: req.body.lang
+    };
+    User.updateOne(
+        {_id: req.userdata._id},
+        {$set: request},
+        function (err, resp) {
+            if (err) {
+                res.json(err);
+            }
+            res.json(request);
+        });
+};
 
 // exports.postUsers = function (req, res) {
 //     let newUser = new User({

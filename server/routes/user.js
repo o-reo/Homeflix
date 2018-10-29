@@ -18,9 +18,10 @@ router.route('/login').post(authController.login);
 router.route('/:id')
     .get(authController.validJWT, UserController.getUser);
 
-// Personal info
+// Personal info, with a put for updating user info
 router.route('/')
-    .get(authController.validJWT, UserController.getUser);
+    .get(authController.validJWT, UserController.getUser)
+    .put(authController.validJWT, UserController.updateUser);
 
 /* Creates storage for uploader. */
 let storage = multer.diskStorage({
