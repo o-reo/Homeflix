@@ -1,5 +1,5 @@
 const OS = require('opensubtitles-api');
-var srt2vtt = require('srt-to-vtt');
+let srt2vtt = require('srt-to-vtt');
 
 const OpenSubtitles = new OS({
     useragent: 'TemporaryUserAgent'

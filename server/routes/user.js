@@ -11,37 +11,8 @@ const DIR = './profil_pictures';
 
 
 // Register
-router.post('/register', (req, res, next) => {
-    let newUserData = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        password: req.body.password,
-        password2: req.body.password2,
-        language: req.body.language,
-        path_picture: req.body.path_picture,
-        username: req.body.username
-    };
-    /* Looks for errors into inputs. */
-    let errors = User.lookErrors(newUserData);
-    /* Return message containing all errors if some were found. */
-    if (Object.getOwnPropertyNames(errors).length !== 0)
-        res.json({success: false, err: errors});
-    /* Sends data to model if no errors were found. */
-    else {
-        User.addUser(newUserData, (err) => {
-            /* Returns error if user couldn't register. */
-            if (err)
-                res.json({
-                    success: false,
-                    msg: 'Failed to register user, your email or username must already be used.',
-                    err: err
-                });
-            else
-                res.json({success: true, msg: 'User successfully registered.'});
-        });
-    }
-});
+router.route('/register')
+    .post(authController.register);
 
 
 // Login
