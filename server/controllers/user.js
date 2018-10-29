@@ -1,6 +1,47 @@
-const bcrypt = require('bcrypt');
+const User = require('../models/user');
 
 
+exports.getUser = function (req, res) {
+    if (!req.params.id) {
+        User.getUserById(req.userdata._id, function (err, result) {
+            if (!result || err) {
+                res.json({success: false, msg: 'Could not fetch this user'});
+            }
+            else {
+                if (result.password === req.userdata.password) {
+                    res.json({
+                        _id: result._id,
+                        first_name: result.first_name,
+                        last_name: result.last_name,
+                        username: result.username,
+                        email: result.email,
+                        photo: result.photo,
+                        language: result.language
+                    });
+                } else {
+                    res.json({success: false, msg: 'Corrupted user data'});
+                }
+            }
+        });
+    }
+    else {
+        User.getUserById(req.params.id, function (err, result) {
+            if (!result || err) {
+                res.json({success: false, msg: 'Could not fetch this user'});
+            }
+            else {
+                res.json({
+                    _id: result._id,
+                    first_name: result.first_name,
+                    last_name: result.last_name,
+                    username: result.username,
+                    photo: result.photo,
+                    language: result.language
+                });
+            }
+        });
+    }
+};
 
 
 // exports.postUsers = function (req, res) {
@@ -36,13 +77,6 @@ const bcrypt = require('bcrypt');
 //     });
 // };
 //
-// exports.getUser = function (req, res) {
-//     User.findOne({_id: req.params.id}, function(err, result) {
-//        if (err)
-//            res.json(err);
-//        res.json(result);
-//     });
-// };
 //
 // exports.getMyUser = function (req, res) {
 //     User.findOne({ _id: req.user._id }, function(err, result) {

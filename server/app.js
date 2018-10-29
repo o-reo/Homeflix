@@ -14,6 +14,8 @@ const route_comment = require('./routes/comment');
 const fs = require('fs');
 const multer = require('multer');
 const router = express.Router();
+const credentials = require('./config/credentials');
+const session = require('express-session');
 
 let app = express();
 
@@ -45,11 +47,18 @@ app.use(bodyparser.urlencoded({
     extended: true
 }));
 
+app.use(require('morgan')('combined'));
+
 // Passport Middleware
 app.use(passport.initialize({}));
-app.use(passport.session({}));
+app.use(passport.session());
 
-require('./config/passport_setup')(passport);
+// Session config
+const sess = { secret: credentials.session.secret,
+    cookie: {},
+    resave: false,
+    saveUninitialized: true };
+app.use(session(sess));
 
 //adding middleware - cors for cross origin
 app.use(cors());

@@ -1,29 +1,13 @@
 const express = require('express');
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
-const fs = require('fs');
+const UserController = require('../controllers/user');
+const authController = require('../controllers/auth');
 const multer = require('multer');
-let path = require('path');
 const router = express.Router({});
+const jwt = require('jsonwebtoken');
 
 const DIR = './profil_pictures';
-
-// User info
-router.get('/:user_id', passport.authenticate('jwt', {session: false}), function (req, res) {
-    console.log('req', req);
-    res.json({
-        success: true, user: {
-            _id: req.user._id,
-            username: req.user.username,
-            first_name: req.user.first_name,
-            last_name: req.user.last_name,
-            language: req.user.language,
-            photo: req.user.photo
-        }
-    });
-});
 
 
 // Register
@@ -61,70 +45,16 @@ router.post('/register', (req, res, next) => {
 
 
 // Login
-router.post('/authenticate', (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+router.route('/login').post(authController.login);
 
-    User.getUserByUsername(username, (err, user) => {
-        // if (err) throw err;
-        if (!user) {
-            return res.json({success: false, msg: 'User not found'});
-        }
-        User.comparePassword(password, user.password, (err, isMatch) => {
-            // if (err) throw err;
-            if (isMatch) {
-                const token = jwt.sign(user.toJSON(), config.secret, {
-                    expiresIn: 604800
-                });
-                // Add here user data you want to access in client after login
-                res.json({
-                    success: true,
-                    token: 'Bearer ' + token,
-                    user: {
-                        id: user._id,
-                        username: user.username,
-                        first_name: user.first_name,
-                        last_name: user.last_name,
-                        mail: user.mail,
-                        photo: user.photo
-                    }
-                });
-            } else {
-                res.json({success: false, msg: 'Wrong password'});
-            }
-        });
-    });
-});
 
-//login google
-router.get('/authenticate/google', passport.authenticate('google',
-    {
-        scope: [ 'email', 'profile' ],
-        session: false
-}));
+// User info
+router.route('/:id')
+    .get(authController.validJWT, UserController.getUser);
 
-router.get('/authenticate/google/callback',
-    passport.authenticate('google',
-        {
-            failureRedirect: 'http://localhost:4200/auth'
-        }),
-    function (req, res) {
-        res.redirect('http://localhost:4200/auth?code=' + req.query.code);
-    });
-
-// Profile
-router.get('/profile', passport.authenticate(['jwt', 'google'], {session: false}), function (req, res) {
-    res.json({
-        success: true, user: {
-            _id: req.user._id,
-            username: req.user.username,
-            first_name: req.user.first_name,
-            last_name: req.user.last_name,
-            language: req.user.language,
-            mail: req.user.mail
-        }
-    });
-});
+// Complete user info
+router.route('/')
+    .get(authController.validJWT, UserController.getUser);
 
 /* Creates storage for uploader. */
 let storage = multer.diskStorage({

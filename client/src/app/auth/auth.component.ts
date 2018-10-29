@@ -9,10 +9,8 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-
   username: string;
   password: string;
-  user: any;
 
   constructor(private authService: AuthService,
               public snackBar: MatSnackBar,
@@ -26,7 +24,7 @@ export class AuthComponent implements OnInit {
       .subscribe(params => {
         if (params['code']) {
           this.authService.setToken(params['code']);
-          this.router.navigate(['profile']);
+          this.router.navigate(['watch']);
         }
       });
   }

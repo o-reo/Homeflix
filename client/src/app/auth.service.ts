@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Request} from '@angular/http';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -8,18 +7,18 @@ import {Router} from '@angular/router';
 })
 export class AuthService {
   private authToken: string;
-  private user: any;
 
   constructor(private http: HttpClient, private router: Router) {
   }
 
   public login(user, callback) {
-    this.http.post('http://localhost:3000/user/authenticate', user)
+    this.http.post('http://localhost:3000/user/login', user)
       .subscribe(res => {
           if (res['success']) {
-            this.user = res['user'];
             this.authToken = res['token'];
             this.saveToken();
+          } else {
+            console.log(res['msg']);
           }
           callback(res);
         }
@@ -38,18 +37,13 @@ export class AuthService {
       );
   }
 
-  public profile() {
-    return this.http.get('http://localhost:3000/user/profile', {headers: {Authorization: this.getToken()}});
-  }
-
   public setToken(token) {
     this.authToken = token;
-    this.saveToken();
+    localStorage.setItem('id_token', token);
   }
 
   private saveToken() {
     localStorage.setItem('id_token', this.authToken);
-    localStorage.setItem('user', JSON.stringify(this.user));
   }
 
   public getToken(): string {
@@ -59,24 +53,20 @@ export class AuthService {
     return this.authToken;
   }
 
+  public getUser(id?: string) {
+    id = id || '';
+    return this.http.get('http://localhost:3000/user' + id, {headers: {Authorization: 'Bearer ' + this.getToken()}});
+  }
+
   public logout(): void {
     this.authToken = '';
     window.localStorage.removeItem('id_token');
-    window.localStorage.removeItem('user');
     this.router.navigateByUrl('/');
-  }
-
-  public getUser(): {} {
-    let user = this.user;
-    if (!user) {
-      user = JSON.parse(localStorage.getItem('user'));
-      this.user = user;
-    }
-    return user;
   }
 
   public isLoggedIn(): boolean {
     const token = this.getToken();
+    // Should check token locally
     return !!token;
   }
 }

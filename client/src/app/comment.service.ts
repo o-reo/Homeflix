@@ -27,8 +27,6 @@ export class CommentService {
 
   postComment(data) {
     const headers = {authorization: this.authservice.getToken()};
-    data.user = {id: this.authservice.getUser()['id']};
-    console.log(data);
     return this.http.post<any>('http://localhost:3000/comment', data, {headers: headers});
   }
 }

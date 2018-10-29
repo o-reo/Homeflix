@@ -34,9 +34,9 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.profile().subscribe(resp => {
+    this.authService.getUser().subscribe(resp => {
       console.log(resp);
-      this.user = resp['user'];
+      this.user = resp;
       this.formGroup.controls['input_lastName'].setValue(this.user['last_name']);
       this.formGroup.controls['input_firstName'].setValue(this.user['first_name']);
       this.formGroup.controls['input_email'].setValue(this.user['mail']);
