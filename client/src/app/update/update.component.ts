@@ -9,11 +9,11 @@ const URL = 'http://localhost:3000/user/upload/';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  templateUrl: './update.component.html',
+  styleUrls: ['./update.component.css']
 })
 
-export class RegisterComponent implements OnInit {
+export class UpdateComponent implements OnInit {
   err_firstname: string;
   err_lastname: string;
   err_username: string;

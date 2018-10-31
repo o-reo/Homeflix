@@ -55,7 +55,7 @@ export class AuthService {
 
   public getUser(id?: string) {
     id = id || '';
-    return this.http.get('http://localhost:3000/user' + id, {headers: {Authorization: 'Bearer ' + this.getToken()}});
+    return this.http.get('http://localhost:3000/user/' + id, {headers: {Authorization: 'Bearer ' + this.getToken()}});
   }
 
   public logout(): void {

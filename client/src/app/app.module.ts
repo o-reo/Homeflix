@@ -36,6 +36,7 @@ import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {RegisterComponent} from './register/register.component';
+import {UpdateComponent} from './update/update.component';
 import {TorrentsComponent} from './torrents/torrents.component';
 import {TorrentComponent} from './torrent/torrent.component';
 import {MovieComponent} from './movie/movie/movie.component';
@@ -51,6 +52,7 @@ const appRoutes: Routes = [
   {path: 'auth', component: AuthComponent},
   {path: '', component: AuthComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'update', component: UpdateComponent},
   {path: 'profile', canActivate: [AuthguardService], component: ProfileComponent},
   {path: 'watch', canActivate: [AuthguardService], component: TorrentsComponent},
   // {path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
@@ -67,6 +69,7 @@ const appRoutes: Routes = [
     FooterComponent,
     ProfileComponent,
     RegisterComponent,
+    UpdateComponent,
     FooterComponent,
     TorrentsComponent,
     SearchComponent,

@@ -25,10 +25,10 @@
 
 .auth-container{
   position: absolute;
-  top: calc(50% - 320px);
+  top: calc(50% - 340px);
   left: calc(50% - 190px);
   width: 350px;
-  height: 650px;
+  height: 630px;
   text-align: center;
 }
 
@@ -49,24 +49,4 @@ mat-card-header{
 
 cdk-global-overlay-wrapper {
   margin-bottom: 500px;
-}
-
-img {
-  max-height: 200px;
-  max-width: 200px;
-}
-
-p {
-  margin-top: 0px;
-}
-
-#frame {
-  background-size: cover;
-  display: block;
-  width: 150px;
-  height: 150px;
-  border-radius: 200px;
-  background: no-repeat center;
-  background-size: cover;
-  margin: 0 auto;
 }

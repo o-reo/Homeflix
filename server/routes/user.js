@@ -4,8 +4,7 @@ const authController = require('../controllers/auth');
 const multer = require('multer');
 const router = express.Router({});
 
-const DIR = './profil_pictures';
-
+const DIR = './public/profil_pictures';
 
 // Register
 router.route('/register')

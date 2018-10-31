@@ -21,6 +21,20 @@ export class UserService {
 
   getMyUser() {
     if (this.authService.isLoggedIn()) {
+      return this.http.get('http://localhost:3000/user/', {headers: {Authorization: this.authService.getToken()}});
+    }
+    else {
+      console.log('An error has occurred.');
+    }
+
+
+
+
+
+
+
+
+/*
       // const headers = this.authService.getHeader_token('application/x-www-form-urlencoded');
       // return this.http.get<User>('http://localhost:3000/api/myuser', {headers: headers});
     // } else {
@@ -31,6 +45,8 @@ export class UserService {
   deleteUser(id) {
     // const headers = this.authService.getHeader_authBasic('application/x-www-form-urlencoded');
     // return this.http.delete<User>('http://localhost:3000/api/user/' + id, {headers: headers});
+
+  */
   }
 
   addUser(newUser) {

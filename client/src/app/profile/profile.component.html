@@ -1,92 +1,46 @@
 <div class="container">
-  <div class="row">
-    <div class="col-sm-10"><h1 *ngIf="(user !== null) && (user.username !== null)">{{ user.username }}</h1></div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><!--left col-->
+  <mat-card class="auth-container">
 
-      <form class="form" [formGroup]="formGroupPhoto" (ngSubmit)="onSubmitPhoto()" enctype="multipart/form-data"
-            id="photoForm">
-        <div class="text-center" *ngIf="(user !== null) && user.photo" >
-          <img [src]="user.photo" class="avatar img-responsive img-circle img-thumbnail" alt="avatar">
-          <h6>Upload a different photo...</h6>
-          <input type="file" formControlName="uploadImg" class="text-center center-block file-upload" accept="image/*"
-                 (change)="changeListener($event)">
-        </div>
-        <br>
-      </form>
-    </div><!--/col-3-->
-    <div class="col-sm-9">
-      <div class="tab-content">
-        <div class="tab-pane active" id="home">
-          <form class="form" [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="registrationForm">
-            <div class="form-group">
-              <div class="col-xs-6">
-                <label for="first_name"><h4>First name</h4></label>
-                <input type="text" class="form-control" formControlName="input_firstName" name="first_name"
-                       id="first_name" title="enter your first name if any.">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-6">
-                <label for="last_name"><h4>Last name</h4></label>
-                <input type="text" class="form-control" formControlName="input_lastName" name="last_name" id="last_name"
-                       placeholder="last name" title="enter your last name if any.">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-xs-6">
-                <label><h4>Language</h4></label>
-                <input type="text" class="form-control" formControlName="input_lang" name="lang" id="lang"
-                       placeholder="lang" title="enter your language">
-              </div>
-            </div>
+    <mat-card-content>
+      <div>
+
+        <h1>Profil</h1>
+        <div id="frame" [ngStyle]="{'background-image': getImg()}"></div>
+        <br/>
+        <br/>
 
 
-            <!--<div class="form-group">-->
+        <b>Username</b>
+        <p>{{username}}</p>
+        <br/>
 
-            <!--<div class="col-xs-6">-->
-            <!--<label for="email"><h4>Email</h4></label>-->
-            <!--<input type="email" class="form-control" formControlName="input_email" name="email" id="email" placeholder="you@email.com" title="enter your email.">-->
-            <!--</div>-->
-            <!--</div>-->
+        <b>Firstname</b>
+        <p>{{firstname}}</p>
+        <br/>
 
-            <div class="form-group">
+        <b>Lastname</b>
+        <p>{{lastname}}</p>
+        <br/>
 
-              <div class="col-xs-12">
-                <input type="submit" class="form-control">
-              </div>
-            </div>
+        <b>Language</b>
+        <p>{{language}}</p>
+        <br/>
 
 
-          </form>
-          <!--div class="form-group">
+        <div *ngIf="email; then thenBlock"></div>
+        <ng-template #thenBlock>
 
-            <div class="col-xs-6">
-              <label for="password"><h4>Password</h4></label>
-              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-            </div>
-          </div>
-          <div class="form-group">
+          <b>Email</b>
+          <p>{{email}}</p>
+          <br/>
+          <mat-card-actions>
+            <a href="http://localhost:4200/update" mat-raised-button color="primary">Update</a>
+          </mat-card-actions>
 
-            <div class="col-xs-6">
-              <label for="password2"><h4>Verify</h4></label>
-              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-xs-12">
-              <br>
-              <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-              <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
-            </div>
-          </div-->
+        </ng-template>
 
-          <hr>
-
-        </div><!--/tab-pane-->
       </div>
-    </div><!--/tab-content-->
+    </mat-card-content>
 
-  </div><!--/col-9-->
-</div><!--/row-->
+  </mat-card>
+</div>
