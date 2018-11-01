@@ -24,11 +24,10 @@
 }
 
 .auth-container{
-  position: absolute;
-  top: calc(50% - 320px);
+  margin-top: 100px;
   left: calc(50% - 190px);
   width: 350px;
-  height: 650px;
+  height: 100%;
   text-align: center;
 }
 

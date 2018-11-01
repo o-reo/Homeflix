@@ -10,8 +10,7 @@
   background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
 }
 
-
-.container{
+.container {
   position: absolute;
   top: 0;
   background-image: url("/assets/img/background.jpg");
@@ -23,16 +22,15 @@
   z-index: 1;
 }
 
-.auth-container{
-  position: absolute;
-  top: calc(50% - 340px);
+.auth-container {
+  margin-top: 100px;
   left: calc(50% - 190px);
   width: 350px;
-  height: 630px;
+  height: 100%;
   text-align: center;
 }
 
-mat-card-header{
+mat-card-header {
   margin: auto;
   text-align: center;
 }
@@ -49,4 +47,27 @@ mat-card-header{
 
 cdk-global-overlay-wrapper {
   margin-bottom: 500px;
+}
+
+mat-card-actions {
+  margin: 0px;
+}
+
+a {
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.inside {
+  background-color: #f4f4f2;
+  margin-bottom: 10px;
+  margin-top: -10px;
+  padding: 10px;
+}
+
+.register-input {
+}
+
+button {
+  margin-left: 20px;
 }

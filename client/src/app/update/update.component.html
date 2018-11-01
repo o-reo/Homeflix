@@ -1,87 +1,139 @@
 <div class="container">
   <mat-card class="auth-container">
-    <mat-card-header>
-      <mat-card-title>Register</mat-card-title>
-      <p>{{text}}</p>
-    </mat-card-header>
-
     <form (submit)="register()" method="post">
       <mat-card-content>
         <div>
+          <h1>Update</h1>
 
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="firstname">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_firstname }}</small>
-          <br/>
 
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="lastname">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_lastname }}</small>
-          <br/>
+          <!-- Firstname -->
+          <mat-card-actions>
+            <a mat-raised-button (click)="collapsed1 = button(collapsed1)">Firstname</a>
+          </mat-card-actions>
 
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_username }}</small>
-          <br/>
+          <mat-card-content *ngIf="collapsed1" class="inside">
+            <mat-form-field class="register-input">
+              <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="firstname">
+            </mat-form-field>
+            <button mat-mini-fab type="button" id="firstname-upload">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <small class="error-msg">{{ err_firstname }}</small>
+            <br/>
+          </mat-card-content>
 
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Email" name="email" required [(ngModel)]="email">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_email }}</small>
-          <br/>
 
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>lock</mat-icon>
-            <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_password }}</small>
-          <br/>
+          <!-- Lastname -->
+          <mat-card-actions>
+            <a mat-raised-button (click)="collapsed2 = button(collapsed2)">Lastname</a>
+          </mat-card-actions>
 
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>lock</mat-icon>
-            <input matInput type="password" placeholder="Password confirmation" name="password2" required
-                   [(ngModel)]="password2">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_password2 }}</small>
-          <br/>
+          <mat-card-content *ngIf="collapsed2" class="inside">
+            <mat-form-field class="register-input">
+              <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="lastname">
+            </mat-form-field>
+            <button mat-mini-fab type="button" id="firstname-upload">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <small class="error-msg">{{ err_lastname }}</small>
+            <br/>
+          </mat-card-content>
 
+
+          <!-- Username -->
+          <mat-card-actions>
+            <a mat-raised-button (click)="collapsed3 = button(collapsed3)">Username</a>
+          </mat-card-actions>
+
+          <mat-card-content *ngIf="collapsed3" class="inside">
+            <mat-form-field class="register-input">
+              <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
+            </mat-form-field>
+            <button mat-mini-fab type="button" id="firstname-upload">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <small class="error-msg">{{ err_username }}</small>
+            <br/>
+          </mat-card-content>
+
+
+          <!-- Email -->
+          <mat-card-actions>
+            <a mat-raised-button (click)="collapsed4 = button(collapsed4)">Email</a>
+          </mat-card-actions>
+
+          <mat-card-content *ngIf="collapsed4" class="inside">
+            <mat-form-field class="register-input">
+              <input matInput placeholder="Email" name="email" required [(ngModel)]="email">
+            </mat-form-field>
+            <button mat-mini-fab type="button" id="firstname-upload">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <small class="error-msg">{{ err_email }}</small>
+          </mat-card-content>
+
+
+          <!-- Password -->
+          <mat-card-actions>
+            <a mat-raised-button (click)="collapsed5 = button(collapsed5)">Password</a>
+          </mat-card-actions>
+
+          <mat-card-content *ngIf="collapsed5" class="inside">
+            <mat-form-field class="register-input">
+              <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
+            </mat-form-field>
+            <mat-form-field class="register-input">
+              <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
+            </mat-form-field>
+            <br>
+            <br>
+            <button mat-mini-fab type="button" id="firstname-upload">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <small class="error-msg">{{ err_password }}</small>
+            <br/>
+          </mat-card-content>
+
+
+          <!--Language-->
+          <mat-card-actions>
+            <a mat-raised-button (click)="collapsed7 = button(collapsed7)">Language</a>
+          </mat-card-actions>
+
+          <mat-card-content *ngIf="collapsed7" class="inside">
+            <mat-form-field class="register-input">
+              <mat-select [(ngModel)]="language" name="language" placeholder="Language">
+                <mat-option value="english">English</mat-option>
+                <mat-option value="french">French</mat-option>
+                <mat-option value="spanish">Spanish</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-mini-fab type="button" id="firstname-upload">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-card-content>
+
+
+          <!-- Photo-->
+          <a mat-raised-button style="margin-bottom: 10px">Photo</a>
           <mat-form-field>
-            <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" id="file-upload_back" hidden>
+            <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect
+                   [uploader]="uploader" id="file-upload_back" hidden>
             <input matInput type="text" name="path" id="file-upload_file" disabled/>
           </mat-form-field>
-          <button mat-mini-fab type="button" id="file-upload">
+          <button mat-mini-fab type="button" id="file-upload" color="primary">
             <mat-icon>add_a_photo</mat-icon>
+          </button>
+          <button mat-mini-fab type="button" id="firstname-upload">
+            <mat-icon>edit</mat-icon>
           </button>
           <br>
           <small class="error-msg">{{ err_photo }}</small>
           <br/>
 
-          <mat-form-field class="register-input">
-            <mat-select [(ngModel)]="language" name="language" placeholder="Language">
-              <mat-option value="english">English</mat-option>
-              <mat-option value="french">French</mat-option>
-              <mat-option value="spanish">Spanish</mat-option>
-            </mat-select>
-          </mat-form-field>
 
         </div>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button type="submit" color="primary">Register</button>
-      </mat-card-actions>
     </form>
   </mat-card>
 </div>

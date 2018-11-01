@@ -56,7 +56,6 @@ export class RegisterComponent implements OnInit {
       const filelist = $(this).val().split('\\');
       $('#file-upload_file').val(filelist[filelist.length - 1]);
     });
-
   }
 
   register() {
