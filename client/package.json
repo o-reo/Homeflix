@@ -26,7 +26,6 @@
     "@ngx-translate/core": "^10.0.2",
     "@ngx-translate/http-loader": "^3.0.1",
     "angular-froala-wysiwyg": "^2.8.5",
-    "angular-oauth2-oidc": "^4.0.3",
     "angular-webstorage-service": "^1.0.2",
     "angularx-social-login": "^1.2.3",
     "bytes": "^3.0.0",

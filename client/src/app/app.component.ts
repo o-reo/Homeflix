@@ -9,7 +9,8 @@ templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
 
-  constructor(public authService: HyperAuthService, private router: Router) {}
+  constructor(public authService: HyperAuthService, private router: Router) {
+  }
 
   ngOnInit() {
   }

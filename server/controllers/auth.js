@@ -84,6 +84,39 @@ module.exports.oauth = (req, res) => {
             }
         });
     }
+    if (req.body.provider === '42') {
+        User.get42User(req.body.id, (err, user) => {
+            if (!user) {
+                let newUser = {
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    email: req.body.email,
+                    username: req.body.username,
+                    token_42: req.body.id,
+                    password: Math.random().toString(36).slice(-12),
+                    path_picture: req.body.path_picture
+                };
+                User.addUser(newUser, (err, user) => {
+                    if (err){
+                        if (err.code === 11000) {
+                            err.errmsg = 'Your email is already registered';
+                        }
+                        res.json({success: false, msg: err.errmsg})
+                    } else {
+                        const token = jwt.sign(user.toJSON(), config.secret, {
+                            expiresIn: 604800
+                        });
+                        res.json({success: true, token: token});
+                    }
+                });
+            } else {
+                const token = jwt.sign(user.toJSON(), config.secret, {
+                    expiresIn: 604800
+                });
+                res.json({success: true, token: token})
+            }
+        });
+    }
 };
 
 // Register controller

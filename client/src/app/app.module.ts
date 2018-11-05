@@ -120,7 +120,7 @@ const appRoutes: Routes = [
     NgxPaginationModule,
     SocialLoginModule
   ],
-  providers: [HyperAuthService, { provide: AuthServiceConfig, useFactory: provideConfig }, AuthguardService],
+  providers: [HyperAuthService, {provide: AuthServiceConfig, useFactory: provideConfig}, AuthguardService],
   bootstrap: [AppComponent],
 })
 
