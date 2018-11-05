@@ -3,7 +3,7 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
-import { FileSelectDirective } from 'ng2-file-upload';
+import {FileSelectDirective} from 'ng2-file-upload';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
@@ -46,7 +46,20 @@ import {CommentComponent} from './movie/comment/comment.component';
 import {PostCommentComponent} from './movie/post-comment/post-comment.component';
 // import {LoaderComponent} from './loader/loader.component';
 import {HyperAuthService} from './auth.service';
+import {SocialLoginModule, AuthServiceConfig, GoogleLoginProvider} from 'angularx-social-login';
 import {AuthguardService} from './authguard.service';
+import {GOOGLE_API} from './credentials';
+
+const config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider(GOOGLE_API.clientID)
+  }
+]);
+
+export function provideConfig() {
+  return config;
+}
 
 const appRoutes: Routes = [
   {path: 'auth', component: AuthComponent},
@@ -56,8 +69,7 @@ const appRoutes: Routes = [
   {path: 'profile', canActivate: [AuthguardService], component: ProfileComponent},
   {path: 'watch', canActivate: [AuthguardService], component: TorrentsComponent},
   // {path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
-  {path: 'watch/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent},
-  {path: 'auth/:code', component: AuthComponent}
+  {path: 'watch/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent}
 ];
 
 @NgModule({
@@ -105,9 +117,10 @@ const appRoutes: Routes = [
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     ReactiveFormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    SocialLoginModule
   ],
-  providers: [HyperAuthService, AuthguardService],
+  providers: [HyperAuthService, { provide: AuthServiceConfig, useFactory: provideConfig }, AuthguardService],
   bootstrap: [AppComponent],
 })
 

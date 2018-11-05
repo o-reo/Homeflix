@@ -25,6 +25,20 @@ export class HyperAuthService {
       );
   }
 
+  public oauth(user, callback) {
+    this.http.post('http://localhost:3000/user/oauth', user)
+      .subscribe((resp) => {
+        console.log(resp);
+        if (resp['success']) {
+          this.authToken = resp['token'];
+          this.saveToken();
+        } else {
+          console.log(resp['msg']);
+        }
+        callback();
+      });
+  }
+
   public register(user) {
     this.http.post('http://localhost:3000/user/register', user)
       .subscribe(resp => {
