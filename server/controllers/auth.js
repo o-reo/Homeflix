@@ -58,14 +58,17 @@ module.exports.oauth = (req, res) => {
                     firstname: req.body.firstname,
                     lastname: req.body.lastname,
                     email: req.body.email,
-                    username: req.body.username,
+                    username: Math.random().toString(36).substring(7),
                     token_google: req.body.id,
                     password: Math.random().toString(36).slice(-12),
                     path_picture: req.body.path_picture
                 };
                 User.addUser(newUser, (err, user) => {
                    if (err){
-                       res.json({success: false, msg: 'Could not save user'})
+                       if (err.code === 11000) {
+                           err.errmsg = 'Your email is already registered';
+                       }
+                       res.json({success: false, msg: err.errmsg})
                    } else {
                        const token = jwt.sign(user.toJSON(), config.secret, {
                            expiresIn: 604800
