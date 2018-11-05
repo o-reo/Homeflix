@@ -22,7 +22,8 @@ export class UpdateComponent implements OnInit {
   password2: string;
   language: string;
   photo: string;
-
+  path: string;
+  err_password: string;
 
   public uploader: FileUploader = new FileUploader({
     url: URL,
@@ -49,9 +50,21 @@ export class UpdateComponent implements OnInit {
       const filelist = $(this).val().split('\\');
       $('#file-upload_file').val(filelist[filelist.length - 1]);
     });
+
+
+    this.userService.getUser('').subscribe(resp => {
+      console.log(resp);
+      this.first_name = resp['first_name'];
+      this.last_name = resp['last_name'];
+      this.username = resp['username'];
+      this.email = resp['email'];
+      this.language = resp['language'];
+      this.path = resp['photo'];
+    });
   }
 
-  upload(data, key) {
+  /* Functions that updates everything except password and picture. */
+  update(data, key) {
     this.userService.getUser('').subscribe(resp => {
       let obj = {newInfo: {[key]: data}, oldInfo: {}};
       obj['oldInfo'][key] = resp[key];
@@ -59,6 +72,44 @@ export class UpdateComponent implements OnInit {
         console.log(resp);
       });
     });
+  }
+
+  /* Function that updates password. */
+  update_password() {
+
+    this.userService.getUser('').subscribe(resp => {
+      let obj = {newInfo: {['password']: this.password, ['password2']: this.password2}, oldInfo: {}};
+      obj['oldInfo']['username'] = resp['username'];
+      console.log(obj);
+      this.userService.updateMyUser(obj).subscribe(resp => {
+        console.log(resp);
+      });
+    });
+  }
+
+
+  /* Function that updates photo. */
+  update_photo() {
+    console.log(this.photo);
+    /* Create path of the profil picture. */
+    if (this.photo) {
+      let extension = this.photo.split('.')[this.photo.split('.').length - 1];
+      if (extension === 'JPG' || extension === 'jpg') {
+        extension = 'jpeg';
+      }
+      /* Request to uploads picture name to database. */
+      this.userService.getUser('').subscribe(resp => {
+        let obj = {newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}, oldInfo: {}};
+        //let obj = {newInfo: {['photo']: this.password, ['password2']: this.password2}, oldInfo: {}};
+        obj['oldInfo']['photo'] = resp['photo'];
+        console.log(obj);
+        this.userService.updateMyUser(obj).subscribe(resp => {
+          console.log(resp);
+          /* Uploads picture into server repositorie. */
+          this.uploader.uploadAll();
+        });
+      });
+    }
   }
 
   /* Function for collapse button. */
@@ -69,5 +120,15 @@ export class UpdateComponent implements OnInit {
     else {
       return true;
     }
+  }
+
+  getImg() {
+    if (!this.path) {
+      return 'none';
+    }
+    if (this.path.includes('http://') || this.path.includes('https://')) {
+      return 'url(\'' + this.path + '\')';
+    }
+    return 'url(\'http://localhost:3000/' + this.path + '\')';
   }
 }

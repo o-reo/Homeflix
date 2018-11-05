@@ -75,7 +75,7 @@ export class RegisterComponent implements OnInit {
     /* Create path of the profil picture. */
     if (this.photo) {
       let extension = this.photo.split('.')[this.photo.split('.').length - 1];
-      if (extension === 'JPG') {
+      if (extension === 'JPG' || extension === 'jpg') {
         extension = 'jpeg';
       }
       newUser['path_picture'] = 'profil_pictures/' + this.username + '.' + extension;

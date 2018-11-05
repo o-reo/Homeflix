@@ -43,6 +43,7 @@ mat-card-header {
 .error-msg {
   color: red;
   margin-top: -30px;
+  white-space: pre-line;
 }
 
 cdk-global-overlay-wrapper {
@@ -70,4 +71,15 @@ a {
 
 button {
   margin-left: 20px;
+}
+
+#frame {
+  background-size: cover;
+  display: block;
+  width: 150px;
+  height: 150px;
+  border-radius: 200px;
+  background: no-repeat center;
+  background-size: cover;
+  margin: 0 auto;
 }
