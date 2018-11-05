@@ -13,6 +13,9 @@ router.route('/register')
 // Login
 router.route('/login').post(authController.login);
 
+// OAuth
+router.route('/oauth').post(authController.oauth);
+
 // User info
 router.route('/:id')
     .get(authController.validJWT, UserController.getUser);

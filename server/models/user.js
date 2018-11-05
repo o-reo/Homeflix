@@ -53,6 +53,10 @@ module.exports.getUserById = function (id, callback) {
     User.findById(id, callback);
 };
 
+module.exports.getGoogleUser = function (id, callback) {
+    User.findOne({token_google: id}, callback);
+};
+
 module.exports.getUserByUsername = function (username, callback) {
     User.findOne({username: username}, callback);
 };
@@ -68,7 +72,8 @@ module.exports.addUser = function (newUserData, callback) {
         email: newUserData.email,
         password: newUserData.password,
         photo: newUserData.path_picture,
-        language: newUserData.language
+        language: newUserData.language,
+        token_google: newUserData.token_google ? newUserData.token_google : null
     });
     /* Hashes and add user to database or returns error if user couldn't be added to database. */
     bcrypt.genSalt(10, (err, salt) => {

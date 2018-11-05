@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
 // import {User} from '../user';
 import {FormControl, FormGroup} from '@angular/forms';
-import {AuthService} from '../auth.service';
+import {HyperAuthService} from '../auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -17,9 +17,9 @@ export class ProfileComponent implements OnInit {
   photo: string;
   language: string;
   email: string;
-  id : string;
+  id: string;
 
-  constructor(private authService: AuthService, private userService: UserService, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: HyperAuthService, private userService: UserService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -27,10 +27,13 @@ export class ProfileComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.id = params['id'];
     });
-    
+
     this.userService.getUser(this.id).subscribe(resp => {
-      console.log(resp);
-      this.photo = 'http://localhost:3000/' + resp['photo'];
+      if (resp['photo'].includes('http://') || resp['photo'].includes('https://')) {
+        this.photo = resp['photo'];
+      } else {
+        this.photo = 'http://localhost:3000/' + resp['photo'];
+      }
       this.username = resp['username'];
       this.firstname = resp['first_name'];
       this.lastname = resp['last_name'];
@@ -42,6 +45,12 @@ export class ProfileComponent implements OnInit {
   }
 
   getImg() {
+    if (!this.photo) {
+      return 'none';
+    }
+    if (this.photo.includes('http://') || this.photo.includes('https://')) {
+      return 'url(\'' + this.photo + '\')';
+    }
     return 'url(\'' + this.photo + '\')';
   }
 }

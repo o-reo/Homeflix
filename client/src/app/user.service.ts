@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from './user';
-import {AuthService} from './auth.service';
+import {HyperAuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,7 @@ import {AuthService} from './auth.service';
 
 export class UserService {
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-  }
+  constructor(private http: HttpClient, private authService: HyperAuthService) {}
 
   getUsers() {
     return this.http.get<User[]>('http://localhost:3000/users');

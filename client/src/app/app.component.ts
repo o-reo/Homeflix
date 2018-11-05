@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './auth.service';
+import { HyperAuthService } from './auth.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: HyperAuthService, private router: Router) {}
 
   ngOnInit() {
   }

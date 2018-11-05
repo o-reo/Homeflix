@@ -5,10 +5,9 @@
     </mat-card-header>
     <mat-grid-list cols="4">
       <mat-grid-tile>
-        <a href="http://localhost:3000/user/login/google">
-          <button mat-mini-fab color="warn">
+          <button mat-mini-fab color="warn" (click)="signInWithGoogle()">
             <i class="fa fa-google-plus visible-xs"></i>
-        </button></a>
+        </button>
       </mat-grid-tile>
       <mat-grid-tile>
         <a href="http://localhost:3000/user/login/twitter">
