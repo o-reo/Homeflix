@@ -61,6 +61,8 @@ module.exports.getUserByUsername = function (username, callback) {
     User.findOne({username: username}, callback);
 };
 
+
+/* Method used to add user. */
 module.exports.addUser = function (newUserData, callback) {
     /* Creates object from data passed by router. */
     const newUser = User({
@@ -90,30 +92,17 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
   });
 };
 
-
 /* Function that looks for errors into inputs. */
 module.exports.lookErrors = function(user) {
     let errors = {};
     /* Looks for errors in passwords. */
-    if (!user.password || user.password === null)
-        errors['password1_empty'] = true;
-    if (!user.password2 || user.password2 === null)
-        errors['password2_empty'] = true;
-    if (user.password !== null && user.password2 !== null && user.password !== user.password2)
-        errors['passwords_dont_match'] = true;
-    let regex = new RegExp('^(?=.*[^a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
-    if (Object.getOwnPropertyNames(errors).length === 0 && regex.test(user.password) === false)
-        errors['password_uncorrect'] = true;
+    this.checkPassword(user.password,  user.password2, errors);
     /* Looks for errors in email. */
-    if (!user.email || user.email === null)
-        errors['mail_undefined'] = true;
-    let regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    if (regexp.test(user.email) === false)
-        errors['mail_uncorrect'] = true;
+    this.checkEmail(user.email, errors);
     /* Looks for other errors. */
-    if (!user.firstname || user.firstname === null)
+    if ((!user.firstname || user.firstname === null) && (!user.first_name || user.first_name === null))
         errors['firstname_undefined'] = true;
-    if (!user.lastname || user.lastname === null)
+    if ((!user.lastname || user.lastname === null) && (!user.last_name || user.last_name === null))
         errors['lastname_undefined'] = true;
     if (!user.username || user.username === null)
         errors['username_undefined'] = true;
@@ -121,5 +110,27 @@ module.exports.lookErrors = function(user) {
         errors['language_uncorrect'] = true;
     if (!user.path_picture || user.path_picture === null)
         errors['no_photo'] = true;
+    return (errors);
+};
+
+module.exports.checkPassword = function(password, confirmation, errors) {
+    if (!password || password === null)
+        errors['password1_empty'] = true;
+    if (!confirmation || confirmation === null)
+        errors['password2_empty'] = true;
+    if (password !== null && confirmation !== null && password !== confirmation)
+        errors['passwords_dont_match'] = true;
+    let regex = new RegExp('^(?=.*[^a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+    if (Object.getOwnPropertyNames(errors).length === 0 && regex.test(password) === false)
+        errors['password_uncorrect'] = true;
+    return (errors);
+};
+
+module.exports.checkEmail = function(email, errors) {
+    if (!email || email === null)
+        errors['mail_undefined'] = true;
+    let regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    if (regexp.test(email) === false)
+        errors['mail_uncorrect'] = true;
     return (errors);
 };

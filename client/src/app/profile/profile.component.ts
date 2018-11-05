@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   email: string;
   id: string;
 
-  constructor(private authService: HyperAuthService, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: HyperAuthService, private userService: UserService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
       this.id = params['id'];
     });
 
-    this.authService.getUser(this.id).subscribe(resp => {
+    this.userService.getUser(this.id).subscribe(resp => {
       if (resp['photo'].includes('http://') || resp['photo'].includes('https://')) {
         this.photo = resp['photo'];
       } else {
