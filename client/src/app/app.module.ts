@@ -45,7 +45,7 @@ import {CommentsComponent} from './movie/comments/comments.component';
 import {CommentComponent} from './movie/comment/comment.component';
 import {PostCommentComponent} from './movie/post-comment/post-comment.component';
 // import {LoaderComponent} from './loader/loader.component';
-import {AuthService} from './auth.service';
+import {HyperAuthService} from './auth.service';
 import {AuthguardService} from './authguard.service';
 
 const appRoutes: Routes = [
@@ -107,7 +107,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     NgxPaginationModule
   ],
-  providers: [AuthService, AuthguardService],
+  providers: [HyperAuthService, AuthguardService],
   bootstrap: [AppComponent],
 })
 

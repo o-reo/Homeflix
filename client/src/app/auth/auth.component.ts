@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../auth.service';
+import {HyperAuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
+import {GOOGLE_API} from '../credentials';
+import {AuthService, FacebookLoginProvider, GoogleLoginProvider, LinkedInLoginProvider} from 'angularx-social-login';
 
 @Component({
   selector: 'app-auth',
@@ -12,21 +14,13 @@ export class AuthComponent implements OnInit {
   username: string;
   password: string;
 
-  constructor(private authService: AuthService,
+  constructor(private authService: HyperAuthService,
               public snackBar: MatSnackBar,
               private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.route
-      .queryParams
-      .subscribe(params => {
-        if (params['code']) {
-          this.authService.setToken(params['code']);
-          this.router.navigate(['watch']);
-        }
-      });
   }
 
   login() {
@@ -39,5 +33,9 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/profile']);
       }
     });
+  }
+
+  google_login() {
+
   }
 }

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
 // import {User} from '../user';
 import {FormControl, FormGroup} from '@angular/forms';
-import {AuthService} from '../auth.service';
+import {HyperAuthService} from '../auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   email: string;
   id : string;
 
-  constructor(private authService: AuthService, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: HyperAuthService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {

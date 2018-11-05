@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AuthService} from './auth.service';
+import {HyperAuthService} from './auth.service';
 import {Torrent} from './torrent';
 import {Movie} from './movie';
 
@@ -15,7 +15,7 @@ export class TorrentService {
   torrentsIsShow: boolean;
   api: string;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: HyperAuthService) {
     this.page = 1;
     this.torrentsIsShow = false;
     this.api = 'yts';
