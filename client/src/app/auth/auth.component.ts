@@ -40,37 +40,27 @@ export class AuthComponent implements OnInit {
   }
 
   signInWithGoogle(): void {
-    console.log('Trying to login with Google...');
     this.googleAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
       .then((resp) => {
-          console.log('response:', resp);
-          const user = {
-            id: resp.id,
-            firstname: resp.firstName,
-            lastname: resp.lastName,
-            username: resp.firstName,
-            path_picture: resp.photoUrl,
-            email: resp.email,
-            provider: 'GOOGLE'
-          };
-          this.authService.oauth(user, (resp) => {
-            console.log('oauth:', resp);
-          });
-        }, (err) => {
-          console.log('error', err);
-        }
-      );
-    // this.authService.goAuthWithGoogle(this.user)
-    //   .subscribe(response => {
-    //     if (response.success == true) {
-    //       localStorage.setItem('isLog', 'true');
-    //       localStorage.setItem('token', response.token);
-    //       this.authSimpleService.myUser = response.user;
-    //       console.log('rresp: ', response.user);
-    //       this.router.navigate(['torrents']);
-    //     } else {
-    //       localStorage.removeItem('isLog');
-    //     }
-    //   });
+        const user = {
+          id: resp.id,
+          firstname: resp.firstName,
+          lastname: resp.lastName,
+          username: resp.firstName,
+          path_picture: resp.photoUrl,
+          email: resp.email,
+          provider: 'GOOGLE'
+        };
+        this.authService.oauth(user, (status, err) => {
+          if (!status) {
+            this.snackBar.open(err, 'X', {
+              duration: 2000
+            });
+
+          } else {
+            this.router.navigate(['/profile']);
+          }
+        });
+      });
   }
 }

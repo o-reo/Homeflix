@@ -64,9 +64,7 @@ module.exports.oauth = (req, res) => {
                     path_picture: req.body.path_picture
                 };
                 User.addUser(newUser, (err, user) => {
-                    console.log(user);
                    if (err){
-                       console.log(err);
                        res.json({success: false, msg: 'Could not save user'})
                    } else {
                        const token = jwt.sign(user.toJSON(), config.secret, {
