@@ -1,6 +1,5 @@
 <div class="container">
   <mat-card class="auth-container">
-    <form (submit)="register()" method="post">
       <mat-card-content>
         <div>
           <h1>Update</h1>
@@ -13,9 +12,9 @@
 
           <mat-card-content *ngIf="collapsed1" class="inside">
             <mat-form-field class="register-input">
-              <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="firstname">
+              <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="first_name">
             </mat-form-field>
-            <button mat-mini-fab type="button" id="firstname-upload">
+            <button mat-mini-fab type="button" (click)="upload(first_name, 'first_name')" id="firstname-upload">
               <mat-icon>edit</mat-icon>
             </button>
             <small class="error-msg">{{ err_firstname }}</small>
@@ -30,9 +29,9 @@
 
           <mat-card-content *ngIf="collapsed2" class="inside">
             <mat-form-field class="register-input">
-              <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="lastname">
+              <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="last_name">
             </mat-form-field>
-            <button mat-mini-fab type="button" id="firstname-upload">
+            <button mat-mini-fab type="button" (click)="upload(last_name, 'last_name')" id="lastname-upload">
               <mat-icon>edit</mat-icon>
             </button>
             <small class="error-msg">{{ err_lastname }}</small>
@@ -49,7 +48,7 @@
             <mat-form-field class="register-input">
               <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
             </mat-form-field>
-            <button mat-mini-fab type="button" id="firstname-upload">
+            <button mat-mini-fab type="button" (click)="upload(username, 'username')" id="username-upload">
               <mat-icon>edit</mat-icon>
             </button>
             <small class="error-msg">{{ err_username }}</small>
@@ -66,7 +65,7 @@
             <mat-form-field class="register-input">
               <input matInput placeholder="Email" name="email" required [(ngModel)]="email">
             </mat-form-field>
-            <button mat-mini-fab type="button" id="firstname-upload">
+            <button mat-mini-fab type="button" (click)="upload(email, 'email')" id="email-upload">
               <mat-icon>edit</mat-icon>
             </button>
             <small class="error-msg">{{ err_email }}</small>
@@ -83,11 +82,11 @@
               <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
             </mat-form-field>
             <mat-form-field class="register-input">
-              <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
+              <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password2">
             </mat-form-field>
             <br>
             <br>
-            <button mat-mini-fab type="button" id="firstname-upload">
+            <button mat-mini-fab type="button" (click)="upload(password, 'password')" id="password-upload">
               <mat-icon>edit</mat-icon>
             </button>
             <small class="error-msg">{{ err_password }}</small>
@@ -108,7 +107,7 @@
                 <mat-option value="spanish">Spanish</mat-option>
               </mat-select>
             </mat-form-field>
-            <button mat-mini-fab type="button" id="firstname-upload">
+            <button mat-mini-fab type="button" (click)="upload(language, 'language')" id="language-upload">
               <mat-icon>edit</mat-icon>
             </button>
           </mat-card-content>
@@ -124,7 +123,7 @@
           <button mat-mini-fab type="button" id="file-upload" color="primary">
             <mat-icon>add_a_photo</mat-icon>
           </button>
-          <button mat-mini-fab type="button" id="firstname-upload">
+          <button mat-mini-fab type="button" (click)="upload(photo, 'photo')" id="photo-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br>
@@ -134,6 +133,5 @@
 
         </div>
       </mat-card-content>
-    </form>
   </mat-card>
 </div>

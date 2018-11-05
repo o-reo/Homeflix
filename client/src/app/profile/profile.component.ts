@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   email: string;
   id : string;
 
-  constructor(private authService: AuthService, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: AuthService, private userService: UserService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
       this.id = params['id'];
     });
     
-    this.authService.getUser(this.id).subscribe(resp => {
+    this.userService.getUser(this.id).subscribe(resp => {
       console.log(resp);
       this.photo = 'http://localhost:3000/' + resp['photo'];
       this.username = resp['username'];

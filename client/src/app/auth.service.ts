@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -51,11 +51,6 @@ export class AuthService {
       this.authToken = localStorage.getItem('id_token');
     }
     return this.authToken;
-  }
-
-  public getUser(id?: string) {
-    id = id || '';
-    return this.http.get('http://localhost:3000/user/' + id, {headers: {Authorization: 'Bearer ' + this.getToken()}});
   }
 
   public logout(): void {

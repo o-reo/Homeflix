@@ -14,7 +14,13 @@ const URL = 'http://localhost:3000/user/upload/';
 })
 
 export class UpdateComponent implements OnInit {
+  first_name: string;
+  last_name: string;
   username: string;
+  email: string;
+  password: string;
+  password2: string;
+  language: string;
   photo: string;
 
 
@@ -45,7 +51,17 @@ export class UpdateComponent implements OnInit {
     });
   }
 
+  upload(data, key) {
+    this.userService.getUser('').subscribe(resp => {
+      let obj = {newInfo: {[key]: data}, oldInfo: {}};
+      obj['oldInfo'][key] = resp[key];
+      this.userService.updateMyUser(obj).subscribe(resp => {
+        console.log(resp);
+      });
+    });
+  }
 
+  /* Function for collapse button. */
   button(coll) {
     if (coll === true) {
       return false;

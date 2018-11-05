@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from './user';
 import {AuthService} from './auth.service';
 
@@ -9,61 +9,45 @@ import {AuthService} from './auth.service';
 
 export class UserService {
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {
+  }
 
   getUsers() {
-      return this.http.get<User[]>('http://localhost:3000/users');
+    return this.http.get<User[]>('http://localhost:3000/users');
   }
 
   getUser(id) {
-    return this.http.get('http://localhost:3000/user/' + id, {headers: {Authorization: this.authService.getToken()}});
-  }
+    id = id || '';
 
-  getMyUser() {
-    if (this.authService.isLoggedIn()) {
-      return this.http.get('http://localhost:3000/user/', {headers: {Authorization: this.authService.getToken()}});
-    }
-    else {
-      console.log('An error has occurred.');
-    }
+    //const header = new HttpHeaders();
+    const header = {};
+    header['Authorization'] = 'Bearer ' + this.authService.getToken();
 
-
-
-
-
-
-
-
-/*
-      // const headers = this.authService.getHeader_token('application/x-www-form-urlencoded');
-      // return this.http.get<User>('http://localhost:3000/api/myuser', {headers: headers});
-    // } else {
-    //   console.log('ERREUR PAS d USERNAME ET DE PASS');
-    }
-  }
-
-  deleteUser(id) {
-    // const headers = this.authService.getHeader_authBasic('application/x-www-form-urlencoded');
-    // return this.http.delete<User>('http://localhost:3000/api/user/' + id, {headers: headers});
-
-  */
+    return this.http.get('http://localhost:3000/user/' + id, {headers: header});
   }
 
   addUser(newUser) {
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
+    const headers = {};
+    headers['Content-Type'] = 'application/json';
     return this.http.post<any>('http://localhost:3000/user/register', newUser, {headers: headers});
   }
 
-  updateMyUser(newUser) {
-    if ('isLog' in localStorage) {
-      const headers = {};
-      // const headers = this.authService.getHeader_token('application/json');
-      return this.http.put<User>('http://localhost:3000/api/myuser', newUser, {headers: headers});
-    } else {
-      console.log('PAS LOG');
-    }
+  updateMyUser(newData) {
+    //const header = new HttpHeaders();
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    return this.http.put('http://localhost:3000/user', newData, {headers: headers});
   }
+
+
+    /*
+    const headers = {};
+    headers['Authorization'] = this.authService.getToken();
+ //   headers['Content-Type'] = 'application/json';
+ //   return this.http.put<User>('http://localhost:3000/user', newUser, {headers: headers});
+ */
+
 
   UpdateMyPhoto(photo) {
     // if ('mail' in localStorage && 'passwd' in localStorage) {
@@ -74,3 +58,30 @@ export class UserService {
     // }
   }
 }
+
+
+/*
+  getMyUser() {
+    if (this.authService.isLoggedIn()) {
+      return this.http.get('http://localhost:3000/user/', {headers: {Authorization: this.authService.getToken()}});
+    }
+    else {
+      console.log('An error has occurred.');
+    }
+
+
+
+          // const headers = this.authService.getHeader_token('application/x-www-form-urlencoded');
+          // return this.http.get<User>('http://localhost:3000/api/myuser', {headers: headers});
+        // } else {
+        //   console.log('ERREUR PAS d USERNAME ET DE PASS');
+        }
+      }
+
+      deleteUser(id) {
+        // const headers = this.authService.getHeader_authBasic('application/x-www-form-urlencoded');
+        // return this.http.delete<User>('http://localhost:3000/api/user/' + id, {headers: headers});
+
+
+  }
+*/

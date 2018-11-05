@@ -13,8 +13,8 @@ const route_comment = require('./routes/comment');
 const fs = require('fs');
 const multer = require('multer');
 const router = express.Router();
-const credentials = require('./config/credentials');
 const session = require('express-session');
+const credentials = require('./config/credentials');
 
 let app = express();
 
