@@ -59,6 +59,7 @@ module.exports.oauth = (req, res) => {
         username: Math.random().toString(36).substring(7),
         token_google: null,
         token_42: null,
+        token_github: null,
         password: Math.random().toString(36).slice(-12),
         path_picture: req.body.path_picture
     };
@@ -69,29 +70,37 @@ module.exports.oauth = (req, res) => {
         query = {token_42: req.body.id};
         newUser.token_42 = req.body.id;
         newUser.username = req.body.username;
+    } else if (req.body.provider === 'github') {
+        query = {token_github: String(req.body.id)};
+        newUser.token_github = String(req.body.id);
+        newUser.username = req.body.username;
     }
-    User.getUser(query, (err, user) => {
-        if (!user) {
-            User.addUser(newUser, (err, user) => {
-                if (err) {
-                    if (err.code === 11000) {
-                        err.errmsg = 'Your email is already registered';
+    if (!newUser.email || !newUser.firstname || !newUser.lastname || !newUser.path_picture) {
+        res.json({success: false, msg: `Your ${req.body.provider} profile is incomplete`})
+    } else {
+        User.getUser(query, (err, user) => {
+            if (!user) {
+                User.addUser(newUser, (err, user) => {
+                    if (err) {
+                        if (err.code === 11000) {
+                            err.errmsg = 'Your email is already registered';
+                        }
+                        res.json({success: false, msg: err.errmsg})
+                    } else {
+                        const token = jwt.sign(user.toJSON(), config.secret, {
+                            expiresIn: 604800
+                        });
+                        res.json({success: true, token: token});
                     }
-                    res.json({success: false, msg: err.errmsg})
-                } else {
-                    const token = jwt.sign(user.toJSON(), config.secret, {
-                        expiresIn: 604800
-                    });
-                    res.json({success: true, token: token});
-                }
-            });
-        } else {
-            const token = jwt.sign(user.toJSON(), config.secret, {
-                expiresIn: 604800
-            });
-            res.json({success: true, token: token})
-        }
-    });
+                });
+            } else {
+                const token = jwt.sign(user.toJSON(), config.secret, {
+                    expiresIn: 604800
+                });
+                res.json({success: true, token: token})
+            }
+        });
+    }
 };
 
 // Register controller

@@ -17,11 +17,9 @@
         </a>
       </mat-grid-tile>
       <mat-grid-tile>
-        <a href="http://localhost:3000/user/login/outlook">
-          <button mat-mini-fab color="accent">
-            <i class="fa fa-windows visible-xs"></i>
-          </button>
-        </a>
+        <button mat-mini-fab color="accent" (click)="signInWithGithub()">
+          <i class="fa fa-github visible-xs"></i>
+        </button>
       </mat-grid-tile>
       <mat-grid-tile>
         <button mat-mini-fab color="primary" (click)="signInWith42()">42</button>

@@ -3,7 +3,7 @@ import {HyperAuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
-import {API_42} from '../credentials';
+import {API_42, API_GITHUB} from '../credentials';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Component({
@@ -15,6 +15,7 @@ export class AuthComponent implements OnInit {
   username: string;
   password: string;
   user: SocialUser;
+  provider: string;
 
   constructor(private authService: HyperAuthService,
               private googleAuthService: AuthService,
@@ -25,13 +26,20 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.provider = localStorage.getItem('provider');
     this.googleAuthService.authState.subscribe((user) => {
       this.user = user;
     });
     this.activatedRoute.queryParams.subscribe(params => {
       const code = params['code'];
       if (code) {
-        this.Authorize42(code);
+        if (this.provider === '42') {
+          this.Authorize42(code);
+        }
+        if (this.provider === 'github') {
+          this.AuthorizeGithub(code);
+        }
+        window.localStorage.removeItem('provider');
       }
     });
   }
@@ -75,6 +83,7 @@ export class AuthComponent implements OnInit {
   }
 
   signInWith42(): void {
+    localStorage.setItem('provider', '42');
     const redirect_uri = 'http%3A%2F%2Flocalhost%3A4200%2Fauth%2F';
     window.location.href = `https://api.intra.42.fr/oauth/authorize` +
       `?client_id=${API_42.client_id}&redirect_uri=${redirect_uri}&response_type=code`;
@@ -122,6 +131,57 @@ export class AuthComponent implements OnInit {
         this.snackBar.open(err.statusText, 'X', {
           duration: 2000
         });
+      });
+  }
+
+  signInWithGithub(): void {
+    localStorage.setItem('provider', 'github');
+    window.location.href = `https://github.com/login/oauth/authorize` +
+      `?client_id=${API_GITHUB.client_id}&scope=read:user`;
+  }
+
+  AuthorizeGithub(code: string): void {
+    const auth = {
+      client_id: API_GITHUB.client_id,
+      client_secret: API_GITHUB.client_secret,
+      code: code,
+      responseType: 'text'
+    };
+    let access_token = null;
+    this.http.post<string>('https://github.com/login/oauth/access_token', auth)
+      .subscribe(response => {
+      }, (err) => {
+        if (err.status === 200) {
+          access_token = err.error.text.split('&')[0].substring(13);
+          if (access_token) {
+            const headers = new HttpHeaders();
+            this.http.get<any>(`https://api.github.com/user?access_token=${access_token}`, {headers: headers})
+              .subscribe((resp) => {
+                const name = resp.name.split(' ');
+                const user = {
+                  id: resp.id,
+                  firstname: name[0],
+                  lastname: name[name.length - 1],
+                  username: resp.login,
+                  path_picture: resp.avatar_url,
+                  email: resp.email,
+                  provider: 'github'
+                };
+                this.authService.oauth(user, (status, err) => {
+                  if (!status) {
+                    this.snackBar.open(err, 'X', {
+                      duration: 2000
+                    });
+
+                  } else {
+                    this.router.navigate(['/profile']);
+                  }
+                });
+              }, (error) => {
+                console.log(error);
+              });
+          }
+        }
       });
   }
 }

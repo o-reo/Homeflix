@@ -37,6 +37,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    token_github: {
+        type: String,
+        required: false
+    },
     photo: {
         type: String,
         required: false
