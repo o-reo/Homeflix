@@ -51,72 +51,47 @@ module.exports.login = (req, res) => {
 // OAuth controller
 
 module.exports.oauth = (req, res) => {
+    let query = '';
+    let newUser = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        username: Math.random().toString(36).substring(7),
+        token_google: null,
+        token_42: null,
+        password: Math.random().toString(36).slice(-12),
+        path_picture: req.body.path_picture
+    };
     if (req.body.provider === 'GOOGLE') {
-        User.getGoogleUser(req.body.id, (err, user) => {
-            if (!user) {
-                let newUser = {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    email: req.body.email,
-                    username: Math.random().toString(36).substring(7),
-                    token_google: req.body.id,
-                    password: Math.random().toString(36).slice(-12),
-                    path_picture: req.body.path_picture
-                };
-                User.addUser(newUser, (err, user) => {
-                   if (err){
-                       if (err.code === 11000) {
-                           err.errmsg = 'Your email is already registered';
-                       }
-                       res.json({success: false, msg: err.errmsg})
-                   } else {
-                       const token = jwt.sign(user.toJSON(), config.secret, {
-                           expiresIn: 604800
-                       });
-                       res.json({success: true, token: token});
-                   }
-                });
-            } else {
-                const token = jwt.sign(user.toJSON(), config.secret, {
-                    expiresIn: 604800
-                });
-                res.json({success: true, token: token})
-            }
-        });
+        query = {token_google: req.body.id};
+        newUser.token_google = req.body.id;
+    } else if (req.body.provider === '42') {
+        query = {token_42: req.body.id};
+        newUser.token_42 = req.body.id;
+        newUser.username = req.body.username;
     }
-    if (req.body.provider === '42') {
-        User.get42User(req.body.id, (err, user) => {
-            if (!user) {
-                let newUser = {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    email: req.body.email,
-                    username: req.body.username,
-                    token_42: req.body.id,
-                    password: Math.random().toString(36).slice(-12),
-                    path_picture: req.body.path_picture
-                };
-                User.addUser(newUser, (err, user) => {
-                    if (err){
-                        if (err.code === 11000) {
-                            err.errmsg = 'Your email is already registered';
-                        }
-                        res.json({success: false, msg: err.errmsg})
-                    } else {
-                        const token = jwt.sign(user.toJSON(), config.secret, {
-                            expiresIn: 604800
-                        });
-                        res.json({success: true, token: token});
+    User.getUser(query, (err, user) => {
+        if (!user) {
+            User.addUser(newUser, (err, user) => {
+                if (err) {
+                    if (err.code === 11000) {
+                        err.errmsg = 'Your email is already registered';
                     }
-                });
-            } else {
-                const token = jwt.sign(user.toJSON(), config.secret, {
-                    expiresIn: 604800
-                });
-                res.json({success: true, token: token})
-            }
-        });
-    }
+                    res.json({success: false, msg: err.errmsg})
+                } else {
+                    const token = jwt.sign(user.toJSON(), config.secret, {
+                        expiresIn: 604800
+                    });
+                    res.json({success: true, token: token});
+                }
+            });
+        } else {
+            const token = jwt.sign(user.toJSON(), config.secret, {
+                expiresIn: 604800
+            });
+            res.json({success: true, token: token})
+        }
+    });
 };
 
 // Register controller

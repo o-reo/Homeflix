@@ -53,12 +53,8 @@ module.exports.getUserById = function (id, callback) {
     User.findById(id, callback);
 };
 
-module.exports.getGoogleUser = function (id, callback) {
-    User.findOne({token_google: id}, callback);
-};
-
-module.exports.get42User = function (id, callback) {
-    User.findOne({token_42: id}, callback);
+module.exports.getUser = function (query, callback) {
+    User.findOne(query, callback);
 };
 
 module.exports.getUserByUsername = function (username, callback) {
