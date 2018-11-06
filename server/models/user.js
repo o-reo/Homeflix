@@ -41,6 +41,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    token_slack: {
+        type: String,
+        required: false
+    },
     photo: {
         type: String,
         required: false
@@ -78,6 +82,8 @@ module.exports.addUser = function (newUserData, callback) {
         photo: newUserData.path_picture,
         language: newUserData.language,
         token_google: newUserData.token_google ? newUserData.token_google : null,
+        token_github: newUserData.token_github ? newUserData.token_github : null,
+        token_slack: newUserData.token_slack ? newUserData.token_slack : null,
         token_42: newUserData.token_42 ? newUserData.token_42 : null
     });
     /* Hashes and add user to database or returns error if user couldn't be added to database. */

@@ -10,11 +10,9 @@
         </button>
       </mat-grid-tile>
       <mat-grid-tile>
-        <a href="http://localhost:3000/user/login/twitter">
-          <button mat-mini-fab color="primary">
-            <i class="fa fa-twitter visible-xs"></i>
-          </button>
-        </a>
+        <button mat-mini-fab color="primary" (click)="signInWithSlack()">
+          <i class="fa fa-slack visible-xs"></i>
+        </button>
       </mat-grid-tile>
       <mat-grid-tile>
         <button mat-mini-fab color="accent" (click)="signInWithGithub()">

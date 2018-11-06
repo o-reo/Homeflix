@@ -3,7 +3,7 @@ import {HyperAuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
-import {API_42, API_GITHUB} from '../credentials';
+import {API_42, API_GITHUB, API_SLACK} from '../credentials';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Component({
@@ -38,6 +38,9 @@ export class AuthComponent implements OnInit {
         }
         if (this.provider === 'github') {
           this.AuthorizeGithub(code);
+        }
+        if (this.provider === 'slack') {
+          this.AuthorizeSlack(code);
         }
         window.localStorage.removeItem('provider');
       }
@@ -182,6 +185,44 @@ export class AuthComponent implements OnInit {
               });
           }
         }
+      });
+  }
+
+  signInWithSlack(): void {
+    localStorage.setItem('provider', 'slack');
+    window.location.href = `https://slack.com/oauth/authorize` +
+      `?client_id=${API_SLACK.client_id}&scope=users.profile:read&state=thisisasecret`;
+  }
+
+  AuthorizeSlack(code: string): void {
+    const auth = `client_id=${API_SLACK.client_id}&client_secret=${API_SLACK.client_secret}&code=${code}&state=thisisasecret`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+    this.http.post<any>('https://slack.com/api/oauth.access', auth, {headers})
+      .subscribe(response => {
+        const access_token = response.access_token;
+        this.http.get<any>(`https://slack.com/api/users.profile.get?token=${access_token}`, {headers: headers})
+          .subscribe((resp => {
+            const name = resp.profile.real_name.split(' ');
+            const user = {
+              id: resp.profile.avatar_hash,
+              firstname: name[0],
+              lastname: name[name.length - 1],
+              username: resp.profile.display_name,
+              path_picture: resp.profile.image_192,
+              email: resp.profile.email,
+              provider: 'slack'
+            };
+            this.authService.oauth(user, (status, err) => {
+              if (!status) {
+                this.snackBar.open(err, 'X', {
+                  duration: 2000
+                });
+
+              } else {
+                this.router.navigate(['/profile']);
+              }
+            });
+          }));
       });
   }
 }

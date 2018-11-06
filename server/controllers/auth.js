@@ -75,7 +75,12 @@ module.exports.oauth = (req, res) => {
         newUser.token_github = String(req.body.id);
         newUser.username = req.body.username;
     }
-    if (!newUser.email || !newUser.firstname || !newUser.lastname || !newUser.path_picture) {
+    if (req.body.provider === 'slack') {
+        query = {token_slack: String(req.body.id)};
+        newUser.token_slack = String(req.body.id);
+        newUser.username = req.body.username;
+    }
+    if (!newUser.email || !newUser.firstname || !newUser.lastname || !newUser.path_picture || !newUser.username) {
         res.json({success: false, msg: `Your ${req.body.provider} profile is incomplete`})
     } else {
         User.getUser(query, (err, user) => {
