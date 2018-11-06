@@ -32,7 +32,7 @@ export class HyperAuthService {
           this.authToken = resp['token'];
           this.saveToken();
         } else {
-          callback(false, resp['msg']);
+          callback(false, {msg: resp['msg'], user: resp['user']});
         }
         callback(true, user);
       });

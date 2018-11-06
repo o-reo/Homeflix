@@ -77,7 +77,7 @@ export class AuthComponent implements OnInit {
             this.snackBar.open(err, 'X', {
               duration: 2000
             });
-
+            this.router.navigate(['/register']);
           } else {
             this.router.navigate(['/profile']);
           }
@@ -118,10 +118,12 @@ export class AuthComponent implements OnInit {
             };
             this.authService.oauth(user, (status, err) => {
               if (!status) {
-                this.snackBar.open(err, 'X', {
+                this.snackBar.open(err.msg, 'X', {
                   duration: 2000
                 });
-
+                setTimeout(() => {
+                  this.router.navigate(['/register'], {queryParams: err.user});
+                }, 3000);
               } else {
                 this.router.navigate(['/profile']);
               }
@@ -172,10 +174,12 @@ export class AuthComponent implements OnInit {
                 };
                 this.authService.oauth(user, (status, err) => {
                   if (!status) {
-                    this.snackBar.open(err, 'X', {
+                    this.snackBar.open(err.msg, 'X', {
                       duration: 2000
                     });
-
+                    setTimeout(() => {
+                      this.router.navigate(['/register'], {queryParams: err.user});
+                    }, 3000);
                   } else {
                     this.router.navigate(['/profile']);
                   }
@@ -214,10 +218,12 @@ export class AuthComponent implements OnInit {
             };
             this.authService.oauth(user, (status, err) => {
               if (!status) {
-                this.snackBar.open(err, 'X', {
+                this.snackBar.open(err.msg, 'X', {
                   duration: 2000
                 });
-
+                setTimeout(() => {
+                  this.router.navigate(['/register'], {queryParams: err.user});
+                }, 3000);
               } else {
                 this.router.navigate(['/profile']);
               }

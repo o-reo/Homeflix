@@ -80,19 +80,34 @@ module.exports.oauth = (req, res) => {
         newUser.token_slack = String(req.body.id);
         newUser.username = req.body.username;
     }
+    let public_user = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        email: req.body.email
+    };
     if (!newUser.email || !newUser.firstname || !newUser.lastname || !newUser.path_picture || !newUser.username) {
-        res.json({success: false, msg: `Your ${req.body.provider} profile is incomplete`})
+        res.json({success: false, msg: `Your ${req.body.provider} profile is incomplete`, user: public_user})
     } else {
         User.getUser(query, (err, user) => {
             if (!user) {
-                User.addUser(newUser, (err, user) => {
+                User.addUser(newUser, (err, resp) => {
                     if (err) {
                         if (err.code === 11000) {
-                            err.errmsg = 'Your email is already registered';
+                            if (err.errmsg.includes('username')){
+                                err.errmsg = 'Your username is already registered';
+                                delete public_user.username;
+                                res.json({success: false, msg: err.errmsg, user: public_user})
+                            } else if (err.errmsg.includes('email')) {
+                                err.errmsg = 'Your email is already registered';
+                                delete public_user.email;
+                                res.json({success: false, msg: err.errmsg, user: public_user})
+                            }
+                        } else {
+                            res.json({success: false, msg: err.errmsg, user: public_user})
                         }
-                        res.json({success: false, msg: err.errmsg})
                     } else {
-                        const token = jwt.sign(user.toJSON(), config.secret, {
+                        const token = jwt.sign(resp.toJSON(), config.secret, {
                             expiresIn: 604800
                         });
                         res.json({success: true, token: token});
