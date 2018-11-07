@@ -4,7 +4,7 @@ import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
 import {API_42, API_GITHUB, API_SLACK} from '../credentials';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',
@@ -142,6 +142,21 @@ export class AuthComponent implements OnInit {
     localStorage.setItem('provider', 'github');
     window.location.href = `https://github.com/login/oauth/authorize` +
       `?client_id=${API_GITHUB.client_id}&scope=read:user`;
+    // const params = new HttpParams();
+    // params.set('client_id', API_GITHUB.client_id);
+    // params.set('scope', 'read:user');
+    // const headers = new HttpHeaders();
+    // headers.set('User-Agent', 'Hypertube');
+    // headers.set('Access-Control-Allow-Credentials', 'true');
+    // {
+    //   'User-Agent': 'Hypertube',
+    //   'Access-Control-Allow-Credentials': 'true'
+    // });
+    // this.http.get<any>('/api/github/login/oauth/authorize', {headers: headers, params: params, withCredentials: true})
+    //   .subscribe((resp) => {
+    //     console.log(resp);
+        // this.AuthorizeGithub(resp.code);
+      // });
   }
 
   AuthorizeGithub(code: string): void {
@@ -149,10 +164,14 @@ export class AuthComponent implements OnInit {
       client_id: API_GITHUB.client_id,
       client_secret: API_GITHUB.client_secret,
       code: code,
-      responseType: 'text'
+      // responseType: 'text',
+      // redirect_uri: 'http://localhost:4200/auth'
     };
+    const headers = new HttpHeaders({});
+  //     'Access-Control-Allow-Credentials': 'true'
+  // });
     let access_token = null;
-    this.http.post<string>('https://github.com/login/oauth/access_token', auth)
+    this.http.post<string>('/login/oauth/access_token', auth, {headers: headers})
       .subscribe(response => {
       }, (err) => {
         if (err.status === 200) {
