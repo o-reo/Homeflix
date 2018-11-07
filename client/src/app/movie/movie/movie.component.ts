@@ -5,6 +5,7 @@ import {UserService} from '../../user.service';
 import {Torrent} from '../../torrent';
 import {Input} from '@angular/core';
 import * as bytes from 'bytes';
+// import * as $ from 'jquery';
 import {HyperAuthService} from '../../auth.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class MovieComponent implements OnInit {
   link: String;
   textLoad: String = 'Please Wait...';
   lang: String;
+  subtitle_default: boolean;
   @Input() subtitle_path_en;
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: HyperAuthService,
@@ -28,8 +30,10 @@ export class MovieComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subtitle_default = false;
     this.torrentService.getTorrent(this.route.snapshot.params['id_movie'])
       .subscribe(torrent => {
+        console.log(torrent);
         this.lang = 'eng';
         this.userService.getUser('').subscribe(resp => {
           if (resp['language'] === 'french') {
@@ -41,6 +45,9 @@ export class MovieComponent implements OnInit {
           this.torrentService.getSubtitles(this.lang, torrent.imdb_code, bytes(torrent.torrents[0].size))
             .subscribe(subtitles => {
               this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
+              if (torrent.language.toLowerCase() !== resp['language']) {
+                this.subtitle_default = true;
+              }
               this.loaded = Promise.resolve(true);
               this.torrentService.startStreaming(this.torrent)
                 .subscribe(data => {
