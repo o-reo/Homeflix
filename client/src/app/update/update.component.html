@@ -17,6 +17,7 @@
           <button mat-mini-fab type="button" (click)="update(first_name, 'first_name')" id="firstname-upload">
             <mat-icon>edit</mat-icon>
           </button>
+          <br>
           <small class="error-msg">{{ err_firstname }}</small>
           <br/>
         </mat-card-content>
@@ -34,6 +35,7 @@
           <button mat-mini-fab type="button" (click)="update(last_name, 'last_name')" id="lastname-upload">
             <mat-icon>edit</mat-icon>
           </button>
+          <br>
           <small class="error-msg">{{ err_lastname }}</small>
           <br/>
         </mat-card-content>
@@ -51,6 +53,7 @@
           <button mat-mini-fab type="button" (click)="update(username, 'username')" id="username-upload">
             <mat-icon>edit</mat-icon>
           </button>
+          <br>
           <small class="error-msg">{{ err_username }}</small>
           <br/>
         </mat-card-content>
@@ -68,7 +71,9 @@
           <button mat-mini-fab type="button" (click)="update(email, 'email')" id="email-upload">
             <mat-icon>edit</mat-icon>
           </button>
+          <br>
           <small class="error-msg">{{ err_email }}</small>
+          <br>
         </mat-card-content>
 
 
@@ -81,11 +86,15 @@
           <mat-form-field class="register-input">
             <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
           </mat-form-field>
+          <br>
+          <small class="error-msg">{{ err_password }}</small>
+          <br>
           <mat-form-field class="register-input">
             <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password2">
           </mat-form-field>
           <br>
-          <small class="error-msg">{{ err_password }}</small>
+          <small class="error-msg">{{ err_password2 }}</small>
+          <br>
           <br>
           <button mat-mini-fab type="button" (click)="update_password()" id="password-upload">
             <mat-icon>edit</mat-icon>
