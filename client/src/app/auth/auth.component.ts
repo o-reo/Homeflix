@@ -142,21 +142,6 @@ export class AuthComponent implements OnInit {
     localStorage.setItem('provider', 'github');
     window.location.href = `https://github.com/login/oauth/authorize` +
       `?client_id=${API_GITHUB.client_id}&scope=read:user`;
-    // const params = new HttpParams();
-    // params.set('client_id', API_GITHUB.client_id);
-    // params.set('scope', 'read:user');
-    // const headers = new HttpHeaders();
-    // headers.set('User-Agent', 'Hypertube');
-    // headers.set('Access-Control-Allow-Credentials', 'true');
-    // {
-    //   'User-Agent': 'Hypertube',
-    //   'Access-Control-Allow-Credentials': 'true'
-    // });
-    // this.http.get<any>('/api/github/login/oauth/authorize', {headers: headers, params: params, withCredentials: true})
-    //   .subscribe((resp) => {
-    //     console.log(resp);
-        // this.AuthorizeGithub(resp.code);
-      // });
   }
 
   AuthorizeGithub(code: string): void {
@@ -164,14 +149,10 @@ export class AuthComponent implements OnInit {
       client_id: API_GITHUB.client_id,
       client_secret: API_GITHUB.client_secret,
       code: code,
-      // responseType: 'text',
-      // redirect_uri: 'http://localhost:4200/auth'
+      responseType: 'text',
     };
-    const headers = new HttpHeaders({});
-  //     'Access-Control-Allow-Credentials': 'true'
-  // });
     let access_token = null;
-    this.http.post<string>('/login/oauth/access_token', auth, {headers: headers})
+    this.http.post<string>('/login/oauth/access_token', auth, )
       .subscribe(response => {
       }, (err) => {
         if (err.status === 200) {
