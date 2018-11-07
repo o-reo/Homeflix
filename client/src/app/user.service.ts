@@ -9,7 +9,8 @@ import {HyperAuthService} from './auth.service';
 
 export class UserService {
 
-  constructor(private http: HttpClient, private authService: HyperAuthService) {}
+  constructor(private http: HttpClient, private authService: HyperAuthService) {
+  }
 
   getUsers() {
     return this.http.get<User[]>('http://localhost:3000/users');
@@ -18,7 +19,6 @@ export class UserService {
   getUser(id) {
     id = id || '';
 
-    //const header = new HttpHeaders();
     const header = {};
     header['Authorization'] = 'Bearer ' + this.authService.getToken();
 
@@ -32,7 +32,6 @@ export class UserService {
   }
 
   updateMyUser(newData) {
-    //const header = new HttpHeaders();
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
     headers['Content-Type'] = 'application/json';
@@ -40,12 +39,12 @@ export class UserService {
   }
 
 
-    /*
-    const headers = {};
-    headers['Authorization'] = this.authService.getToken();
- //   headers['Content-Type'] = 'application/json';
- //   return this.http.put<User>('http://localhost:3000/user', newUser, {headers: headers});
- */
+  /*
+  const headers = {};
+  headers['Authorization'] = this.authService.getToken();
+//   headers['Content-Type'] = 'application/json';
+//   return this.http.put<User>('http://localhost:3000/user', newUser, {headers: headers});
+*/
 
 
   UpdateMyPhoto(photo) {
