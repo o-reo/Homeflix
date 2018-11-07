@@ -23,6 +23,7 @@ export class MovieComponent implements OnInit {
   textLoad: String = 'Please Wait...';
   lang: String;
   subtitle_default: boolean;
+  subtitle_defined: boolean;
   @Input() subtitle_path_en;
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: HyperAuthService,
@@ -44,6 +45,8 @@ export class MovieComponent implements OnInit {
           this.torrent = torrent;
           this.torrentService.getSubtitles(this.lang, torrent.imdb_code, bytes(torrent.torrents[0].size))
             .subscribe(subtitles => {
+              console.log(subtitles);
+              this.subtitle_defined = subtitles.path;
               this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
               if (torrent.language.toLowerCase() !== resp['language']) {
                 this.subtitle_default = true;
