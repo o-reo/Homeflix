@@ -14,7 +14,7 @@
           <mat-form-field class="register-input">
             <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="first_name">
           </mat-form-field>
-          <button mat-mini-fab type="button" (click)="update(first_name, 'first_name')" id="firstname-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update(first_name, 'first_name')" id="firstname-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br>
@@ -32,7 +32,7 @@
           <mat-form-field class="register-input">
             <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="last_name">
           </mat-form-field>
-          <button mat-mini-fab type="button" (click)="update(last_name, 'last_name')" id="lastname-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update(last_name, 'last_name')" id="lastname-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br>
@@ -50,7 +50,7 @@
           <mat-form-field class="register-input">
             <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
           </mat-form-field>
-          <button mat-mini-fab type="button" (click)="update(username, 'username')" id="username-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update(username, 'username')" id="username-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br>
@@ -68,7 +68,7 @@
           <mat-form-field class="register-input">
             <input matInput placeholder="Email" name="email" required [(ngModel)]="email">
           </mat-form-field>
-          <button mat-mini-fab type="button" (click)="update(email, 'email')" id="email-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update(email, 'email')" id="email-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br>
@@ -96,7 +96,7 @@
           <small class="error-msg">{{ err_password2 }}</small>
           <br>
           <br>
-          <button mat-mini-fab type="button" (click)="update_password()" id="password-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update_password()" id="password-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br/>
@@ -116,7 +116,7 @@
               <mat-option value="spanish">Spanish</mat-option>
             </mat-select>
           </mat-form-field>
-          <button mat-mini-fab type="button" (click)="update(language, 'language')" id="language-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update(language, 'language')" id="language-upload">
             <mat-icon>edit</mat-icon>
           </button>
         </mat-card-content>
@@ -131,10 +131,10 @@
                  [uploader]="uploader" id="file-upload_back" hidden>
           <input matInput type="text" name="path" id="file-upload_file" disabled/>
         </mat-form-field>
-        <button mat-mini-fab type="button" id="file-upload" color="primary">
+        <button mat-mini-fab type="button" color="warn" id="file-upload">
           <mat-icon>add_a_photo</mat-icon>
         </button>
-        <button mat-mini-fab type="button" (click)="update_photo()" id="photo-upload">
+        <button mat-mini-fab type="button" color="warn" (click)="update_photo()" id="photo-upload">
           <mat-icon>edit</mat-icon>
         </button>
         <br>
