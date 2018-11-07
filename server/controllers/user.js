@@ -97,7 +97,9 @@ exports.updateUser = function (req, res) {
             else {
                 /* Delete picture if update is a picture. */
                 if (req.body.oldInfo.photo) {
-                    fs.unlinkSync('./public/' + req.body.oldInfo.photo);
+                    if (fs.existsSync('./public/' + req.body.oldInfo.photo)) {
+                        fs.unlinkSync('./public/' + req.body.oldInfo.photo);
+                    }
                 }
                 res.json({success: true, msg: 'Profile is successfully updated.'});
             }
@@ -124,7 +126,29 @@ exports.updateUser = function (req, res) {
                 })
             }
         );
+    } else {
+        /* Return errors as json. */
+        let msg = {};
+
+        if (req.body.newInfo.first_name === "") {
+            msg = {place: 'err_firstname', message: 'Firstname is empty.'};
+        }
+        if (req.body.newInfo.last_name === "") {
+            msg = {place: 'err_lastname', message: 'Lastname is empty.'};
+        }
+        if (req.body.newInfo.username === "") {
+            msg = {place: 'err_username', message: 'Username is empty.'};
+        }
+        if (req.body.newInfo.email === "") {
+            msg = {place: 'err_email', message: 'Email is empty.'};
+        }
+        if (req.body.newInfo.email && errors['mail_uncorrect'] === true) {
+            msg = {place: 'err_email', message: 'Email is uncorrect.'};
+        }
+        if (errors['password1_empty'] !== true && errors['password2_empty'] !== true &&
+        errors['passwords_dont_match'] !== true && errors['password_uncorrect'] === true) {
+            msg = {place: 'err_password2', message: 'Password is not strong enough.'};
+        }
+        res.json(msg);
     }
-    else
-        res.json(errors);
 };

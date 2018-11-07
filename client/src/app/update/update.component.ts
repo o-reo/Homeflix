@@ -14,6 +14,13 @@ const URL = 'http://localhost:3000/user/upload/';
 })
 
 export class UpdateComponent implements OnInit {
+  err_firstname: string;
+  err_lastname: string;
+  err_username: string;
+  err_email: string;
+  err_password: string;
+  err_password2: string;
+  err_photo: string;
   first_name: string;
   last_name: string;
   username: string;
@@ -23,7 +30,7 @@ export class UpdateComponent implements OnInit {
   language: string;
   photo: string;
   path: string;
-  err_password: string;
+
 
   public uploader: FileUploader = new FileUploader({
     url: URL,
@@ -53,7 +60,6 @@ export class UpdateComponent implements OnInit {
 
 
     this.userService.getUser('').subscribe(resp => {
-      console.log(resp);
       this.first_name = resp['first_name'];
       this.last_name = resp['last_name'];
       this.username = resp['username'];
@@ -65,32 +71,66 @@ export class UpdateComponent implements OnInit {
 
   /* Functions that updates everything except password and picture. */
   update(data, key) {
+    this.cleanErrorMessage();
     this.userService.getUser('').subscribe(resp => {
-      let obj = {newInfo: {[key]: data}, oldInfo: {}};
+      const obj = {newInfo: {[key]: data}, oldInfo: {}};
       obj['oldInfo'][key] = resp[key];
-      this.userService.updateMyUser(obj).subscribe(resp => {
-        console.log(resp);
+      this.userService.updateMyUser(obj).subscribe(res => {
+        if (res['success'] === true) {
+          if (key === 'first_name') {
+            key = 'First name';
+          }
+          if (key === 'last_name') {
+            key = 'Last name';
+          }
+          this.snackBar.open(key.charAt(0).toUpperCase() + key.slice(1) + ' was successfully updated.', 'X', {
+            duration: 3000,
+          });
+        } else {
+          this.throwErrors(res);
+        }
       });
     });
   }
 
   /* Function that updates password. */
   update_password() {
-
+    this.cleanErrorMessage();
     this.userService.getUser('').subscribe(resp => {
-      let obj = {newInfo: {['password']: this.password, ['password2']: this.password2}, oldInfo: {}};
+      const obj = {newInfo: {['password']: this.password, ['password2']: this.password2}, oldInfo: {}};
       obj['oldInfo']['username'] = resp['username'];
-      console.log(obj);
-      this.userService.updateMyUser(obj).subscribe(resp => {
-        console.log(resp);
+      this.userService.updateMyUser(obj).subscribe(res => {
+        if (res['success'] === true) {
+          this.snackBar.open('Password' + ' was successfully updated.', 'X', {
+            duration: 3000,
+          });
+        } else {
+          let errors = {};
+          if (Object.keys(res).length === 0) {
+            if (!this.password && !this.password2) {
+              errors = {
+                place: 'err_password', message: 'Password is undefined.',
+                place2: 'err_password2', message2: 'Password confirmation is undefined.'
+              };
+            } else if (!this.password) {
+              errors = {place: 'err_password', message: 'Password is undefined.'};
+            } else if (!this.password2) {
+              errors = {place: 'err_password2', message: 'Password confirmation is undefined.'};
+            } else if (this.password && this.password2 && this.password !== this.password2) {
+              errors = {place: 'err_password2', message: 'Passwords don\'t match.'};
+            }
+          } else {
+            errors = res;
+          }
+          this.throwErrors(errors);
+        }
       });
     });
   }
 
-
   /* Function that updates photo. */
   update_photo() {
-    console.log(this.photo);
+    this.cleanErrorMessage();
     /* Create path of the profil picture. */
     if (this.photo) {
       let extension = this.photo.split('.')[this.photo.split('.').length - 1];
@@ -99,29 +139,51 @@ export class UpdateComponent implements OnInit {
       }
       /* Request to uploads picture name to database. */
       this.userService.getUser('').subscribe(resp => {
-        let obj = {newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}, oldInfo: {}};
-        //let obj = {newInfo: {['photo']: this.password, ['password2']: this.password2}, oldInfo: {}};
+        const obj = {newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}, oldInfo: {}};
         obj['oldInfo']['photo'] = resp['photo'];
-        console.log(obj);
-        this.userService.updateMyUser(obj).subscribe(resp => {
-          console.log(resp);
-          /* Uploads picture into server repositorie. */
-          this.uploader.uploadAll();
+        this.userService.updateMyUser(obj).subscribe(res => {
+          if (res['success'] === true) {
+            this.snackBar.open('Photo' + ' was successfully updated.', 'X', {
+              duration: 3000,
+            });
+            /* Uploads picture into server repositorie. */
+            this.uploader.uploadAll();
+          } else {
+          }
         });
       });
+    } else {
+        this.throwErrors({place: 'err_photo', message: 'Photo is empty.'});
     }
+  }
+
+  /* Function that prints error message. */
+  throwErrors(errors) {
+    let varName = Object.values(errors)[0];
+    this[String(varName)] = Object.values(errors)[1];
+    if (Object.keys(errors).length === 4) {
+      varName = Object.values(errors)[2];
+      this[String(varName)] = Object.values(errors)[3];
+    }
+  }
+
+  /* Function that cleans errors message. */
+  cleanErrorMessage() {
+    this.err_firstname = '';
+    this.err_lastname = '';
+    this.err_username = '';
+    this.err_email = '';
+    this.err_password = '';
+    this.err_password2 = '';
+    this.err_photo = '';
   }
 
   /* Function for collapse button. */
   button(coll) {
-    if (coll === true) {
-      return false;
-    }
-    else {
-      return true;
-    }
+    return coll !== true;
   }
 
+  /* Function that pu image to background css. */
   getImg() {
     if (!this.path) {
       return 'none';
@@ -132,3 +194,4 @@ export class UpdateComponent implements OnInit {
     return 'url(\'http://localhost:3000/' + this.path + '\')';
   }
 }
+
