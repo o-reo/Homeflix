@@ -1,7 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-
+const nodemailer = require('nodemailer');
+const credentials = require('../config/credentials');
 
 exports.getUser = function (req, res) {
     if (!req.params.id) {
@@ -43,6 +44,34 @@ exports.getUser = function (req, res) {
             }
         });
     }
+};
+
+
+exports.recovery = function (req, res) {
+    User.resetPassword(req.query.email, (success, resp) => {
+        if (success) {
+            const transporter = nodemailer.createTransport(credentials.mail);
+            transporter.verify(function (error, success) {
+                if (success) {
+                    let mailOptions = {
+                        from: 'matcha.o-reo@yandex.com',
+                        to: req.query.email,
+                        subject: 'Hypertube - Your new password',
+                        text: `Your new password is ${resp['password']}`
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            res.json({success: false, msg: 'Could not send recovery email'});
+                        } else {
+                            res.json({success: true, msg: 'A recovery email has been sent'});
+                        }
+                    });
+                }
+            });
+        } else {
+            res.json({success: false, msg: resp['msg']})
+        }
+    });
 };
 
 /* Method used to update username, firstname, lastname, email and language. */

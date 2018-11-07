@@ -70,6 +70,26 @@ module.exports.getUserByUsername = function (username, callback) {
 };
 
 
+module.exports.resetPassword = function (email, callback) {
+    User.findOne({email: email}, (err, user) => {
+        if (!err && user) {
+            let pwdChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^*()-_+=?[]}{|~`";
+            let pwdLen = 10;
+            let new_password = Array(pwdLen).fill(pwdChars).map(function(x) { return x[Math.floor(Math.random() * x.length)] }).join('');
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(new_password, salt, (err, hash) => {
+                    user.password = hash;
+                    user.save((err, new_user) => {
+                        callback(true, {password: new_password})
+                    })
+                })
+            })
+        } else {
+            callback(false, {msg: 'Invalid email address'});
+        }
+    });
+};
+
 /* Method used to add user. */
 module.exports.addUser = function (newUserData, callback) {
     /* Creates object from data passed by router. */
@@ -98,18 +118,20 @@ module.exports.addUser = function (newUserData, callback) {
     );
 };
 
-module.exports.comparePassword = function(candidatePassword, hash, callback){
-  bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
-      if (err) {return callback(err, false); }
-      return callback(null, isMatch);
-  });
+module.exports.comparePassword = function (candidatePassword, hash, callback) {
+    bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
+        if (err) {
+            return callback(err, false);
+        }
+        return callback(null, isMatch);
+    });
 };
 
 /* Function that looks for errors into inputs. */
-module.exports.lookErrors = function(user) {
+module.exports.lookErrors = function (user) {
     let errors = {};
     /* Looks for errors in passwords. */
-    this.checkPassword(user.password,  user.password2, errors);
+    this.checkPassword(user.password, user.password2, errors);
     /* Looks for errors in email. */
     this.checkEmail(user.email, errors);
     /* Looks for other errors. */
@@ -126,7 +148,7 @@ module.exports.lookErrors = function(user) {
     return (errors);
 };
 
-module.exports.checkPassword = function(password, confirmation, errors) {
+module.exports.checkPassword = function (password, confirmation, errors) {
     if (!password || password === null)
         errors['password1_empty'] = true;
     if (!confirmation || confirmation === null)
@@ -139,7 +161,7 @@ module.exports.checkPassword = function(password, confirmation, errors) {
     return (errors);
 };
 
-module.exports.checkEmail = function(email, errors) {
+module.exports.checkEmail = function (email, errors) {
     if (!email || email === null)
         errors['mail_undefined'] = true;
     let regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);

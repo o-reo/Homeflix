@@ -5,22 +5,26 @@ const config = require('../config/database');
 
 // Middleware to check JsonWebToken validity
 module.exports.validJWT = (req, res, next) => {
-    jwt.verify(req.headers.authorization.substring(7), config.secret, (err, decoded) => {
-        if (err) {
-            res.json({success: false, msg: err})
-        }
-        else {
-            User.findOne({_id: decoded._id}, (err, user) => {
-                if (err || !user) {
-                    res.json({success: false, msg: err})
-                }
-                else {
-                    req.userdata = user;
-                }
-                next();
-            });
-        }
-    });
+    if (!req.headers.authorization) {
+        res.json({success: false, msg: 'No Authorization was sent'});
+    } else {
+        jwt.verify(req.headers.authorization.substring(7), config.secret, (err, decoded) => {
+            if (err) {
+                res.json({success: false, msg: err})
+            }
+            else {
+                User.findOne({_id: decoded._id}, (err, user) => {
+                    if (err || !user) {
+                        res.json({success: false, msg: err})
+                    }
+                    else {
+                        req.userdata = user;
+                    }
+                    next();
+                });
+            }
+        });
+    }
 };
 
 // Login controller
@@ -94,7 +98,7 @@ module.exports.oauth = (req, res) => {
                 User.addUser(newUser, (err, resp) => {
                     if (err) {
                         if (err.code === 11000) {
-                            if (err.errmsg.includes('username')){
+                            if (err.errmsg.includes('username')) {
                                 err.errmsg = 'Your username is already registered';
                                 delete public_user.username;
                                 res.json({success: false, msg: err.errmsg, user: public_user})

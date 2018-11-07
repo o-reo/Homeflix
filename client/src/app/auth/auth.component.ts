@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {HyperAuthService} from '../auth.service';
+import {UserService} from '../user.service';
 import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
 import {API_42, API_GITHUB, API_SLACK} from '../credentials';
@@ -16,13 +18,16 @@ export class AuthComponent implements OnInit {
   password: string;
   user: SocialUser;
   provider: string;
+  email: string;
 
   constructor(private authService: HyperAuthService,
+              private userService: UserService,
               private googleAuthService: AuthService,
               public snackBar: MatSnackBar,
               private router: Router,
               private http: HttpClient,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -48,7 +53,8 @@ export class AuthComponent implements OnInit {
   }
 
   login() {
-    console.log(this.user);
+    this.user = null;
+    window.localStorage.removeItem('provider');
     this.authService.login({username: this.username, password: this.password}, (res) => {
       if (res['msg']) {
         this.snackBar.open(res['msg'], 'X', {
@@ -61,6 +67,7 @@ export class AuthComponent implements OnInit {
   }
 
   signInWithGoogle(): void {
+    this.user = null;
     this.googleAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
       .then((resp) => {
         const user = {
@@ -86,6 +93,7 @@ export class AuthComponent implements OnInit {
   }
 
   signInWith42(): void {
+    this.user = null;
     localStorage.setItem('provider', '42');
     const redirect_uri = 'http%3A%2F%2Flocalhost%3A4200%2Fauth%2F';
     window.location.href = `https://api.intra.42.fr/oauth/authorize` +
@@ -139,6 +147,7 @@ export class AuthComponent implements OnInit {
   }
 
   signInWithGithub(): void {
+    this.user = null;
     localStorage.setItem('provider', 'github');
     window.location.href = `https://github.com/login/oauth/authorize` +
       `?client_id=${API_GITHUB.client_id}&scope=read:user`;
@@ -152,7 +161,7 @@ export class AuthComponent implements OnInit {
       responseType: 'text',
     };
     let access_token = null;
-    this.http.post<string>('/login/oauth/access_token', auth, )
+    this.http.post<string>('/login/oauth/access_token', auth,)
       .subscribe(response => {
       }, (err) => {
         if (err.status === 200) {
@@ -192,6 +201,7 @@ export class AuthComponent implements OnInit {
   }
 
   signInWithSlack(): void {
+    this.user = null;
     localStorage.setItem('provider', 'slack');
     window.location.href = `https://slack.com/oauth/authorize` +
       `?client_id=${API_SLACK.client_id}&scope=users.profile:read&state=thisisasecret`;
@@ -230,4 +240,37 @@ export class AuthComponent implements OnInit {
           }));
       });
   }
+
+  Recovery(): void {
+    const dialogRef = this.dialog.open(DialogTemplateComponent, {
+      width: '235px',
+      data: {email: this.email}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.userService.Recovery(result)
+        .subscribe((res) => {
+          this.snackBar.open(res['msg'], 'X', {
+            duration: 2000
+          });
+        });
+    });
+  }
+}
+
+@Component({
+  selector: 'app-dialog-template',
+  templateUrl: 'dialog-template.html',
+})
+
+export class DialogTemplateComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogTemplateComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

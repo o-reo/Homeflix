@@ -21,7 +21,6 @@ export class UserService {
 
     const header = {};
     header['Authorization'] = 'Bearer ' + this.authService.getToken();
-
     return this.http.get('http://localhost:3000/user/' + id, {headers: header});
   }
 
@@ -36,6 +35,10 @@ export class UserService {
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
     headers['Content-Type'] = 'application/json';
     return this.http.put('http://localhost:3000/user', newData, {headers: headers});
+  }
+
+  Recovery(email) {
+    return this.http.get('http://localhost:3000/user/recovery', {params: {email: email}});
   }
 
 

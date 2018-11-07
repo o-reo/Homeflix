@@ -20,12 +20,13 @@ import {
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSnackBarModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatDialogModule
 } from '@angular/material';
 
 import {AppComponent} from './app.component';
 // import {UsersComponent} from './users/users.component';
-import {AuthComponent} from './auth/auth.component';
+import {AuthComponent, DialogTemplateComponent} from './auth/auth.component';
 // import {StorageServiceModule} from 'angular-webstorage-service';
 import {Routes} from '@angular/router';
 import {RouterModule} from '@angular/router';
@@ -90,7 +91,8 @@ const appRoutes: Routes = [
     CommentsComponent,
     CommentComponent,
     FileSelectDirective,
-    PostCommentComponent
+    PostCommentComponent,
+    DialogTemplateComponent
     // LoaderComponent
   ],
   imports: [
@@ -110,6 +112,7 @@ const appRoutes: Routes = [
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatSidenavModule,
+    MatDialogModule,
     HttpClientModule,
     FormsModule,
     // StorageServiceModule,
@@ -120,6 +123,7 @@ const appRoutes: Routes = [
     NgxPaginationModule,
     SocialLoginModule
   ],
+  entryComponents: [DialogTemplateComponent],
   providers: [HyperAuthService, {provide: AuthServiceConfig, useFactory: provideConfig}, AuthguardService],
   bootstrap: [AppComponent],
 })
