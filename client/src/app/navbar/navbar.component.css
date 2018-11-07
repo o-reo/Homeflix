@@ -1,8 +1,14 @@
-.toolbar-divider {
-  flex: 1 1 auto;
+.links > *{
+  margin: 0 15px;
+}
+
+.links.right {
+  text-align: right;
 }
 
 .navbar {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px;
   height: 55px;
   margin: 0;
   padding: 0;
@@ -11,10 +17,10 @@
 
 .navbar > * {
   z-index: 2;
-  margin: 0 15px 0 15px;
 }
 
 .navbar span {
+  text-align: center;
   font-family: 'Pinco';
   color: crimson;
   text-shadow: white 1px 1px;
