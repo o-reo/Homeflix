@@ -24,3 +24,18 @@ mat-card-header{
   margin: auto;
   text-align: center;
 }
+
+.link{
+  color: gainsboro;
+}
+
+.link:hover{
+  transition: 0.3s;
+  color: grey;
+}
+
+button:hover{
+  transition: 0.4s;
+  background-color: #FF9900;
+  color: white;
+}
