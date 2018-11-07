@@ -48,7 +48,7 @@ export class MovieComponent implements OnInit {
               console.log(subtitles);
               this.subtitle_defined = subtitles.path;
               this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
-              if (torrent.language.toLowerCase() !== resp['language']) {
+              if (torrent.language && torrent.language.toLowerCase() !== resp['language']) {
                 this.subtitle_default = true;
               }
               this.loaded = Promise.resolve(true);
