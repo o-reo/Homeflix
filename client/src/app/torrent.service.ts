@@ -30,7 +30,7 @@ export class TorrentService {
   }
 
   getSubtitles(lang, imdbid, filesize) {
-    return this.http.get<any>('http://localhost:3000/subtitles/?imdbid=' + imdbid + '&lang=' + lang + '&filesize=' + filesize);
+    return this.http.get<any>('http://localhost:3000/subtitles?imdbid=' + imdbid + '&lang=' + lang + '&filesize=' + filesize);
   }
 
   getImage(title) {
