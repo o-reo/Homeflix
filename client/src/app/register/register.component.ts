@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
 import {MatSnackBar} from '@angular/material';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
 import * as $ from 'jquery';
 
@@ -39,7 +39,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(private userService: UserService,
               public snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -55,6 +56,12 @@ export class RegisterComponent implements OnInit {
     $('#file-upload_back').change(function () {
       const filelist = $(this).val().split('\\');
       $('#file-upload_file').val(filelist[filelist.length - 1]);
+    });
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.firstname = params.firstname;
+      this.lastname = params.lastname;
+      this.username = params.username;
+      this.email = params.email;
     });
   }
 
@@ -93,7 +100,9 @@ export class RegisterComponent implements OnInit {
         /* If request succeeded upload picture and empty form, if not throw error messages.*/
         if (msg['success'] === true) {
           this.uploader.uploadAll();
-          setTimeout( () => {window.location.href = 'http://localhost:4200';}, 3000);
+          setTimeout(() => {
+            window.location.href = 'http://localhost:4200';
+          }, 3000);
         } else {
           this.throwError(msg['err']);
         }
