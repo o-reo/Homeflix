@@ -106,7 +106,6 @@ export class AuthComponent implements OnInit {
         headers = headers.append('Authorization', 'Bearer ' + response.access_token);
         this.http.get<any>('https://api.intra.42.fr/v2/me', {headers: headers})
           .subscribe(resp => {
-            console.log(resp);
             const user = {
               id: resp.id,
               firstname: resp.first_name,
