@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -32,7 +32,7 @@ export class HyperAuthService {
           this.authToken = resp['token'];
           this.saveToken();
         } else {
-          callback(false, resp['msg']);
+          callback(false, {msg: resp['msg'], user: resp['user']});
         }
         callback(true, user);
       });

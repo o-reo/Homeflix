@@ -41,7 +41,6 @@ exports.accessMovie = function (req, res) {
                             }
                         });
                     }
-                    ;
                 });
             } else if (req.params.api === 'nyaapantsu') {
                 request('https://nyaa.pantsu.cat/api/search?id=' + req.params.id_api, function (error, response, body) {

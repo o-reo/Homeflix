@@ -1,4 +1,3 @@
-const http = require('http');
 const torrentStream = require('torrent-stream');
 const fs = require("fs"); //Load the filesystem module
 const MovieInfos = require('../models/movie-infos');

@@ -15,6 +15,7 @@ var MovieInfosSchema = new mongoose.Schema({
     small_cover_image: {type:String, required: true},
     medium_cover_image: {type:String, required: true},
     large_cover_image: {type:String, required: true},
+    language: {type:String, required: true},
     torrents: [{
         url: { type: String, required: true },
         hash: { type: String, required: true },

@@ -11,7 +11,8 @@
 
           <mat-form-field class="register-input">
             <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="firstname">
+            <input matInput placeholder="Firstname" name="first_name" required
+                   [(ngModel)]="firstname">
           </mat-form-field>
           <br/>
           <small class="error-msg">{{ err_firstname }}</small>
@@ -59,7 +60,8 @@
           <br/>
 
           <mat-form-field>
-            <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" id="file-upload_back" hidden>
+            <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect
+                   [uploader]="uploader" id="file-upload_back" hidden>
             <input matInput type="text" name="path" id="file-upload_file" disabled/>
           </mat-form-field>
           <button mat-mini-fab type="button" id="file-upload">

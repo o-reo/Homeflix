@@ -22,7 +22,6 @@ export class CommentsComponent implements OnInit {
   ngOnInit() {
     this.commentService.getComments(this.id_movie)
       .subscribe(comments => {
-        console.log(comments);
         this.commentService.comments = comments;
         this.loaded = Promise.resolve(true);
       });

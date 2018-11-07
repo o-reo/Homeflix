@@ -1,12 +1,13 @@
 const OS = require('opensubtitles-api');
-let srt2vtt = require('srt-to-vtt');
+const srt2vtt = require('srt-to-vtt');
+const fs = require('fs');
+const http = require('http');
 
 const OpenSubtitles = new OS({
     useragent: 'TemporaryUserAgent'
 });
 
 exports.getSubtitles = function (req, res) {
-    console.log(req.query);
     let lang = 'eng';
     if (req.query.lang) {
         lang = req.query.lang;
@@ -32,19 +33,13 @@ exports.getSubtitles = function (req, res) {
                             .pipe(srt2vtt())
                             .pipe(sub_file);
                     });
-                    console.log('debug output:', {
-                        path: './../client/src/assets/subtitles/' + uniqid + '.vtt',
-                        lang: lang
-                    });
                     res.json({path: 'subtitles/' + uniqid + '.vtt', lang: lang});
                 })
                 .catch(error => {
-                    console.log('error');
                     res.json({error: error, query: req.query});
                 })
         })
         .catch(error => {
-            console.log('error');
             res.json({error: error, query: req.query});
         })
 };
