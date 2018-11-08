@@ -17,11 +17,15 @@ import {
   MatInputModule,
   MatDividerModule,
   MatGridListModule,
-  MatProgressSpinnerModule,
   MatSelectModule,
   MatSnackBarModule,
   MatSidenavModule,
-  MatDialogModule
+  MatDialogModule,
+  MatProgressBarModule,
+  MatTabsModule,
+  MatListModule,
+  MatBadgeModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 import {AppComponent} from './app.component';
@@ -110,9 +114,13 @@ const appRoutes: Routes = [
     MatGridListModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatSnackBarModule,
     MatSidenavModule,
+    MatBadgeModule,
     MatDialogModule,
+    MatTabsModule,
+    MatListModule,
     HttpClientModule,
     FormsModule,
     // StorageServiceModule,

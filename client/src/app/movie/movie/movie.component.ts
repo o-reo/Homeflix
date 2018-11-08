@@ -20,7 +20,6 @@ export class MovieComponent implements OnInit {
   torrent: Torrent;
   path: String;
   link: String;
-  textLoad: String = 'Please Wait...';
   lang: String;
   subtitle_default: boolean;
   subtitle_defined: boolean;
@@ -34,7 +33,6 @@ export class MovieComponent implements OnInit {
     this.subtitle_default = false;
     this.torrentService.getTorrent(this.route.snapshot.params['id_movie'])
       .subscribe(torrent => {
-        console.log(torrent);
         this.lang = 'eng';
         this.userService.getUser('').subscribe(resp => {
           if (resp['language'] === 'french') {
@@ -43,6 +41,7 @@ export class MovieComponent implements OnInit {
             this.lang = 'spa';
           }
           this.torrent = torrent;
+          console.log(torrent);
           this.torrentService.getSubtitles(this.lang, torrent.imdb_code, bytes(torrent.torrents[0].size))
             .subscribe(subtitles => {
               console.log(subtitles);
@@ -56,9 +55,7 @@ export class MovieComponent implements OnInit {
                 .subscribe(data => {
                   this.path = data.path;
                   this.link = 'http://localhost:3000/torrent/streaming/' + data.path;
-                  console.log(data.path);
                   this.videoloaded = Promise.resolve(true);
-                  this.textLoad = '';
                 });
             });
         });
