@@ -1,0 +1,60 @@
+<div class="container">
+  <mat-card class="search-container">
+    <mat-card-content>
+      <form role="form" [formGroup]="formGroupSearch" name="formSearch">
+        <mat-form-field>
+          <input matInput type="text" [(ngModel)]="input_query" placeholder="Title"/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="inputGenre" placeholder="Genre">
+            <mat-option value="all" select>All</mat-option>
+            <mat-option value="Comedy">Comedy</mat-option>
+            <mat-option value="Sci-Fi">Sci-Fi</mat-option>
+            <mat-option value="Horror">Horror</mat-option>
+            <mat-option value="Romance">Romance</mat-option>
+            <mat-option value="Action">Action</mat-option>
+            <mat-option value="Thriller">Thriller</mat-option>
+            <mat-option value="Drama">Drama</mat-option>
+            <mat-option value="Mystery">Mystery</mat-option>
+            <mat-option value="Crime">Crime</mat-option>
+            <mat-option value="Animation">Animation</mat-option>
+            <mat-option value="Adventure">Adventure</mat-option>
+            <mat-option value="Fantasy">Fantasy</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="inputTri" placeholder="Sort by">
+            <mat-option value="year_a" selected>Year
+              <span class="fa fa-sort-up"></span>
+            </mat-option>
+            <mat-option value="year_d">Year
+              <span class="fa fa-sort-down"></span>
+            </mat-option>
+            <mat-option value="pop_a">Popularity
+              <span class="fa fa-sort-up"></span>
+            </mat-option>
+            <mat-option value="pop_d">Popularity
+              <span class="fa fa-sort-down"></span>
+            </mat-option>
+            <mat-option value="runt_a">Runtime
+              <span class="fa fa-sort-up"></span>
+            </mat-option>
+            <mat-option value="runt_d">Runtime
+              <span class="fa fa-sort-down"></span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <input matInput type="text" placeholder="Author"/>
+        </mat-form-field>
+        <br/>
+        <mat-card-actions>
+          <button mat-button type="submit" (click)="onSubmitSearch()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
