@@ -1,10 +1,20 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
 .search-container{
-  margin: 25px auto 5px auto;
-  width: 230px;
-  height: 330px;
+  margin:20px 0 20px 0;
   text-align: center;
 }
-
-.search-container button{
-  width: 100%;
+form {
+  display: flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+mat-form-field {
+  margin:  0 20px 0 20px;
 }

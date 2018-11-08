@@ -1,10 +1,10 @@
 <div class="container">
   <mat-card class="search-container">
     <mat-card-content>
-      <mat-form-field>
-        <input matInput type="text" [(ngModel)]="input_query" placeholder="Title"/>
-      </mat-form-field>
       <form role="form" [formGroup]="formGroupSearch" name="formSearch">
+        <mat-form-field>
+          <input matInput type="text" [(ngModel)]="input_query" placeholder="Title"/>
+        </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="inputGenre" placeholder="Genre">
             <mat-option value="all" select>All</mat-option>
@@ -22,7 +22,6 @@
             <mat-option value="Fantasy">Fantasy</mat-option>
           </mat-select>
         </mat-form-field>
-        <br/>
         <mat-form-field>
           <mat-select formControlName="inputTri" placeholder="Sort by">
             <mat-option value="year_a" selected>Year
@@ -50,15 +49,12 @@
           <input matInput type="text" placeholder="Author"/>
         </mat-form-field>
         <br/>
-        <mat-form-field>
-          <input matInput type="text" name="title" placeholder="Contains the words"/>
-        </mat-form-field>
+        <mat-card-actions>
+          <button mat-button type="submit" (click)="onSubmitSearch()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-card-actions>
       </form>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button type="submit" (click)="onSubmitSearch()">
-        <mat-icon>search</mat-icon>
-      </button>
-    </mat-card-actions>
   </mat-card>
 </div>
