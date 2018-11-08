@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import { Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommentService} from "../../comment.service";
+import {Input} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommentService} from '../../comment.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-post-comment',
@@ -17,9 +19,23 @@ export class PostCommentComponent implements OnInit {
   });
   @Input() id_movie: string;
 
-  constructor(private commentService: CommentService) { }
+  constructor(private commentService: CommentService) {
+  }
 
-  ngOnInit() {}
+  public options: Object = {
+    placeholderText: 'Write your comment here',
+    theme: 'dark',
+    quickInsertTags: [],
+    toolbarInline: true,
+    charCounterCount: false,
+    toolbarButtons: ['bold', 'italic', 'underline', 'color', 'clearFormatting'],
+    toolbarButtonsXS: ['bold', 'italic', 'underline', 'color', 'clearFormatting'],
+    toolbarButtonsSM: ['bold', 'italic', 'underline', 'color', 'clearFormatting'],
+    toolbarButtonsMD: ['bold', 'italic', 'underline', 'color', 'clearFormatting'],
+  };
+
+  ngOnInit() {
+  }
 
   onSubmit() {
     const newComment = {

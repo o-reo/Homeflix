@@ -21,23 +21,22 @@
           <img [src]="torrent.medium_cover_image">
         </div>
         <mat-tab-group class="details">
-          <mat-tab label="Info">
+          <mat-tab label="Info" class="tab-section">
             <div class="tab info">
               <span><b>{{ torrent.title }}</b></span>&nbsp;&nbsp;
               <span matBadge="{{torrent.rating}}" matBadgeOverlap="false" matBadgePosition="below after"></span>
-              <p><b>{{ torrent.year }}</b></p>
+              <br/>
+              <p>{{ torrent.year }}</p>
               <p>{{torrent.runtime}}mn</p>
               <p>{{torrent.genres}}</p>
             </div>
           </mat-tab>
           <mat-tab label="Synopsis"><p class="tab">{{ torrent.synopsis }}</p></mat-tab>
           <mat-tab label="Casting"><p class="tab">{{ torrent.casting }}</p></mat-tab>
+          <mat-tab label="Comments">
+            <app-comments [id_movie]="torrent._id"></app-comments>
+          </mat-tab>
         </mat-tab-group>
-      </mat-card-content>
-    </mat-card>
-    <mat-card>
-      <mat-card-content>
-        <app-comments [id_movie]="torrent._id"></app-comments>
       </mat-card-content>
     </mat-card>
   </div>

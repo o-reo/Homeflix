@@ -11,7 +11,7 @@ $my-dark-theme-background: (
   app-bar:    map_get($mat-blue, 900),
   background: black,
   hover:      rgba(white, 0.04),
-  card:       rgba(black, 0.6),
+  card:       rgba(black, 0.8),
   dialog:     #222,
   disabled-button: $white-12-opacity,
   raised-button: map-get($mat-grey, 900),
