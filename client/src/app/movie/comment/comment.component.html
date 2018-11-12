@@ -3,7 +3,7 @@
     <img matListAvatar [src]="user.photo"/>
     <div class="comment_time">{{ comment.time | date:'medium' }}</div>
     <h3 matLine> {{user.username}} </h3>
-    <span [innerHTML]="comment.content" matLine></span>
+    <div [froalaView]="comment.content" matLine></div>
     <mat-divider matLine></mat-divider>
   </mat-list-item>
 </ng-container>
