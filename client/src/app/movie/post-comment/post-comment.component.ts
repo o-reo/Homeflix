@@ -45,7 +45,7 @@ export class PostCommentComponent implements OnInit {
     this.commentService.postComment(newComment)
       .subscribe(msg => {
         this.commentService.comments.push(msg);
-        /* location.reload(); */
+        this.formGroup.reset();
       });
   }
 }

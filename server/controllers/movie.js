@@ -118,11 +118,11 @@ exports.getComment = function (req, res) {
     });
 };
 
-/* post.api/movie_comment/:id_movie */
+/* post.comment */
 exports.postComment = function (req, res) {
     const newComment = MovieComment({
         id_movie: req.body.id_movie,
-        id_user: req.body.user.id,
+        id_user: req.userdata._id,
         content: req.body.content
     });
     newComment.save((err, comment) => {

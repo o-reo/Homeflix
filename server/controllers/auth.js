@@ -19,8 +19,8 @@ module.exports.validJWT = (req, res, next) => {
                     }
                     else {
                         req.userdata = user;
+                        next();
                     }
-                    next();
                 });
             }
         });

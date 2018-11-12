@@ -10,11 +10,11 @@ const route_torrents = require('./routes/torrents');
 const route_subtitles = require('./routes/subtitles');
 const route_comments = require('./routes/comments');
 const route_comment = require('./routes/comment');
-const fs = require('fs');
-const multer = require('multer');
-const router = express.Router();
-const session = require('express-session');
-const credentials = require('./config/credentials');
+// const fs = require('fs');
+// const multer = require('multer');
+// const router = express.Router();
+// const session = require('express-session');
+// const credentials = require('./config/credentials');
 
 let app = express();
 
@@ -49,11 +49,11 @@ app.use(bodyparser.urlencoded({
 app.use(require('morgan')('combined'));
 
 // Session config
-const sess = { secret: credentials.session.secret,
-    cookie: {},
-    resave: false,
-    saveUninitialized: true };
-app.use(session(sess));
+// const sess = { secret: credentials.session.secret,
+//     cookie: {},
+//     resave: false,
+//     saveUninitialized: true };
+// app.use(session(sess));
 
 //adding middleware - cors for cross origin
 app.use(cors());
