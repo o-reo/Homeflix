@@ -6,6 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FileSelectDirective} from 'ng2-file-upload';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatChipsModule} from '@angular/material/chips';
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -121,6 +122,7 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatTabsModule,
     MatListModule,
+    MatChipsModule,
     HttpClientModule,
     FormsModule,
     // StorageServiceModule,

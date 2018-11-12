@@ -5,7 +5,8 @@
         <video *ngIf="videoloaded | async; else progress_bar" class="video-player" id="videoPlayer" width="100%"
                height="100%" controls>
           <source src="{{link}}" type="video/mp4">
-          <track *ngIf="subtitle_defined_lang" [src]=subtitle_path_lang kind="subtitles" srclang="{{lang}}" label="{{lang}}"
+          <track *ngIf="subtitle_defined_lang" [src]=subtitle_path_lang kind="subtitles" srclang="{{lang}}"
+                 label="{{lang}}"
                  [attr.default]="subtitle_default ? '' : null"/>
           <track *ngIf="subtitle_defined_en" [src]=subtitle_path_en kind="subtitles" srclang="en" label="eng"/>
         </video>
@@ -24,12 +25,12 @@
         <mat-tab-group class="details">
           <mat-tab label="Info" class="tab-section">
             <div class="tab info">
-              <span><b>{{ torrent.title }}</b></span>&nbsp;&nbsp;
-              <span matBadge="{{torrent.rating}}" matBadgeOverlap="false" matBadgePosition="below after"></span>
-              <br/>
+              <h3>{{ torrent.title }}    <mat-chip selected>{{torrent.rating}}</mat-chip></h3>
               <p>{{ torrent.year }}</p>
               <p>{{torrent.runtime}}mn</p>
-              <p>{{torrent.genres}}</p>
+              <mat-chip-list>
+                <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre}}</mat-chip>
+              </mat-chip-list>
             </div>
           </mat-tab>
           <mat-tab label="Synopsis"><p class="tab">{{ torrent.synopsis }}</p></mat-tab>

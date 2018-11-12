@@ -57,9 +57,12 @@ video {
 
 .tab{
   margin: 8px 10px;
-  text-align: center;
 }
 
 .tab-section{
   height: 320px;
+}
+
+.info{
+  overflow: hidden;
 }
