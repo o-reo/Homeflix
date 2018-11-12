@@ -1,7 +1,7 @@
 <ng-container *ngIf="loaded | async">
   <div class="container">
     <mat-list class="top">
-      <app-comment *ngFor="let comment of comments"
+      <app-comment *ngFor="let comment of comments.slice().reverse()"
                    [comment]="comment"></app-comment>
     </mat-list>
     <div class="bottom">
