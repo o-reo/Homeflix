@@ -24,5 +24,4 @@ export class CommentComponent implements OnInit {
         this.loaded = Promise.resolve(true);
       });
   }
-
 }

@@ -1,9 +1,9 @@
 <ng-container *ngIf="loaded | async">
   <div class="container">
-    <div class="top">
+    <mat-list class="top">
       <app-comment *ngFor="let comment of comments"
                    [comment]="comment"></app-comment>
-    </div>
+    </mat-list>
     <div class="bottom">
       <app-post-comment [id_movie]="id_movie"></app-post-comment>
     </div>

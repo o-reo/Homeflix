@@ -29,11 +29,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.userService.getUser(this.id).subscribe(resp => {
-      if (resp['photo'].includes('http://') || resp['photo'].includes('https://')) {
-        this.photo = resp['photo'];
-      } else {
-        this.photo = 'http://localhost:3000/' + resp['photo'];
-      }
+      this.photo = resp['photo'];
       this.username = resp['username'];
       this.firstname = resp['first_name'];
       this.lastname = resp['last_name'];
@@ -47,9 +43,6 @@ export class ProfileComponent implements OnInit {
   getImg() {
     if (!this.photo) {
       return 'none';
-    }
-    if (this.photo.includes('http://') || this.photo.includes('https://')) {
-      return 'url(\'' + this.photo + '\')';
     }
     return 'url(\'' + this.photo + '\')';
   }

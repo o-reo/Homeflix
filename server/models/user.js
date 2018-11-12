@@ -58,15 +58,30 @@ const UserSchema = mongoose.Schema({
 const User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.getUserById = function (id, callback) {
-    User.findById(id, callback);
+    User.findById(id, (err, user) => {
+        if (user && !user.photo.includes('http://') && !user.photo.includes('https://')) {
+            user.photo = 'http://localhost:3000/' + user.photo;
+        }
+        callback(err, user);
+    });
 };
 
 module.exports.getUser = function (query, callback) {
-    User.findOne(query, callback);
+    User.findOne(query, (err, user) => {
+        if (user && !user.photo.includes('http://') && !user.photo.includes('https://')) {
+            user.photo = 'http://localhost:3000/' + user.photo;
+        }
+        callback(err, user);
+    });
 };
 
 module.exports.getUserByUsername = function (username, callback) {
-    User.findOne({username: username}, callback);
+    User.findOne({username: username}, (err, user) => {
+        if (user && !user.photo.includes('http://') && !user.photo.includes('https://')) {
+            user.photo = 'http://localhost:3000/' + user.photo;
+        }
+        callback(err, user);
+    });
 };
 
 

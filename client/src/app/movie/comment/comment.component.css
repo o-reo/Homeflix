@@ -1,4 +1,15 @@
-.img-profile {
-  height : 150px;
-  width: 150px;
+mat-list-item{
+  position: relative;
+}
+
+mat-list-item .comment_time{
+  position: absolute;
+  top:5px;
+  right: 5px;
+  font-size: 12px;
+}
+
+mat-list-item img{
+  width: 60px;
+  height: 60px;
 }
