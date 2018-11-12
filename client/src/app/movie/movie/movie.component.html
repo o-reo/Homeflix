@@ -5,8 +5,9 @@
         <video *ngIf="videoloaded | async; else progress_bar" class="video-player" id="videoPlayer" width="100%"
                height="100%" controls>
           <source src="{{link}}" type="video/mp4">
-          <track *ngIf="subtitle_defined" [src]=subtitle_path_en kind="subtitles" srclang="en" label="{{lang}}"
+          <track *ngIf="subtitle_defined_lang" [src]=subtitle_path_lang kind="subtitles" srclang="{{lang}}" label="{{lang}}"
                  [attr.default]="subtitle_default ? '' : null"/>
+          <track *ngIf="subtitle_defined_en" [src]=subtitle_path_en kind="subtitles" srclang="en" label="eng"/>
         </video>
         <ng-template #progress_bar>
           <div class="progress-card">

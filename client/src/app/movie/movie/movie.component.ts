@@ -22,8 +22,10 @@ export class MovieComponent implements OnInit {
   link: String;
   lang: String;
   subtitle_default: boolean;
-  subtitle_defined: boolean;
+  subtitle_defined_en: boolean;
+  subtitle_defined_lang: boolean;
   @Input() subtitle_path_en;
+  @Input() subtitle_path_lang;
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: HyperAuthService,
               private userService: UserService) {
@@ -41,22 +43,27 @@ export class MovieComponent implements OnInit {
             this.lang = 'spa';
           }
           this.torrent = torrent;
-          console.log(torrent);
+          if (this.lang !== 'eng') {
+            this.torrentService.getSubtitles('eng', torrent.imdb_code, bytes(torrent.torrents[0].size))
+              .subscribe(subtitles => {
+                this.subtitle_defined_en = subtitles.path;
+                this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
+              });
+          }
           this.torrentService.getSubtitles(this.lang, torrent.imdb_code, bytes(torrent.torrents[0].size))
             .subscribe(subtitles => {
-              console.log(subtitles);
-              this.subtitle_defined = subtitles.path;
-              this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
+              this.subtitle_defined_lang = subtitles.path;
+              this.subtitle_path_lang = './../../../src/assets/' + subtitles.path;
               if (torrent.language && torrent.language.toLowerCase() !== resp['language']) {
                 this.subtitle_default = true;
               }
-              this.loaded = Promise.resolve(true);
-              this.torrentService.startStreaming(this.torrent)
-                .subscribe(data => {
-                  this.path = data.path;
-                  this.link = 'http://localhost:3000/torrent/streaming/' + data.path;
-                  this.videoloaded = Promise.resolve(true);
-                });
+            });
+          this.loaded = Promise.resolve(true);
+          this.torrentService.startStreaming(this.torrent)
+            .subscribe(data => {
+              this.path = data.path;
+              this.link = 'http://localhost:3000/torrent/streaming/' + data.path;
+              this.videoloaded = Promise.resolve(true);
             });
         });
       });
