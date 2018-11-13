@@ -25,7 +25,9 @@
         <mat-tab-group class="details">
           <mat-tab label="Info" class="tab-section">
             <div class="tab info">
-              <h3>{{ torrent.title }}    <mat-chip selected>{{torrent.rating}}</mat-chip></h3>
+              <h3>{{ torrent.title }}
+                <mat-chip selected>{{torrent.rating}}</mat-chip>
+              </h3>
               <p>{{ torrent.year }}</p>
               <p>{{torrent.runtime}}mn</p>
               <p>{{torrent.views}} views</p>
@@ -35,7 +37,16 @@
             </div>
           </mat-tab>
           <mat-tab label="Synopsis"><p class="tab">{{ torrent.synopsis }}</p></mat-tab>
-          <mat-tab label="Casting"><p class="tab">{{ torrent.casting }}</p></mat-tab>
+          <mat-tab label="Casting">
+            <p class="tab">
+              <mat-list>
+                <mat-list-item *ngFor="let cast of torrent.cast">
+                  <h3 matLine> {{cast.name}} </h3>
+                  <div matLine>{{cast.character_name}}</div>
+                </mat-list-item>
+              </mat-list>
+            </p>
+          </mat-tab>
           <mat-tab label="Comments">
             <app-comments [id_movie]="torrent._id"></app-comments>
           </mat-tab>
