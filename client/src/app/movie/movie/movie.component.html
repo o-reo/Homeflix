@@ -5,9 +5,12 @@
         <vg-player *ngIf="videoloaded | async; else progress_bar">
           <vg-overlay-play></vg-overlay-play>
           <vg-buffering></vg-buffering>
-          <vg-controls [vgAutohide]="true">
+          <vg-controls [vgAutohide]="true" [vgAutohideTime]="0.5">
             <vg-play-pause></vg-play-pause>
-            <vg-scrub-bar [vgSlider]="false"></vg-scrub-bar>
+            <vg-scrub-bar [vgSlider]="false">
+              <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+              <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+            </vg-scrub-bar>
             <vg-track-selector></vg-track-selector>
             <vg-mute></vg-mute>
             <vg-volume></vg-volume>
