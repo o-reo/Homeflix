@@ -66,8 +66,3 @@ video {
 .info{
   overflow: hidden;
 }
-
-mat-list-item img{
-  width: 60px;
-  height: 60px;
-}
