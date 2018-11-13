@@ -16,7 +16,7 @@
   box-shadow: 0 0 30px black;
 }
 
-video {
+vg-player {
   position: absolute;
   padding: 0;
   margin: 0;

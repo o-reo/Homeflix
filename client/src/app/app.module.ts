@@ -7,6 +7,10 @@ import {FileSelectDirective} from 'ng2-file-upload';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatChipsModule} from '@angular/material/chips';
+import {VgCoreModule} from 'videogular2/core';
+import {VgControlsModule} from 'videogular2/controls';
+import {VgOverlayPlayModule} from 'videogular2/overlay-play';
+import {VgBufferingModule} from 'videogular2/buffering';
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -101,6 +105,10 @@ const appRoutes: Routes = [
     // LoaderComponent
   ],
   imports: [
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule,
