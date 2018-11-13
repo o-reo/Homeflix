@@ -28,6 +28,7 @@
               <h3>{{ torrent.title }}    <mat-chip selected>{{torrent.rating}}</mat-chip></h3>
               <p>{{ torrent.year }}</p>
               <p>{{torrent.runtime}}mn</p>
+              <p>{{torrent.views}} views</p>
               <mat-chip-list>
                 <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre}}</mat-chip>
               </mat-chip-list>

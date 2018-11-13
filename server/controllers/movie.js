@@ -75,11 +75,10 @@ exports.accessMovie = function (req, res) {
 };
 
 exports.getMovieInfos = function (req, res) {
-    MovieInfos.findOne({_id: req.params.id}, function (err, movie) {
+    MovieInfos.get({_id: req.params.id}, function (err, movie) {
         if (err)
             res.json(err);
         else {
-
             res.json(movie);
         }
     });

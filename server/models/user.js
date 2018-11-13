@@ -95,8 +95,10 @@ module.exports.addView = function(info, callback){
     });
 };
 
-module.exports.countViews = function(imdbid, callback){
-
+module.exports.countViews = function (imdbid, callback) {
+   User.countDocuments({views:{$elemMatch:{imdbid: imdbid}}}, (err, views) => {
+       callback(err, views);
+   });
 };
 
 module.exports.getUser = function (query, callback) {
