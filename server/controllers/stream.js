@@ -18,7 +18,7 @@ exports.getStream = function (req, res) {
         console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
 
 
-        file = fs.createReadStream(path, {start: start, end: end});
+        let file = fs.createReadStream(path, {start: start, end: end});
         res.writeHead(206, {
             'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
             'Accept-Ranges': 'bytes',

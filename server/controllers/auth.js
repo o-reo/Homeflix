@@ -13,9 +13,9 @@ module.exports.validJWT = (req, res, next) => {
                 res.json({success: false, msg: err})
             }
             else {
-                User.findOne({_id: decoded._id}, (err, user) => {
+                User.getUserById(decoded._id, (err, user) => {
                     if (err || !user) {
-                        res.json({success: false, msg: err})
+                        res.json({success: false, msg: 'Could not find user'})
                     }
                     else {
                         req.userdata = user;

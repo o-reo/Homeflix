@@ -1,4 +1,5 @@
 const Movie = require('../models/movie');
+const User = require('../models/user');
 const MovieComment = require('../models/movie-comment');
 const https = require('https');
 const request = require('request');
@@ -77,8 +78,10 @@ exports.getMovieInfos = function (req, res) {
     MovieInfos.findOne({_id: req.params.id}, function (err, movie) {
         if (err)
             res.json(err);
-        else
+        else {
+
             res.json(movie);
+        }
     });
 };
 

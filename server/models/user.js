@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const ViewSchema = new mongoose.Schema({
+    imdbid: {
+        type: String,
+        required: true
+    }
+});
+
 const UserSchema = mongoose.Schema({
     first_name: {
         type: String,
@@ -52,10 +59,13 @@ const UserSchema = mongoose.Schema({
     language: {
         type: String,
         default: 'english'
-    }
+    },
+    views: [ViewSchema]
 });
 
 const User = module.exports = mongoose.model('User', UserSchema);
+const View = module.exports = mongoose.model('View', ViewSchema);
+
 
 module.exports.getUserById = function (id, callback) {
     User.findById(id, (err, user) => {
@@ -64,6 +74,29 @@ module.exports.getUserById = function (id, callback) {
         }
         callback(err, user);
     });
+};
+
+module.exports.addView = function(info, callback){
+    User.findOne({_id: info.user_id}, (err, user) => {
+        const has_viewed = user.views.toString().includes(info.imdbid);
+        if (user && !has_viewed){
+            user.views.push(new View({imdbid: info.imdbid}));
+            user.save((err) => {
+                if (!err){
+                    callback(true, null)
+                } else {
+                    callback(false, 'Could not save view')
+                }
+            });
+        }
+        else {
+            callback(false, 'User has already viewed this movie');
+        }
+    });
+};
+
+module.exports.countViews = function(imdbid, callback){
+
 };
 
 module.exports.getUser = function (query, callback) {

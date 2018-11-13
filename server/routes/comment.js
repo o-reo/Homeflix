@@ -1,4 +1,5 @@
 const express = require('express');
+
 const movieController = require('../controllers/movie');
 const authController = require('../controllers/auth');
 

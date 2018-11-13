@@ -1,5 +1,6 @@
 const express = require('express');
 const config = require('../config/database');
+const authController = require('../controllers/auth');
 
 const torrentController = require('../controllers/torrent');
 const movieController = require('../controllers/movie');
@@ -9,10 +10,10 @@ const router = express.Router({});
 
 
 router.route('/:id')
-    .get(movieController.getMovieInfos);
+    .get(authController.validJWT, movieController.getMovieInfos);
 
 router.route('/stream/:hash')
-    .get(torrentController.streamTorrent);
+    .get(authController.validJWT, torrentController.streamTorrent);
 
 router.route('/streaming/:file')
     .get(streamController.getStream);

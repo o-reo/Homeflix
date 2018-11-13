@@ -22,24 +22,34 @@ export class TorrentService {
   }
 
   getTorrents(query) {
-    return this.http.get<any>('http://localhost:3000/torrents' + query);
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    return this.http.get<any>('http://localhost:3000/torrents' + query, {headers: headers});
   }
 
   getTorrent(id) {
-    return this.http.get<any>('http://localhost:3000/torrent/' + id);
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    return this.http.get<any>('http://localhost:3000/torrent/' + id, {headers: headers});
   }
 
   getSubtitles(lang, imdbid, filesize) {
-    return this.http.get<any>('http://localhost:3000/subtitles?imdbid=' + imdbid + '&lang=' + lang + '&filesize=' + filesize);
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    return this.http.get<any>('http://localhost:3000/subtitles',
+      {headers: headers, params: {imdbid: imdbid, lang: lang, filesize: filesize}});
   }
 
   getImage(title) {
-    return this.http.get<any>('https://api.themoviedb.org/3/search/movie?api_key=0da39945fce0b1135aa1b956f44eb3ec&query='
-      + encodeURI(title));
+    return this.http.get<any>('https://api.themoviedb.org/3/search/movie',
+      {params: {api_key: '0da39945fce0b1135aa1b956f44eb3ec', query: encodeURI(title)}});
   }
 
   startStreaming(movie) {
-    return this.http.get<any>('http://localhost:3000/torrent/stream/' + movie.torrents[0].hash);
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    return this.http.get<any>('http://localhost:3000/torrent/stream/' + movie.torrents[0].hash,
+      {headers: headers, params: {imdbid: movie.imdb_code}});
   }
 
   /* getMovie(id) {

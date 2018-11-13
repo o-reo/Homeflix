@@ -1,6 +1,7 @@
 const torrentStream = require('torrent-stream');
 const fs = require("fs"); //Load the filesystem module
 const MovieInfos = require('../models/movie-infos');
+const User = require('../models/user');
 
 exports.getTorrents = function (req, res) {
     var get_query = '';
@@ -57,14 +58,19 @@ exports.getTorrents = function (req, res) {
         sort: sort,
         page: page,
         limit: limit
-    }
+    };
     MovieInfos.paginate(query, options, function (err, movies) {
         //console.log(movies.docs);
         res.json(movies.docs);
     });
 };
 
+
 exports.streamTorrent = function (req, res) {
+    if (req.query.imdbid) {
+        User.addView({imdbid: req.query.imdbid, user_id: req.userdata._id}, (success, msg) => {
+        });
+    }
     let path = '';
     let sending = false;
     var magnet = 'magnet:?xt=urn:btih:'
@@ -90,7 +96,7 @@ exports.streamTorrent = function (req, res) {
             if (fs.existsSync(__dirname + '/../../films/' + path)) {
                 const stats = fs.statSync(__dirname + '/../../films/' + path);
                 const fileSizeInBytes = stats.size;
-//Convert the file size to megabytes (optional)
+                //Convert the file size to megabytes (optional)
                 const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
                 if (fileSizeInMegabytes >= 25 && !sending) {
                     sending = true;
@@ -100,6 +106,7 @@ exports.streamTorrent = function (req, res) {
                 console.log('SIZE: ', fileSizeInMegabytes);
             } else {
                 console.log('fichier introuvable: ' + __dirname + '/../../films/' + path);
+
             }
         }
     });
@@ -123,4 +130,5 @@ exports.streamTorrent = function (req, res) {
         }
         console.log('end download');
     });
-};
+}
+;

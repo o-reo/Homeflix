@@ -1,11 +1,12 @@
 const express = require('express');
 const config = require('../config/database');
 
+const authController = require('../controllers/auth');
 const torrentController = require('../controllers/torrent');
 
 const router = express.Router({});
 
 router.route('/')
-    .get(torrentController.getTorrents);
+    .get(authController.validJWT, torrentController.getTorrents);
 
 module.exports = router;

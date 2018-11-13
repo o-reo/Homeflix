@@ -8,25 +8,34 @@ import {HyperAuthService} from './auth.service';
 })
 export class CommentService {
 
-  constructor(private http: HttpClient, private authservice: HyperAuthService) {
+  constructor(private http: HttpClient, private authService: HyperAuthService) {
   }
 
   comments: Comment[];
 
   getAllComments() {
-    return this.http.get<Comment[]>('http://localhost:3000/comments');
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    return this.http.get<Comment[]>('http://localhost:3000/comments', {headers: headers});
   }
 
   getComments(id_movie) {
-    return this.http.get<Comment[]>('http://localhost:3000/comments/' + id_movie);
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    return this.http.get<Comment[]>('http://localhost:3000/comments/' + id_movie, {headers: headers});
   }
 
   getComment(id_comment) {
-    return this.http.get<Comment>('http://localhost:3000/comment/' + id_comment);
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    return this.http.get<Comment>('http://localhost:3000/comment/' + id_comment, {headers: headers});
   }
 
   postComment(data) {
-    const headers = {authorization: 'Bearer ' + this.authservice.getToken()};
+    const headers = {authorization: 'Bearer ' + this.authService.getToken()};
     headers['Content-Type'] = 'application/json';
     return this.http.post<any>('http://localhost:3000/comment', data, {headers: headers});
   }

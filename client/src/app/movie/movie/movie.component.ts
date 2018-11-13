@@ -57,13 +57,13 @@ export class MovieComponent implements OnInit {
               if (torrent.language && torrent.language.toLowerCase() !== resp['language']) {
                 this.subtitle_default = true;
               }
-            });
-          this.loaded = Promise.resolve(true);
-          this.torrentService.startStreaming(this.torrent)
-            .subscribe(data => {
-              this.path = data.path;
-              this.link = 'http://localhost:3000/torrent/streaming/' + data.path;
-              this.videoloaded = Promise.resolve(true);
+              this.loaded = Promise.resolve(true);
+              this.torrentService.startStreaming(this.torrent)
+                .subscribe(data => {
+                  this.path = data.path;
+                  this.link = 'http://localhost:3000/torrent/streaming/' + data.path;
+                  this.videoloaded = Promise.resolve(true);
+                });
             });
         });
       });

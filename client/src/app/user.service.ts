@@ -13,14 +13,16 @@ export class UserService {
   }
 
   getUsers() {
-    return this.http.get<User[]>('http://localhost:3000/users');
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    return this.http.get<User[]>('http://localhost:3000/users', {headers: headers});
   }
 
   getUser(id) {
     id = id || '';
-
     const header = {};
     header['Authorization'] = 'Bearer ' + this.authService.getToken();
+    header['Content-Type'] = 'application/json';
     return this.http.get('http://localhost:3000/user/' + id, {headers: header});
   }
 
