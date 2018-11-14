@@ -18,7 +18,7 @@ router.route('/stream/:hash')
 router.route('/streaming/:file')
     .get(streamController.getStream);
 
-router.route('/streaming/:directory/:file')
-    .get(streamController.getStreamDirectory);
+// router.route('/streaming/:directory/:file')
+//     .get(streamController.getStreamDirectory);
 
 module.exports = router;

@@ -56,5 +56,19 @@ app.use('/comment', route_comment);
 app.use('/comments', route_comments);
 
 app.listen(port, () => {
-    console.log('Log: Server listening on port: ' + port);
+    console.log('Log: Server listening on port:', port);
+});
+
+// HLS Server for streaming movies
+let HLSServer = require('hls-server');
+let http = require('http');
+
+let server = http.createServer();
+let hls = new HLSServer(server, {
+    path: '/streams',     // Base URI to output HLS streams
+    dir: '../films'  // Directory that input files are stored
+});
+
+server.listen(8000, () => {
+    console.log('Log: Streaming server listens on port:', 8000);
 });

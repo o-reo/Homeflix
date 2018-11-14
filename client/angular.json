@@ -34,7 +34,7 @@
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/froala-editor/js/froala_editor.pkgd.min.js",
-              "./node_modules/dashjs/dist/dash.all.min.js"
+              "./node_modules/hls.js/dist/hls.min.js"
             ]
           },
           "configurations": {

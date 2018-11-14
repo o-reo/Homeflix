@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TorrentService} from '../../torrent.service';
 import {UserService} from '../../user.service';
@@ -7,13 +7,14 @@ import {Input} from '@angular/core';
 import * as bytes from 'bytes';
 // import * as $ from 'jquery';
 import {HyperAuthService} from '../../auth.service';
+// import {Page} from 'ngx-pagination/dist/pagination-controls.directive';
 
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
-export class MovieComponent implements OnInit {
+export class MovieComponent implements OnInit, OnDestroy {
 
   videoloaded: Promise<boolean>;
   loaded: Promise<boolean>;
@@ -61,12 +62,22 @@ export class MovieComponent implements OnInit {
               this.torrentService.startStreaming(this.torrent)
                 .subscribe(data => {
                   this.path = data.path;
-                  this.link = 'http://localhost:3000/torrent/streaming/' + data.path;
+                  this.link = '/streams' + data.path;
                   this.videoloaded = Promise.resolve(true);
                 });
             });
         });
       });
+    // this.page.on('navigatingTo', (data) => {
+    //   console.log('navigating to');
+    // });
+    // this.page.on('navigatingFrom', (data) => {
+    //   console.log('navigating From');
+    // });
   }
 
+  ngOnDestroy() {
+    // this.torrentService.stopStreaming(this.torrent)
+    //   .subscribe();
+  }
 }
