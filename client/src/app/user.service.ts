@@ -15,32 +15,32 @@ export class UserService {
   getUsers() {
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
-    return this.http.get<User[]>('http://localhost:3000/users', {headers: headers});
+    return this.http.get<User[]>(`http://${window.location.hostname}:3000/users`, {headers: headers});
   }
 
   getUser(id) {
     id = id || '';
-    const header = {};
-    header['Authorization'] = 'Bearer ' + this.authService.getToken();
-    header['Content-Type'] = 'application/json';
-    return this.http.get('http://localhost:3000/user/' + id, {headers: header});
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    return this.http.get(`http://${window.location.hostname}:3000/user/${id}`, {headers: headers});
   }
 
   addUser(newUser) {
     const headers = {};
     headers['Content-Type'] = 'application/json';
-    return this.http.post<any>('http://localhost:3000/user/register', newUser, {headers: headers});
+    return this.http.post<any>(`http://${window.location.hostname}:3000/user/register`, newUser, {headers: headers});
   }
 
   updateMyUser(newData) {
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
     headers['Content-Type'] = 'application/json';
-    return this.http.put('http://localhost:3000/user', newData, {headers: headers});
+    return this.http.put(`http://${window.location.hostname}:3000/user`, newData, {headers: headers});
   }
 
   Recovery(email) {
-    return this.http.get('http://localhost:3000/user/recovery', {params: {email: email}});
+    return this.http.get(`http://${window.location.hostname}:3000/user/recovery`, {params: {email: email}});
   }
 
 
@@ -52,14 +52,14 @@ export class UserService {
 */
 
 
-  UpdateMyPhoto(photo) {
+  // UpdateMyPhoto(photo) {
     // if ('mail' in localStorage && 'passwd' in localStorage) {
     //   const headers = this.authService.getHeader_authBasic('application/json');
     //   return this.http.put<any>('http://localhost:3000/api/myuserphoto', photo, {headers: headers});
     // } else {
     //   console.log('ERREUR PAS d USERNAME ET DE PASS');
     // }
-  }
+  // }
 }
 
 

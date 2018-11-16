@@ -38,14 +38,16 @@ export class PostCommentComponent implements OnInit {
   }
 
   onSubmit() {
-    const newComment = {
-      id_movie: this.id_movie,
-      content: this.formGroup.value.form1
-    };
-    this.commentService.postComment(newComment)
-      .subscribe(msg => {
-        this.commentService.comments.push(msg);
-        this.formGroup.reset();
-      });
+    if (this.formGroup.value.form1) {
+      const newComment = {
+        id_movie: this.id_movie,
+        content: this.formGroup.value.form1
+      };
+      this.commentService.postComment(newComment)
+        .subscribe(msg => {
+          this.commentService.comments.push(msg);
+          this.formGroup.reset();
+        });
+    }
   }
 }

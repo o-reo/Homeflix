@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxyconfig.json",
+    "run": "ng serve --proxy-config proxyconfig.json --host z1r11p1.le-101.fr",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

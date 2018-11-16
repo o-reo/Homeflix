@@ -31,6 +31,15 @@ export class UpdateComponent implements OnInit {
   photo: string;
   path: string;
 
+  collapsed1: boolean;
+  collapsed2: boolean;
+  collapsed3: boolean;
+  collapsed4: boolean;
+  collapsed5: boolean;
+  collapsed6: boolean;
+  collapsed7: boolean;
+
+
 
   public uploader: FileUploader = new FileUploader({
     url: URL,

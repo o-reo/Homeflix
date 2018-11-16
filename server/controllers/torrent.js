@@ -96,6 +96,7 @@ exports.streamTorrent = function (req, res) {
         let stream;
         engine.on('ready', function () {
             // Find the video file
+            global.PROCESS_ARRAY[req.params.hash] = {engine: engine, status: 'ready'};
             engine.files.forEach(function (file) {
                 if (file.name.substr(file.name.length - 3) === 'mkv' || file.name.substr(file.name.length - 3) === 'mp4') {
                     if (!fs.existsSync('../films/' + req.params.hash)) {
@@ -106,11 +107,6 @@ exports.streamTorrent = function (req, res) {
                     // create stream to torrent file
                     stream = file.createReadStream();
                     // initialize process entry
-                    if (!global.PROCESS_ARRAY[req.params.hash]) {
-                        global.PROCESS_ARRAY[req.params.hash] = {engine: engine, status: 'ready'};
-                    } else {
-                        global.PROCESS_ARRAY[req.params.hash].status = 'ready';
-                    }
                 } else {
                     file.deselect();
                 }

@@ -3,7 +3,6 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
-import {FileSelectDirective} from 'ng2-file-upload';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatChipsModule} from '@angular/material/chips';
@@ -11,7 +10,7 @@ import {VgCoreModule} from 'videogular2/core';
 import {VgControlsModule} from 'videogular2/controls';
 import {VgOverlayPlayModule} from 'videogular2/overlay-play';
 import {VgBufferingModule} from 'videogular2/buffering';
-import { VgStreamingModule } from 'videogular2/streaming';
+import {VgStreamingModule} from 'videogular2/streaming';
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -35,7 +34,6 @@ import {
 } from '@angular/material';
 
 import {AppComponent} from './app.component';
-// import {UsersComponent} from './users/users.component';
 import {AuthComponent, DialogTemplateComponent} from './auth/auth.component';
 // import {StorageServiceModule} from 'angular-webstorage-service';
 import {Routes} from '@angular/router';
@@ -55,11 +53,11 @@ import {SearchComponent} from './movie/search/search.component';
 import {CommentsComponent} from './movie/comments/comments.component';
 import {CommentComponent} from './movie/comment/comment.component';
 import {PostCommentComponent} from './movie/post-comment/post-comment.component';
-// import {LoaderComponent} from './loader/loader.component';
 import {HyperAuthService} from './auth.service';
 import {SocialLoginModule, AuthServiceConfig, GoogleLoginProvider} from 'angularx-social-login';
 import {AuthguardService} from './authguard.service';
 import {GOOGLE_API} from './credentials';
+import {FileUploadModule} from 'ng2-file-upload';
 
 const config = new AuthServiceConfig([
   {
@@ -86,7 +84,6 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    // UsersComponent,
     AuthComponent,
     NavbarComponent,
     FooterComponent,
@@ -100,13 +97,12 @@ const appRoutes: Routes = [
     MovieComponent,
     CommentsComponent,
     CommentComponent,
-    FileSelectDirective,
     PostCommentComponent,
     DialogTemplateComponent
-    // LoaderComponent
   ],
   imports: [
     VgCoreModule,
+    FileUploadModule,
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,

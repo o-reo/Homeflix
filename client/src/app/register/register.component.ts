@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
   language: string;
   photo: string;
   req: boolean;
+  text: string;
 
   public uploader: FileUploader = new FileUploader({
     url: URL,

@@ -95,7 +95,7 @@ export class AuthComponent implements OnInit {
   signInWith42(): void {
     this.user = null;
     localStorage.setItem('provider', '42');
-    const redirect_uri = 'http%3A%2F%2Flocalhost%3A4200%2Fauth%2F';
+    const redirect_uri = `http%3A%2F%2F${window.location.hostname}%3A4200%2Fauth%2F`;
     window.location.href = `https://api.intra.42.fr/oauth/authorize` +
       `?client_id=${API_42.client_id}&redirect_uri=${redirect_uri}&response_type=code`;
   }
@@ -106,7 +106,7 @@ export class AuthComponent implements OnInit {
       client_id: API_42.client_id,
       client_secret: API_42.client_secret,
       code: code,
-      redirect_uri: 'http://localhost:4200/auth/'
+      redirect_uri: `http://${window.location.hostname}:4200/auth/`
     };
     this.http.post<any>('https://api.intra.42.fr/oauth/token', auth)
       .subscribe(response => {

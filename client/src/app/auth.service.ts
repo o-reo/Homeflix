@@ -12,7 +12,7 @@ export class HyperAuthService {
   }
 
   public login(user, callback) {
-    this.http.post('http://localhost:3000/user/login', user)
+    this.http.post(`http://${window.location.hostname}:3000/user/login`, user)
       .subscribe(res => {
           if (res['success']) {
             this.authToken = res['token'];
@@ -26,7 +26,7 @@ export class HyperAuthService {
   }
 
   public oauth(user, callback) {
-    this.http.post('http://localhost:3000/user/oauth', user)
+    this.http.post(`http://${window.location.hostname}:3000/user/oauth`, user)
       .subscribe((resp) => {
         if (resp['success']) {
           this.authToken = resp['token'];
@@ -39,7 +39,7 @@ export class HyperAuthService {
   }
 
   public register(user) {
-    this.http.post('http://localhost:3000/user/register', user)
+    this.http.post(`http://${window.location.hostname}:3000/user/register`, user)
       .subscribe(resp => {
           if (resp['success']) {
             console.log(resp);

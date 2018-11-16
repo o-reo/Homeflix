@@ -1,4 +1,4 @@
-.links > *{
+.links > * {
   margin: 0 15px;
 }
 
@@ -6,9 +6,8 @@
   text-align: right;
 }
 
-.navbar {
+.navbar{
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   height: 55px;
   margin: 0;
   padding: 0;
@@ -19,12 +18,28 @@
   z-index: 2;
 }
 
-.navbar span {
-  text-align: center;
-  font-family: 'Pinco';
-  color: #d32f2f;
-  text-shadow: white 1px 1px;
-  font-size: 42px;
+@media only screen and (min-width: 600px) {
+  .navbar {
+    grid-template-columns: 150px 1fr 150px;
+  }
+
+  .navbar span {
+    text-align: center;
+    font-family: 'Pinco';
+    color: #d32f2f;
+    text-shadow: white 1px 1px;
+    font-size: 42px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .navbar span {
+    display: none;
+  }
 }
 
 .navbar mat-icon:hover {
