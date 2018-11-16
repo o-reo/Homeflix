@@ -37,7 +37,7 @@ vg-player {
 
 .details-grid{
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: minmax(auto, 200px) minmax(80%, 1fr);
 }
 
 .details{
@@ -51,8 +51,9 @@ vg-player {
 
 .details img {
   object-fit: contain;
-  margin: 20px 8px;
-  width: calc(100% - 16px);
+  margin: 0 5px;
+  max-width: calc(100% - 10px);
+  max-height: 100%;
 }
 
 .tab{

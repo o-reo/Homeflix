@@ -8,7 +8,7 @@
 
 .navbar {
   display: grid;
-  grid-template-columns: 150px 1fr 150px;
+  grid-template-columns: 1fr 1fr 1fr;
   height: 55px;
   margin: 0;
   padding: 0;
@@ -24,7 +24,7 @@
   font-family: 'Pinco';
   color: #d32f2f;
   text-shadow: white 1px 1px;
-  font-size: 48px;
+  font-size: 42px;
 }
 
 .navbar mat-icon:hover {

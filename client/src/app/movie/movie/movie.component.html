@@ -19,22 +19,24 @@
       </mat-card-content>
     </mat-card>
     <mat-card>
-      <mat-card-content class="details-grid">
-        <div class="details">
-          <img [src]="torrent.medium_cover_image">
-        </div>
+      <mat-card-content>
         <mat-tab-group class="details">
           <mat-tab label="Info" class="tab-section">
-            <div class="tab info">
-              <h3>{{ torrent.title }}
-                <mat-chip selected>{{torrent.rating}}</mat-chip>
-              </h3>
-              <p>{{ torrent.year }}</p>
-              <p>{{torrent.runtime}}mn</p>
-              <p>{{torrent.views}} views</p>
-              <mat-chip-list>
-                <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre}}</mat-chip>
-              </mat-chip-list>
+            <div class="tab info details-grid">
+              <div>
+                <img [src]="torrent.medium_cover_image">
+              </div>
+              <div>
+                <h3>{{ torrent.title }}
+                  <mat-chip selected>{{torrent.rating}}</mat-chip>
+                </h3>
+                <p>{{ torrent.year }}</p>
+                <p>{{torrent.runtime}}mn</p>
+                <p>{{torrent.views}} views</p>
+                <mat-chip-list>
+                  <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre}}</mat-chip>
+                </mat-chip-list>
+              </div>
             </div>
           </mat-tab>
           <mat-tab label="Synopsis"><p class="tab">{{ torrent.synopsis }}</p></mat-tab>
