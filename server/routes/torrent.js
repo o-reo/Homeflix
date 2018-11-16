@@ -13,10 +13,11 @@ router.route('/:id')
     .get(authController.validJWT, movieController.getMovieInfos);
 
 router.route('/stream/:hash')
-    .get(authController.validJWT, torrentController.streamTorrent);
+    .post(authController.validJWT, torrentController.streamTorrent)
+    .put(authController.validJWT, torrentController.liveTorrent);
 
-router.route('/streaming/:file')
-    .get(streamController.getStream);
+// router.route('/streaming/:file')
+//     .get(streamController.getStream);
 
 // router.route('/streaming/:directory/:file')
 //     .get(streamController.getStreamDirectory);
