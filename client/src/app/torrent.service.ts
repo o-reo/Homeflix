@@ -39,17 +39,17 @@ export class TorrentService {
       {headers: headers, params: {imdbid: imdbid, lang: lang, filesize: filesize}});
   }
 
-  startStreaming(movie) {
+  startStreaming(movie, torrent_id) {
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
-    return this.http.post<any>('http://localhost:3000/torrent/stream/' + movie.torrents[0].hash, {imdbid: movie.imdb_code},
+    return this.http.post<any>('http://localhost:3000/torrent/stream/' + movie.torrents[torrent_id].hash, {imdbid: movie.imdb_code},
       {headers: headers});
   }
 
-  liveStreaming(movie) {
+  liveStreaming(movie, torrent_id) {
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
-    return this.http.put<any>('http://localhost:3000/torrent/stream/' + movie.torrents[0].hash, {imdbid: movie.imdb_code},
+    return this.http.put<any>('http://localhost:3000/torrent/stream/' + movie.torrents[torrent_id].hash, {imdbid: movie.imdb_code},
       {headers: headers});
   }
 }
