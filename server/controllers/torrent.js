@@ -91,7 +91,7 @@ exports.streamTorrent = function (req, res) {
 
     // Only if this torrent has not been downloaded and converted
     if (!global.PROCESS_ARRAY[req.params.hash] || global.PROCESS_ARRAY[req.params.hash].status === 'stopped') {
-        let engine = torrentStream(magnet, {path: './../films'});
+        let engine = torrentStream(magnet, {path: './../films/' + req.params.hash + '/torrent'});
         // Torrent engine is ready
         let stream;
         engine.on('ready', function () {
