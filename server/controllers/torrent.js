@@ -139,6 +139,9 @@ exports.streamTorrent = function (req, res) {
                         res.json({path: '/' + req.params.hash + '/output.m3u8'});
                         sent = true;
                     }
+                    if ((Date.now() / 1000) - global.PROCESS_ARRAY[req.params.hash].live > 30) {
+                        stop(req.params.hash)
+                    }
                 })
                 .on('end', () => {
                     global.PROCESS_ARRAY[req.params.hash].status = 'done';
