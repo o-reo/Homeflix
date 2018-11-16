@@ -126,6 +126,7 @@ exports.streamTorrent = function (req, res) {
                     '-start_number 0',
                     '-hls_list_size 0',
                     '-hls_time 10',
+                    '-threads 3',
                     '-f hls'
                 ])
                 .on('start', () => {
