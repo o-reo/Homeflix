@@ -11,6 +11,7 @@ const route_torrents = require('./routes/torrents');
 const route_subtitles = require('./routes/subtitles');
 const route_comments = require('./routes/comments');
 const route_comment = require('./routes/comment');
+const route_setup = require('./routes/setup');
 
 let app = express();
 
@@ -54,6 +55,7 @@ app.use('/subtitles', route_subtitles);
 app.use('/user', route_user);
 app.use('/comment', route_comment);
 app.use('/comments', route_comments);
+app.use('/setup', route_setup);
 
 // Empty current ffmpeg process array
 global.PROCESS_ARRAY = {};

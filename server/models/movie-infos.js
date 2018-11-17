@@ -3,7 +3,8 @@ var mongoosePaginate = require('mongoose-paginate');
 const User = require('../models/user');
 
 var MovieInfosSchema = new mongoose.Schema({
-    imdb_code: {type: String, required: true},
+    imdb_code: {type: String, required: true, unique: true},
+    type: {type: String, required: true},
     title: {type: String, required: true},
     year: {type: Number, required: true},
     rating: {type: Number, required: true},
@@ -17,14 +18,14 @@ var MovieInfosSchema = new mongoose.Schema({
     medium_cover_image: {type: String, required: true},
     large_cover_image: {type: String, required: true},
     language: {type: String, required: true},
+    cast: [],
     torrents: [{
-        url: {type: String, required: true},
+        magnet: {type: String},
         hash: {type: String, required: true},
         quality: {type: String, required: true},
         seeds: {type: Number, required: true},
         peers: {type: Number, required: true},
-        size: {type: String, required: true},
-        quality: {type: String, required: true},
+        size: {type: String, required: true}
     }]
 });
 
