@@ -1,15 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
-
-
-const ViewSchema = new mongoose.Schema({
-  imdbid: {
-    type: String,
-    required: true
-  }
-});
-
+const View = require('./view.js');
 
 const UserSchema = mongoose.Schema({
   first_name: {
@@ -63,13 +54,11 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: 'english'
   },
-  views: [ViewSchema]
+  views: [{type: mongoose.Schema.Types.ObjectId,  ref: 'View'}]
 });
 
+
 const User = module.exports = mongoose.model('User', UserSchema);
-
-
-const View = module.exports = mongoose.model('View', ViewSchema);
 
 
 module.exports.getUserById = function(id, callback) {
@@ -104,6 +93,7 @@ module.exports.addView = function(info, callback) {
   });
 };
 
+
 module.exports.countViews = function(imdbid, callback) {
   User.countDocuments({
     views: {
@@ -125,6 +115,7 @@ module.exports.getUser = function(query, callback) {
     callback(err, user);
   });
 };
+
 
 module.exports.getUserByUsername = function(username, callback) {
   User.findOne({

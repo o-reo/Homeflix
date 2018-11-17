@@ -82,9 +82,17 @@ export class UpdateComponent implements OnInit {
   update(data, key) {
     this.cleanErrorMessage();
     this.userService.getUser('').subscribe(resp => {
-      const obj = {newInfo: {[key]: data}, oldInfo: {}};
-      obj['oldInfo'][key] = resp[key];
-      this.userService.updateMyUser(obj).subscribe(res => {
+      const req = {};
+      if (key !== 'username') {
+        req['oldInfo'] = {'_id': resp['_id']};
+        req['newInfo'] = {[key]: data};
+      } else {
+        const oldPath = resp['photo'];
+        const newPath = 'profil_pictures/' + data + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
+        req['oldInfo'] = {'_id': resp['_id']};
+        req['newInfo'] = {[key]: data, 'photo': newPath};
+      }
+      this.userService.updateMyUser(req).subscribe(res => {
         if (res['success'] === true) {
           if (key === 'first_name') {
             key = 'First name';
@@ -99,6 +107,7 @@ export class UpdateComponent implements OnInit {
           this.throwErrors(res);
         }
       });
+
     });
   }
 
@@ -106,9 +115,8 @@ export class UpdateComponent implements OnInit {
   update_password() {
     this.cleanErrorMessage();
     this.userService.getUser('').subscribe(resp => {
-      const obj = {newInfo: {['password']: this.password, ['password2']: this.password2}, oldInfo: {}};
-      obj['oldInfo']['username'] = resp['username'];
-      this.userService.updateMyUser(obj).subscribe(res => {
+      const req = {oldInfo: {'_id': resp['_id']}, newInfo: {['password']: this.password, ['password2']: this.password2}};
+      this.userService.updateMyUser(req).subscribe(res => {
         if (res['success'] === true) {
           this.snackBar.open('Password' + ' was successfully updated.', 'X', {
             duration: 3000,
@@ -148,9 +156,8 @@ export class UpdateComponent implements OnInit {
       }
       /* Request to uploads picture name to database. */
       this.userService.getUser('').subscribe(resp => {
-        const obj = {newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}, oldInfo: {}};
-        obj['oldInfo']['photo'] = resp['photo'];
-        this.userService.updateMyUser(obj).subscribe(res => {
+        const req = {oldInfo: {'_id': resp['_id']}, newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}};
+        this.userService.updateMyUser(req).subscribe(res => {
           if (res['success'] === true) {
             this.snackBar.open('Photo' + ' was successfully updated.', 'X', {
               duration: 3000,
@@ -162,7 +169,7 @@ export class UpdateComponent implements OnInit {
         });
       });
     } else {
-        this.throwErrors({place: 'err_photo', message: 'Photo is empty.'});
+      this.throwErrors({place: 'err_photo', message: 'Photo is empty.'});
     }
   }
 
@@ -203,4 +210,3 @@ export class UpdateComponent implements OnInit {
     return 'url(\'http://localhost:3000/' + this.path + '\')';
   }
 }
-

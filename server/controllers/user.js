@@ -84,7 +84,7 @@ exports.updateUser = function (req, res) {
         (req.body.newInfo.username && errors['username_undefined'] !== true) ||
         (req.body.newInfo.photo && errors['no_photo'] !== true) ||
         (req.body.newInfo.email && errors['mail_undefined'] !== true && errors['mail_uncorrect'] !== true)) {
-        User.findOneAndUpdate(req.body.oldInfo, {$set: req.body.newInfo}, (err) => {
+        User.findOneAndUpdate(req.body.oldInfo, {$set: req.body.newInfo}, {new: false}, (err, doc) => {
             if (err) {
                 if (req.body.newInfo.username || req.body.newInfo.email)
                     res.json({
@@ -96,12 +96,24 @@ exports.updateUser = function (req, res) {
             }
             else {
                 /* Delete picture if update is a picture. */
-                if (req.body.oldInfo.photo) {
-                    if (fs.existsSync('./public/' + req.body.oldInfo.photo)) {
-                        fs.unlinkSync('./public/' + req.body.oldInfo.photo);
+                if (req.body.newInfo.photo  && !req.body.newInfo.username) {
+                    if (fs.existsSync('./public/' + doc['photo'])) {
+                        fs.unlinkSync('./public/' + doc['photo']);
                     }
                 }
-                res.json({success: true, msg: 'Profile is successfully updated.'});
+                /* Rename on database and server photo path if username is changed. */
+                else if (req.body.newInfo.username) {
+                    const username = req.body.newInfo.username;
+                    const oldPath = doc['photo'];
+                    const newPath = 'profil_pictures/' + username + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
+                    fs.rename('./public/' + oldPath, './public/' + newPath, function (err) {
+                        if (err)
+                            console.log(err);
+                    });
+
+                }
+                if (doc)
+                    res.json({success: true, msg: 'Profile is successfully updated.'});
             }
         });
     }
@@ -146,7 +158,7 @@ exports.updateUser = function (req, res) {
             msg = {place: 'err_email', message: 'Email is uncorrect.'};
         }
         if (errors['password1_empty'] !== true && errors['password2_empty'] !== true &&
-        errors['passwords_dont_match'] !== true && errors['password_uncorrect'] === true) {
+            errors['passwords_dont_match'] !== true && errors['password_uncorrect'] === true) {
             msg = {place: 'err_password2', message: 'Password is not strong enough.'};
         }
         res.json(msg);
