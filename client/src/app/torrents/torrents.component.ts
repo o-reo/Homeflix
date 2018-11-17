@@ -44,7 +44,9 @@ export class TorrentsComponent implements OnInit {
 
   @HostListener('window:scroll', [])
   onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    //if ((window.innerHeight + window.scrollY) + 5 >= document.body.offsetHeight) {
+    // Added plus one to the condition because sometimes the sum was it was plus 0.5.
+    if ((window.innerHeight + window.scrollY) + 1 >= document.body.offsetHeight) {
       this.torrentService.page++;
       this.searchService.search(this.searchService.title, this.searchService.tri, this.searchService.genre, this.torrentService.page, true, this.torrentService.api);
      // document.body.scrollTop = document.documentElement.scrollTop = 0;

@@ -3,7 +3,7 @@
     <mat-card-content>
       <form role="form" [formGroup]="formGroupSearch" name="formSearch">
         <mat-form-field>
-          <input matInput type="text" [(ngModel)]="input_query" placeholder="Title"/>
+          <input matInput type="text" formControlName="input_query" placeholder="Title"/>
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="inputGenre" placeholder="Genre">

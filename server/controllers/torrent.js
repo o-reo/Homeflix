@@ -34,6 +34,8 @@ exports.getTorrents = function (req, res) {
             sort = {year: order};
         if (req.query.sort_by === 'rating')
             sort = {rating: order};
+        if (req.query.sort_by === 'runtime')
+            sort = {runtime: order};
     }
     const options = {
         sort: sort,

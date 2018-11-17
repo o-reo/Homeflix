@@ -1,12 +1,17 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+// Commented view part so that update works
+
+
+/*
 const ViewSchema = new mongoose.Schema({
     imdbid: {
         type: String,
         required: true
     }
 });
+*/
 
 const UserSchema = mongoose.Schema({
     first_name: {
@@ -60,11 +65,13 @@ const UserSchema = mongoose.Schema({
         type: String,
         default: 'english'
     },
-    views: [ViewSchema]
+    //views: [ViewSchema]
 });
 
 const User = module.exports = mongoose.model('User', UserSchema);
-const View = module.exports = mongoose.model('View', ViewSchema);
+
+
+//const View = module.exports = mongoose.model('View', ViewSchema);
 
 
 module.exports.getUserById = function (id, callback) {
@@ -76,6 +83,8 @@ module.exports.getUserById = function (id, callback) {
     });
 };
 
+
+/*
 module.exports.addView = function(info, callback){
     User.findOne({_id: info.user_id}, (err, user) => {
         const has_viewed = user.views.toString().includes(info.imdbid);
@@ -100,6 +109,7 @@ module.exports.countViews = function (imdbid, callback) {
        callback(err, views);
    });
 };
+*/
 
 module.exports.getUser = function (query, callback) {
     User.findOne(query, (err, user) => {
