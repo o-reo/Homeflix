@@ -121,7 +121,7 @@ exports.updateUser = function (req, res) {
         && errors['passwords_dont_match'] !== true && errors['password_uncorrect'] !== true) {
         bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(req.body.newInfo.password, salt, (err, hash) => {
-                    User.findOneAndUpdate(req.body.oldInfo, {$set: {password: hash}}, (err) => {
+                    User.updateUser(req.body.oldInfo, {password: hash}, (err, user) => {
                         if (err) {
                             if (req.body.newInfo.username)
                                 res.json({

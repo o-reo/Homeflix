@@ -163,13 +163,17 @@ function addEztvTorrents(page) {
   });
 }
 
-exports.populate = function(req, res) {
-  addEztvTorrents(1);
-};
+checkIMDB(){
+  MovieInfos.find((err, movies) => {
+    console.log(movies);
+  });
+}
 
-// exports.populate = function(req, res) {
-//   dlPage(1);
-//   res.json({
-//     msg: 'Populating database...'
-//   })
-// };
+exports.populate = function(req, res) {
+  // addEztvTorrents(1);
+  //   dlPage(1);
+  checkIMDB();
+    res.json({
+      msg: 'Populating database...'
+    })
+};
