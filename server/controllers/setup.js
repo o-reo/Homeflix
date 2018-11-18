@@ -163,7 +163,7 @@ function addEztvTorrents(page) {
   });
 }
 
-checkIMDB(){
+function checkIMDB() {
   MovieInfos.find((err, movies) => {
     console.log(movies);
   });
