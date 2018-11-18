@@ -203,4 +203,3 @@ export class UpdateComponent implements OnInit {
     return 'url(\'http://localhost:3000/' + this.path + '\')';
   }
 }
-

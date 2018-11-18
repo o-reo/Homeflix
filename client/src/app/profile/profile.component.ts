@@ -44,6 +44,9 @@ export class ProfileComponent implements OnInit {
     if (!this.photo) {
       return 'none';
     }
+    if (!this.photo.includes('http://') && !this.photo.includes('https://')) {
+      this.photo = `http://${window.location.hostname}:3000/${this.photo}`;
+    }
     return 'url(\'' + this.photo + '\')';
   }
 }

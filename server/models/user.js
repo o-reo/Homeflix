@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
-
-
 const ViewSchema = new mongoose.Schema({
   imdbid: {
     type: String,
@@ -74,9 +71,6 @@ const View = module.exports = mongoose.model('View', ViewSchema);
 
 module.exports.getUserById = function(id, callback) {
   User.findById(id, (err, user) => {
-    if (user && !user.photo.includes('http://') && !user.photo.includes('https://')) {
-      user.photo = 'http://localhost:3000/' + user.photo;
-    }
     callback(err, user);
   });
 };
@@ -244,3 +238,11 @@ module.exports.checkEmail = function(email, errors) {
     errors['mail_uncorrect'] = true;
   return (errors);
 };
+
+module.exports.updateUser = function(id, data, callback) {
+  User.findByIdAndUpdate(id, {
+    $set: data
+  }, (err, user) => {
+    callback(err, user);
+  });
+}

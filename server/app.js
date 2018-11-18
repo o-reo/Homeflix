@@ -23,24 +23,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 mongoose.set('useCreateIndex', true);
 
 //connect to mongodb
-mongoose.connect(config.database, {useNewUrlParser: true});
+mongoose.connect(config.database, {
+  useNewUrlParser: true
+});
 
 //on connection
 mongoose.connection.on('connected', () => {
-    console.log('Log: Mongodb connected on port:', '27017');
+  console.log('Log: Mongodb connected on port:', '27017');
 });
 
 //on error connection
 mongoose.connection.on('error', (err) => {
-    if (err) {
-        console.log('Log: Mongodb connection error: ' + err);
-    }
+  if (err) {
+    console.log('Log: Mongodb connection error: ' + err);
+  }
 });
 
 //body - parser
 app.use(bodyparser.json({}));
 app.use(bodyparser.urlencoded({
-    extended: true
+  extended: true
 }));
 
 app.use(require('morgan')('combined'));
@@ -61,7 +63,7 @@ app.use('/setup', route_setup);
 global.PROCESS_ARRAY = {};
 
 app.listen(port, () => {
-    console.log('Log: Server listening on port:', port);
+  console.log('Log: Server listening on port:', port);
 });
 
 // HLS Server for streaming movies
@@ -71,10 +73,10 @@ let http = require('http');
 let server = http.createServer();
 
 let hls = new HLSServer(server, {
-    path: '/streams',     // Base URI to output HLS streams
-    dir: '../films'  // Directory that input files are stored
+  path: '/streams', // Base URI to output HLS streams
+  dir: '../films' // Directory that input files are stored
 });
 
 server.listen(8000, () => {
-        console.log('Log: Streaming server listens on port:', 8000);
-    });
+  console.log('Log: Streaming server listens on port:', 8000);
+});
