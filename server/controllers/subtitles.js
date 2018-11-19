@@ -14,13 +14,16 @@ exports.getSubtitles = function (req, res) {
     }
     let search_array = {
         sublanguageid: lang,
-        extensions: ['srt']
+        imdbid: req.query.imdbid
     };
     if (req.query.filesize) {
         search_array.filesize = req.query.filesize;
     }
-    if (req.query.filesize) {
-        search_array.imdbid = req.query.imdbid;
+    if (req.query.season) {
+        search_array.season = req.query.season;
+    }
+    if (req.query.episode) {
+        search_array.episode = req.query.episode;
     }
     OpenSubtitles.login()
         .then(result => {

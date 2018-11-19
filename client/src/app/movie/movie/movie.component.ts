@@ -23,8 +23,8 @@ export class MovieComponent implements OnInit {
   link: String;
   lang: String;
   subtitle_default: boolean;
-  subtitle_defined_en: boolean;
-  subtitle_defined_lang: boolean;
+  subtitle_defined_en: string;
+  subtitle_defined_lang: string;
   @Input() subtitle_path_en;
   @Input() subtitle_path_lang;
   torrent_id: number;
@@ -46,6 +46,14 @@ export class MovieComponent implements OnInit {
       .subscribe(torrent => {
         this.torrent = torrent;
         this.lang = 'eng';
+        const subdata = {
+          imdbid: torrent.imdb_code,
+          filesize: bytes(torrent.torrents[this.torrent_id].size)
+        };
+        if (torrent.torrents[this.torrent_id].episode) {
+          subdata['episode'] = torrent.torrents[this.torrent_id].episode;
+          subdata['season'] = torrent.torrents[this.torrent_id].season;
+        }
         this.userService.getUser('').subscribe(resp => {
           if (resp['language'] === 'french') {
             this.lang = 'fre';
@@ -53,13 +61,13 @@ export class MovieComponent implements OnInit {
             this.lang = 'spa';
           }
           if (this.lang !== 'eng') {
-            this.torrentService.getSubtitles('eng', torrent.imdb_code, bytes(torrent.torrents[this.torrent_id].size))
+            this.torrentService.getSubtitles('eng', subdata)
               .subscribe(subtitles => {
                 this.subtitle_defined_en = subtitles.path;
                 this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
               });
           }
-          this.torrentService.getSubtitles(this.lang, torrent.imdb_code, bytes(torrent.torrents[this.torrent_id].size))
+          this.torrentService.getSubtitles(this.lang, subdata)
             .subscribe(subtitles => {
               this.subtitle_defined_lang = subtitles.path;
               this.subtitle_path_lang = './../../../src/assets/' + subtitles.path;

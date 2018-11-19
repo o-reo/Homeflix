@@ -33,11 +33,11 @@ export class TorrentService {
     return this.http.get<any>(`http://${window.location.hostname}:3000/torrent/${id}`, {headers: headers});
   }
 
-  getSubtitles(lang, imdbid, filesize) {
+  getSubtitles(lang, data) {
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
     return this.http.get<any>(`http://${window.location.hostname}:3000/subtitles`,
-      {headers: headers, params: {imdbid: imdbid, lang: lang, filesize: filesize}});
+      {headers: headers, params: data});
   }
 
   startStreaming(movie, torrent_id) {
