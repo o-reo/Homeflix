@@ -153,7 +153,9 @@ function checkIMDB() {
                     movie.synopsis = infos['overview'];
                     movie.title = infos['name'];
                     movie.rating = infos['vote_average'];
-                    movie.medium_cover_image = `https://image.tmdb.org/t/p/w300${infos['poster_path']}`;
+                    if (infos.poster_path){
+                        movie.medium_cover_image = `https://image.tmdb.org/t/p/w300${infos['poster_path']}`;
+                    }
                     request(`https://api.themoviedb.org/3/tv/${infos['id']}?${api_query}`, function(error, response, body) {
                         let tvdata = JSON.parse(body);
                         let genres = [];
@@ -215,6 +217,9 @@ function checkIMDB() {
             } else if (movie.type === 'Movie'){
                 if (infos && infos['movie_results'] && infos['movie_results'][0]) {
                     infos = infos['movie_results'][0];
+                    if (infos.poster_path){
+                        movie.medium_cover_image = `https://image.tmdb.org/t/p/w300${infos['poster_path']}`;
+                    }
                     // Get casting
                     request(`https://api.themoviedb.org/3/movie/${infos['id']}/credits?${api_query}`, function(error, response, body) {
                        let moviedata = JSON.parse(body);
@@ -254,8 +259,8 @@ function checkIMDB() {
 
 exports.populate = function(req, res) {
   // addEZTVTorrents(1, 4);
-  //   addYTSTorrents(1, 3);
-  checkIMDB();
+    addYTSTorrents(1, 3);
+  // checkIMDB();
     res.json({
       msg: 'Populating database...'
     })
