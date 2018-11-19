@@ -84,7 +84,7 @@ server.listen(8000, () => {
     console.log('Log: Streaming server listens on port:', 8000);
 });
 
-let cleaning = schedule.scheduleJob({day: 1, hour: 12, minute: 0}, () => {
+let cleaning = schedule.scheduleJob({hour: 12, minute: 0}, () => {
         console.log('TASK: Cleaning old movies');
         setup.cleanMovies();
 });
