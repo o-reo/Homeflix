@@ -215,7 +215,7 @@ function checkIMDB() {
                 }
                 // Handle Movie infos
             } else if (movie.type === 'Movie'){
-                if (infos && infos['movie_results'] && infos['movie_results'][0]) {
+                if (infos && infos['movie_results'] && infos['movie_results'][0] && infos['movie_results'][0]['poster_path']) {
                     infos = infos['movie_results'][0];
                     if (infos.poster_path){
                         movie.medium_cover_image = `https://image.tmdb.org/t/p/w300${infos['poster_path']}`;
@@ -244,7 +244,7 @@ function checkIMDB() {
                         movie.save((err, movie) => {
                             if(err){
                                 console.log(err);
-                            }else {
+                            } else {
                                 console.log(`Adding data to ${movie.title}`);
                             }
                         });
@@ -259,8 +259,8 @@ function checkIMDB() {
 
 exports.populate = function(req, res) {
   // addEZTVTorrents(1, 4);
-    addYTSTorrents(1, 3);
-  // checkIMDB();
+  //   addYTSTorrents(1, 3);
+  checkIMDB();
     res.json({
       msg: 'Populating database...'
     })
