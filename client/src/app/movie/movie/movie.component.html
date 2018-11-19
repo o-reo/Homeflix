@@ -30,9 +30,13 @@
                 <h3>{{ torrent.title }}
                   <mat-chip selected>{{torrent.rating}}</mat-chip>
                 </h3>
-                <p>{{ torrent.year }}</p>
-                <p>{{torrent.runtime}}mn</p>
+                <p *ngIf="torrent">{{ torrent.type }} - {{ torrent.year }}</p>
+                <p *ngIf="torrent.runtime">{{torrent.runtime}}mn</p>
+                <p *ngIf="torrent.torrents[torrent_id].episode && torrent.torrents[torrent_id].episode != 0">Season {{torrent.torrents[torrent_id].season}} -
+                  Episode {{torrent.torrents[torrent_id].episode}}
+                </p>
                 <p>{{torrent.views}} views</p>
+                <p></p>
                 <mat-chip-list>
                   <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre}}</mat-chip>
                 </mat-chip-list>
