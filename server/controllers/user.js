@@ -19,7 +19,8 @@ exports.getUser = function (req, res) {
                         username: result.username,
                         email: result.email,
                         photo: result.photo,
-                        language: result.language
+                        language: result.language,
+                        grant: result.grant
                     });
                 } else {
                     res.json({success: false, msg: 'Corrupted user data'});

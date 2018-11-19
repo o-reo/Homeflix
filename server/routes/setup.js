@@ -8,4 +8,7 @@ const router = express.Router({});
 router.route('/populate')
     .get(setupController.populate);
 
+router.route('/informations')
+    .get(setupController.infos);
+
 module.exports = router;

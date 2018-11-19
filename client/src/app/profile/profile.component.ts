@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
 // import {User} from '../user';
-import {FormControl, FormGroup} from '@angular/forms';
 import {HyperAuthService} from '../auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-profile',
@@ -18,8 +19,11 @@ export class ProfileComponent implements OnInit {
   language: string;
   email: string;
   id: string;
+  grant: boolean;
+  amount: number;
 
-  constructor(private authService: HyperAuthService, private userService: UserService, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: HyperAuthService, public snackBar: MatSnackBar, private userService: UserService,
+              private activatedRoute: ActivatedRoute, private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -37,6 +41,7 @@ export class ProfileComponent implements OnInit {
       if (resp['email']) {
         this.email = resp['email'];
       }
+      this.grant = resp['grant'];
     });
   }
 
@@ -48,5 +53,34 @@ export class ProfileComponent implements OnInit {
       this.photo = `http://${window.location.hostname}:3000/${this.photo}`;
     }
     return 'url(\'' + this.photo + '\')';
+  }
+
+  populate() {
+    const params = {};
+    if (this.amount) {
+      params['amount'] = this.amount;
+    }
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    this.http.get(`http://${window.location.hostname}:3000/setup/populate`, {headers: headers, params: params})
+      .subscribe((err) => {
+        this.snackBar.open('Database was populated', 'X', {
+          duration: 2000
+        });
+      });
+  }
+
+  getInfos() {
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    this.http.get(`http://${window.location.hostname}:3000/setup/informations`, {headers: headers})
+      .subscribe((err) => {
+        console.log('ended');
+        this.snackBar.open('Data was added to the movies', 'X', {
+          duration: 2000
+        });
+      });
   }
 }
