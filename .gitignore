@@ -4,6 +4,5 @@ server/node_modules/*
 client/node_modules/*
 client/src/assets/subtitles/*
 !client/src/assets/subtitles/.empty
-database/*
 server/config/credentials.js
 client/src/app/credentials.ts
