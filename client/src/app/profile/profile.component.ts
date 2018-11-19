@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
     headers['Content-Type'] = 'application/json';
     this.http.get(`http://${window.location.hostname}:3000/setup/populate`, {headers: headers, params: params})
       .subscribe((err) => {
-        this.snackBar.open('Database was populated', 'X', {
+        this.snackBar.open('Database is populating in background...', 'X', {
           duration: 2000
         });
       });
@@ -76,11 +76,9 @@ export class ProfileComponent implements OnInit {
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
     headers['Content-Type'] = 'application/json';
     this.http.get(`http://${window.location.hostname}:3000/setup/informations`, {headers: headers})
-      .subscribe((err) => {
-        console.log('ended');
-        this.snackBar.open('Data was added to the movies', 'X', {
-          duration: 2000
-        });
-      });
+      .subscribe();
+    this.snackBar.open('Database data is updating in background...', 'X', {
+      duration: 2000
+    });
   }
 }

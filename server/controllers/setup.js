@@ -25,7 +25,7 @@ function addYTSTorrents(page, max_page) {
                 data = JSON.parse(body);
             } catch (err) {
                 error = err;
-                console.log(err);
+                console.log('YTS ids need to be updated');
             }
             count = data.data.movies.length;
             if (!error) {
@@ -131,7 +131,7 @@ function addEZTVTorrents(page, max_page) {
             addEZTVTorrents(page + 1, max_page);
         }
     }).catch((err) => {
-        console.log(err);
+        console.log('EZTV: Could not fetch results');
     });
 }
 
@@ -149,7 +149,9 @@ function checkIMDB(callback) {
                         // Get tv infos
                         if (infos && infos['tv_results'] && infos['tv_results'][0]) {
                             infos = infos['tv_results'][0];
-                            movie.year = infos['first_air_date'].substring(0, 4);
+                            if (infos['first_air_data']){
+                                movie.year = infos['first_air_date'].substring(0, 4);
+                            }
                             movie.synopsis = infos['overview'];
                             movie.title = infos['name'];
                             movie.rating = infos['vote_average'];
@@ -243,9 +245,9 @@ function checkIMDB(callback) {
                                 movie.cast = cast;
                                 movie.save((err, movie) => {
                                     if (err) {
-                                        console.log(err);
+                                        console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
                                     } else {
-                                        console.log(`Adding data to ${movie.title}`);
+                                        console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
                                     }
                                 });
                             });
@@ -277,7 +279,7 @@ exports.populate = function (req, res) {
 exports.infos = function (req, res) {
     checkIMDB(() => {
         res.json({
-            msg: 'Populating database...'
+            msg: 'Adding infos...'
         })
     });
 };

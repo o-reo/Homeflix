@@ -24,7 +24,6 @@ export class TorrentService {
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
     return this.http.get<any>(`http://${window.location.hostname}:3000/torrents/`, {headers: headers, params: query});
-    //return this.http.get<any>(`http://${window.location.hostname}:3000/torrents${query}`, {headers: headers});
   }
 
   getTorrent(id) {

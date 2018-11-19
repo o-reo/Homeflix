@@ -125,7 +125,9 @@ exports.streamTorrent = function (req, res) {
                     '-hls_list_size 0',
                     '-hls_time 10',
                     '-threads 3',
-                    '-f hls'
+                    '-f hls',
+                    '-c:a libfdk_aac',
+                    '-b:a 192k'
                 ])
                 .on('start', () => {
                     global.PROCESS_ARRAY[req.params.hash].status = 'in progress';

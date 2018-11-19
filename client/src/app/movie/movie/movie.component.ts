@@ -60,6 +60,7 @@ export class MovieComponent implements OnInit {
           } else if (resp['language'] === 'spanish') {
             this.lang = 'spa';
           }
+          subdata['lang'] = this.lang;
           if (this.lang !== 'eng') {
             this.torrentService.getSubtitles('eng', subdata)
               .subscribe(subtitles => {
