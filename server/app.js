@@ -3,7 +3,9 @@ let mongoose = require('mongoose');
 let bodyparser = require('body-parser');
 let cors = require('cors');
 let path = require('path');
+var schedule = require('node-schedule');
 const config = require('./config/database');
+const setup = require('./controllers/setup');
 
 const route_user = require('./routes/user');
 const route_torrent = require('./routes/torrent');
@@ -80,4 +82,9 @@ let hls = new HLSServer(server, {
 
 server.listen(8000, () => {
     console.log('Log: Streaming server listens on port:', 8000);
+});
+
+let cleaning = schedule.scheduleJob({day: 1, hour: 12, minute: 0}, () => {
+        console.log('TASK: Cleaning old movies');
+        setup.cleanMovies();
 });

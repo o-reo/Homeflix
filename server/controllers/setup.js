@@ -2,6 +2,8 @@ const request = require('request');
 const MovieInfos = require('../models/movie-infos');
 const credentials = require('../config/credentials');
 const EztvApi = require('eztv-api-pt');
+const fs = require('fs');
+const fse = require('fs-extra');
 
 function addYTSTorrents(page, max_page) {
     if (page >= max_page)
@@ -25,7 +27,7 @@ function addYTSTorrents(page, max_page) {
                 data = JSON.parse(body);
             } catch (err) {
                 error = err;
-                console.log('YTS ids need to be updated');
+                console.log('YTS: IDs need to be updated');
             }
             count = data.data.movies.length;
             if (!error) {
@@ -149,7 +151,7 @@ function checkIMDB(callback) {
                         // Get tv infos
                         if (infos && infos['tv_results'] && infos['tv_results'][0]) {
                             infos = infos['tv_results'][0];
-                            if (infos['first_air_data']){
+                            if (infos['first_air_data']) {
                                 movie.year = infos['first_air_date'].substring(0, 4);
                             }
                             movie.synopsis = infos['overview'];
@@ -202,16 +204,16 @@ function checkIMDB(callback) {
                                     movie.cast = cast;
                                     movie.save((err, movie) => {
                                         if (err) {
-                                            console.log(err);
+                                            console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
                                         } else {
-                                            console.log(`Adding data to ${movie.title}`);
+                                            console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
                                         }
                                     });
                                 });
                             });
                         } else {
                             // Remove show because there is no info about it
-                            console.log('Removed ', movie.title);
+                            console.log('THEMOVIEDB: Removed ', movie.title);
                             movie.remove();
 
                         }
@@ -281,5 +283,19 @@ exports.infos = function (req, res) {
         res.json({
             msg: 'Adding infos...'
         })
+    });
+};
+
+exports.cleanMovies = function (req, res) {
+    let time = new Date().getTime();
+    fs.readdir('../films', (err, files) => {
+        files.forEach((file) => {
+            fs.stat('../films/' + file, (err, stat) => {
+                // mtime is modified time a month is 2592000000 seconds
+               if ((time - stat.mtimeMs) > 2592000000){
+                    fse.remove('../films/' + file);
+               }
+            });
+        });
     });
 };
