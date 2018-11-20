@@ -21,7 +21,7 @@
     <mat-card>
       <mat-card-content>
         <mat-tab-group class="details">
-          <mat-tab label="Info" class="tab-section">
+          <mat-tab label="{{'Info' | translate}}" class="tab-section">
             <div class="tab info details-grid">
               <div>
                 <img [src]="torrent.medium_cover_image">
@@ -30,21 +30,24 @@
                 <h3>{{ torrent.title }}
                   <mat-chip selected>{{torrent.rating}}</mat-chip>
                 </h3>
-                <p *ngIf="torrent">{{ torrent.type }} - {{ torrent.year }}</p>
+                <p *ngIf="torrent">{{ torrent.type | translate }} - {{ torrent.year }}</p>
                 <p *ngIf="torrent.runtime">{{torrent.runtime}}mn</p>
-                <p *ngIf="torrent.torrents[torrent_id].episode && torrent.torrents[torrent_id].episode != 0">Season {{torrent.torrents[torrent_id].season}} -
-                  Episode {{torrent.torrents[torrent_id].episode}}
+                <p *ngIf="torrent.torrents[torrent_id].episode && torrent.torrents[torrent_id].episode != 0">
+                  {{'Season' | translate}}
+                  {{torrent.torrents[torrent_id].season}} -
+                  {{'Episode' | translate}}
+                  {{torrent.torrents[torrent_id].episode}}
                 </p>
-                <p>{{torrent.views}} views</p>
+                <p>{{torrent.views}} {{'views' | translate}}</p>
                 <p></p>
                 <mat-chip-list>
-                  <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre}}</mat-chip>
+                  <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre | translate}}</mat-chip>
                 </mat-chip-list>
               </div>
             </div>
           </mat-tab>
-          <mat-tab label="Synopsis"><p class="tab">{{ torrent.synopsis }}</p></mat-tab>
-          <mat-tab label="Casting">
+          <mat-tab label="{{'Synopsis' | translate}}"><p class="tab">{{ torrent.synopsis }}</p></mat-tab>
+          <mat-tab label="{{'Casting' | translate}}">
             <p class="tab">
               <mat-list>
                 <mat-list-item *ngFor="let cast of torrent.cast">
@@ -54,7 +57,7 @@
               </mat-list>
             </p>
           </mat-tab>
-          <mat-tab label="Comments">
+          <mat-tab label="{{'Comments' | translate}}">
             <app-comments [id_movie]="torrent._id"></app-comments>
           </mat-tab>
         </mat-tab-group>

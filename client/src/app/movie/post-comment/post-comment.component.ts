@@ -23,7 +23,7 @@ export class PostCommentComponent implements OnInit {
   }
 
   public options: Object = {
-    placeholderText: 'Write your comment here',
+    placeholderText: '...',
     theme: 'dark',
     quickInsertTags: [],
     toolbarInline: true,
