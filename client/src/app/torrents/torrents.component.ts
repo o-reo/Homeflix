@@ -35,48 +35,31 @@ export class TorrentsComponent implements OnInit {
   constructor(private torrentService: TorrentService, private route: ActivatedRoute, private searchService: SearchService) { }
 
   ngOnInit() {
-    /*if ('page' in this.route.snapshot.params) {
-         this.torrentService.page = this.route.snapshot.params['page'];
-    }*/
-    this.searchService.search('*', 'pop_d', 'all', 1, false, 'yts');
+    const query = {
+      title: '*',
+      tri: 'pop_d',
+      genre: 'all',
+      page: 1
+    };
+    this.searchService.search(query, false, 'yts');
     this.nextActived = true;
   }
 
   @HostListener('window:scroll', [])
   onScroll(): void {
-    //if ((window.innerHeight + window.scrollY) + 5 >= document.body.offsetHeight) {
-    // Added plus one to the condition because sometimes the sum was it was plus 0.5.
     if ((window.innerHeight + window.scrollY) + 1 >= document.body.offsetHeight) {
       this.torrentService.page++;
-      this.searchService.search(this.searchService.title, this.searchService.tri, this.searchService.genre, this.torrentService.page, true, this.torrentService.api);
-     // document.body.scrollTop = document.documentElement.scrollTop = 0;
+      const query = {
+        title: this.searchService.title,
+        tri: this.searchService.tri,
+        genre: this.searchService.genre,
+        minYear: this.searchService.minYear,
+        maxYear: this.searchService.maxYear,
+        minRating: this.searchService.minRating,
+        maxRating: this.searchService.maxRating,
+        page: this.torrentService.page
+      };
+      this.searchService.search(query, true, this.torrentService.api);
     }
   }
-
-  /* nextPage() {
-    this.torrentService.page++;
-    this.prevActived = true;
-    this.searchService.search(this.searchService.title, this.searchService.tri, this.searchService.genre, this.torrentService.page, false);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-  }
-
-  prevPage() {
-    if (this.torrentService.page > 1) {
-      this.torrentService.page--;
-      this.searchService.search(this.searchService.title, this.searchService.tri, this.searchService.genre, this.torrentService.page, false);
-    }
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-  } */
-
-  /*onSubmitSearch() {
-    this.torrentService.getTorrent(encodeURI(this.formGroupSearch.value.inputSearch))
-      .subscribe(torrents => {
-         //const js = JSON.parse(torrents);
-         //console.log(js);
-         //this.text = torrents;
-        this.torrents = JSON.parse(torrents).data.movies;
-         //console.log(JSON.parse(torrents).movies);
-      });
-  }*/
-
 }

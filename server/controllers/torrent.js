@@ -5,45 +5,40 @@ const User = require('../models/user');
 const ffmpeg = require('fluent-ffmpeg');
 
 exports.getTorrents = function (req, res) {
-    let limit = 20;
     let order = 1;
-    let sort = {title: 1};
-    let page = 1;
     let query = {};
+    let options = {};
     let genre = '*';
+
+    // Query part.
     if (req.query.genre)
         genre = req.query.genre;
     if (req.query.title.charAt(0) !== '*')
         query = {title: {$regex: req.query.title, $options: 'i'}};
     if (genre !== '*') {
-        // console.log('GENRE:', genre);
         query.genres = {$all: [genre]};
     }
-    // console.log('QUERY', query);
+    query['year'] = {$gt: req.query.minYear, $lt: req.query.maxYear};
+    query['rating'] = {$gt: req.query.minRating, $lt: req.query.maxRating};
+
+    // Options part.
     if (req.query.page)
-        page = Math.max(0, req.query.page);
+        options['page'] = Math.max(0, req.query.page);
     if (req.query.limit && req.query.limit <= 50 && req.query.limit >= 1)
-        limit = req.query.limit;
+        options['limit'] = req.query.limit;
     if (req.query.order_by)
         order = (req.query.order_by === 'asc') ? 1 : -1;
     if (req.query.sort_by) {
-        // console.log('sortBy');
         if (req.query.sort_by === 'title')
-            sort = {title: order};
+            options['sort'] = {title: order};
         if (req.query.sort_by === 'year')
-            sort = {year: order};
+            options['sort'] = {year: order};
         if (req.query.sort_by === 'rating')
-            sort = {rating: order};
+            options['sort'] = {rating: order};
         if (req.query.sort_by === 'runtime')
-            sort = {runtime: order};
+            options['sort'] = {runtime: order};
     }
-    const options = {
-        sort: sort,
-        page: page,
-        limit: limit
-    };
     MovieInfos.paginate(query, options, function (err, movies) {
-        //console.log(movies.docs);
         res.json(movies.docs);
     });
 };
@@ -125,9 +120,7 @@ exports.streamTorrent = function (req, res) {
                     '-hls_list_size 0',
                     '-hls_time 10',
                     '-threads 3',
-                    '-f hls',
-                    '-c:a libfdk_aac',
-                    '-b:a 192k'
+                    '-f hls'
                 ])
                 .on('start', () => {
                     global.PROCESS_ARRAY[req.params.hash].status = 'in progress';

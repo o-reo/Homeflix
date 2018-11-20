@@ -1,34 +1,35 @@
 <div class="movie-card">
-  <div class="movie-header">
-
+  <mat-card class="movie-header">
     <div [ngStyle]="getBgStyle()">
-        <i class="material-icons header-icon"></i>
+      <div class="material-icons button-container">
+        <p class="play-button"></p>
+      </div>
     </div>
-  </div><!--movie-header-->
-  <div class="movie-content">
-    <div class="movie-content-header">
+  </mat-card><!--movie-header-->
+  <mat-card class="movie-content">
+    <mat-card-content class="movie-content-header">
       <a href="#">
         <h3 class="movie-title">{{ torrent.title }}</h3>
       </a>
       <!--div class="imax-logo"></div-->
-    </div>
-    <div class="movie-info">
-      <div class="info-section">
+    </mat-card-content>
+    <mat-card-content class="movie-info">
+      <mat-card-content class="info-section">
         <label>Year & Time</label>
         <span>{{ torrent.year }} - {{ torrent.runtime }}mn</span>
-      </div><!--date,time-->
-      <div class="info-section">
+      </mat-card-content><!--date,time-->
+      <mat-card-content class="info-section">
         <label>Rating</label>
         <span>{{ torrent.rating }}</span>
-      </div><!--screen-->
-      <div class="info-section">
+      </mat-card-content><!--screen-->
+      <mat-card-content class="info-section">
         <label>Lang</label>
         <span>{{ torrent.language }}</span>
-      </div><!--row-->
-      <div class="info-section">
+      </mat-card-content><!--row-->
+      <mat-card-content class="info-section">
         <label>Views</label>
         <span>???</span>
-      </div><!--seat-->
-    </div>
-  </div><!--movie-content-->
+      </mat-card-content><!--seat-->
+    </mat-card-content>
+  </mat-card><!--movie-content-->
 </div><!--movie-card-->

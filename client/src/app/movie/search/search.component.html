@@ -44,11 +44,44 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <br/>
         <mat-form-field>
           <input matInput type="text" placeholder="Author"/>
         </mat-form-field>
-        <br/>
+
+
+
+        <ion-range-slider #advancedSliderElement
+                          type="double"
+                          min="1870"
+                          max="2018"
+                          from="2000"
+                          from_min="1870"
+                          from_max="2017"
+                          to="2018"
+                          to_min="1871"
+                          to_max="2018"
+                          prefix="Year: "
+                          (onFinish)="getYears(advancedSlider, $event)">
+        </ion-range-slider>
+
+
+
+        <ion-range-slider #advancedSliderElement
+                          type="double"
+                          min="0"
+                          max="10"
+                          from="0"
+                          from_min="0"
+                          from_max="9"
+                          to="10"
+                          to_min="1"
+                          to_max="10"
+                          prefix="Rating: "
+                          (onFinish)="getRating(advancedSlider, $event)">
+        </ion-range-slider>
+
+
+
         <mat-card-actions>
           <button mat-button type="submit" (click)="onSubmitSearch()">
             <mat-icon>search</mat-icon>

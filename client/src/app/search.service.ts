@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {TorrentService} from "./torrent.service";
-import {forEach} from "@angular/router/src/utils/collection";
+import {TorrentService} from './torrent.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,92 +12,35 @@ export class SearchService {
   tri: string;
   genre: string;
   title: string;
+  minYear: number;
+  maxYear: number;
+  minRating: number;
+  maxRating: number;
 
-  search(title, tri, genre, page, async: boolean, api: string) {
-    /*
-    let query = '?title=' + title;
-    let sort = '';
-    let order = '';
-    let year = '';
-    let rating = '';
-    let runtime = '';
-    let asc = '';
-    let desc = '';
-
-    title = title !== null ? title : '*';
-    query = '?title=' + title;
-    if (api === 'yts') {
-      sort = 'sort_by';
-      order = 'order_by';
-      year = 'year';
-      rating = 'rating';
-      runtime = 'runtime';
-      asc = 'asc';
-      desc = 'desc';
-
-    } else if (api === 'nyaapantsu') {
-      sort = 'sort';
-      order = 'order';
-      year = '2';
-      rating = '6';
-      runtime = '1';
-      asc = 'true';
-      desc = 'false';
-    }
-    query += '&';
-    switch (tri) {
-      case 'year_a':
-        query += sort + '=' + year + '&' + order + '=' + asc;
-        break;
-      case 'year_d':
-        query += sort + '=' + year + '&' + order + '=' + desc;
-        break;
-      case 'pop_a':
-        query += sort + '=' + rating + '&' + order + '=' + asc;
-        break;
-      case 'pop_d':
-        query += sort + '=' + rating + '&' + order + '=' + desc;
-        break;
-      case 'runt_a':
-        query += sort + '=' + runtime + '&' + order + '=' + asc;
-        break;
-      case 'runt_d':
-        query += sort + '=' + runtime + '&' + order + '=' + desc;
-        break;
-    }
-    if (genre !== 'all') {
-      query += '&genre=' + genre;
-    }
-    if (tri || (genre || genre !== 'all')) {
-      query += '&';
-    } else {
-      query += '?';
-    }
-    query += 'page=' + page;
-    console.log('QUERY', query);
-*/
-    let req = {};
-    req['title'] = title !== null ? title : '*';
+  //   search(title, tri, genre, page, async: boolean, api: string) {
+  search(query, async: boolean, api: string) {
+    const req = {};
+    req['minYear'] = query.minYear !== undefined ? query.minYear : 2000;
+    req['maxYear'] = query.maxYear !== undefined ? query.maxYear : 2018;
+    req['minRating'] = query.minRating !== undefined ? query.minRating : 0;
+    req['maxRating'] = query.maxRating !== undefined ? query.maxRating : 10;
+    req['title'] = query.title;
     req['sort_by'] = 'rating';
     req['order_by'] = 'desc';
-    req['page'] = page;
-    if (tri === 'year_a' || tri === 'pop_a' || tri === 'runt_a') {
+    req['page'] = query.page;
+    if (query.tri === 'year_a' || query.tri === 'pop_a' || query.tri === 'runt_a') {
       req['order_by'] = 'asc';
     }
-    if (tri === 'year_a' || tri === 'year_d') {
+    if (query.tri === 'year_a' || query.tri === 'year_d') {
       req['sort_by'] = 'year';
-    }
-    else if (tri === 'runt_a' || tri === 'runt_d') {
+    } else if (query.tri === 'runt_a' || query.tri === 'runt_d') {
       req['sort_by'] = 'runtime';
     }
-    if (genre !== 'all') {
-      req['genre'] = genre;
+    if (query.genre !== 'all') {
+      req['genre'] = query.genre;
     }
-    console.log(req);
-    //this.torrentService.getTorrents(encodeURI(query))
     this.torrentService.getTorrents(req)
       .subscribe(torrents => {
-        //console.log(torrents);
         if (async) {
           if (this.torrentService.torrents) {
             const torrentService = this.torrentService;
@@ -114,52 +56,18 @@ export class SearchService {
           }
         } else {
           if (api === 'yts') {
-            //console.log('torrents', torrents);
             this.torrentService.torrents = torrents;
           }
         }
-        this.title = title;
-        this.genre = genre;
-        this.tri = tri;
+        this.title = query.title;
+        this.genre = query.genre;
+        this.tri = query.tri;
+        this.minYear = query.minYear;
+        this.maxYear = query.maxYear;
+        this.minRating = query.minRating;
+        this.maxRating = query.maxRating;
         this.torrentService.torrentsIsShow = true;
         this.torrentService.loaded = Promise.resolve(true);
       });
-  }
-
-
-  triByDate_a() {
-    this.torrentService.torrents.sort(function (a, b) {
-      return a.year - b.year;
-    });
-  }
-
-  triByDate_d() {
-    this.torrentService.torrents.sort(function (a, b) {
-      return b.year - a.year;
-    });
-  }
-
-  triByPopularity_a() {
-    this.torrentService.torrents.sort(function (a, b) {
-      return a.rating - b.rating;
-    });
-  }
-
-  triByPopularity_d() {
-    this.torrentService.torrents.sort(function (a, b) {
-      return b.rating - a.rating;
-    });
-  }
-
-  triByRunTime_a() {
-    this.torrentService.torrents.sort(function (a, b) {
-      return a.runtime - b.runtime;
-    });
-  }
-
-  triByRunTime_d() {
-    this.torrentService.torrents.sort(function (a, b) {
-      return b.runtime - a.runtime;
-    });
   }
 }

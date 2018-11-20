@@ -1,11 +1,15 @@
 .container {
-  display: flex;
-  justify-content: center;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 .search-container{
   margin:20px 0 20px 0;
   text-align: center;
 }
+
 form {
   display: flex;
   display: -webkit-box;
@@ -14,7 +18,22 @@ form {
   display: -webkit-flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
-mat-form-field {
+
+mat-form-field, ion-range-slider {
   margin:  0 20px 0 20px;
+}
+
+form {
+  width: 100%;
+}
+
+
+ion-range-slider {
+  width: 200px;
+}
+
+.irs-min {
+  visibility: hidden;
 }
