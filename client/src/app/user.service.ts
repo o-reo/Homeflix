@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from './user';
 import {HyperAuthService} from './auth.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,18 @@ import {HyperAuthService} from './auth.service';
 
 export class UserService {
 
-  constructor(private http: HttpClient, private authService: HyperAuthService) {
+  constructor(private http: HttpClient, private authService: HyperAuthService, private translate: TranslateService) {
+  }
+
+
+  switchLanguage(language: string) {
+    let lang = 'en';
+    if (language === 'french') {
+      lang = 'fr';
+    } else if (language === 'spanish') {
+      lang = 'sp';
+    }
+    this.translate.use(lang);
   }
 
   getUsers() {
@@ -53,12 +65,12 @@ export class UserService {
 
 
   // UpdateMyPhoto(photo) {
-    // if ('mail' in localStorage && 'passwd' in localStorage) {
-    //   const headers = this.authService.getHeader_authBasic('application/json');
-    //   return this.http.put<any>('http://localhost:3000/api/myuserphoto', photo, {headers: headers});
-    // } else {
-    //   console.log('ERREUR PAS d USERNAME ET DE PASS');
-    // }
+  // if ('mail' in localStorage && 'passwd' in localStorage) {
+  //   const headers = this.authService.getHeader_authBasic('application/json');
+  //   return this.http.put<any>('http://localhost:3000/api/myuserphoto', photo, {headers: headers});
+  // } else {
+  //   console.log('ERREUR PAS d USERNAME ET DE PASS');
+  // }
   // }
 }
 

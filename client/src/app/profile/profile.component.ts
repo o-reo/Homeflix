@@ -42,6 +42,7 @@ export class ProfileComponent implements OnInit {
         this.email = resp['email'];
       }
       this.grant = resp['grant'];
+      this.userService.switchLanguage(this.language);
     });
   }
 
