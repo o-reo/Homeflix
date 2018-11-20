@@ -20,6 +20,7 @@ exports.getUser = function (req, res) {
                         email: result.email,
                         photo: result.photo,
                         language: result.language,
+                        views: result.views,
                         grant: result.grant
                     });
                 } else {

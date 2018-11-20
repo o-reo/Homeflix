@@ -1,9 +1,11 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import { TorrentService } from '../torrent.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Torrent} from "../torrent";
-import {ActivatedRoute} from "@angular/router";
-import {SearchService} from "../search.service";
+import {Torrent} from '../torrent';
+import {ActivatedRoute} from '@angular/router';
+import {SearchService} from '../search.service';
+import {UserService} from '../user.service';
+
 
 
 @Component({
@@ -12,14 +14,10 @@ import {SearchService} from "../search.service";
   styleUrls: ['./torrents.component.css']
 })
 export class TorrentsComponent implements OnInit {
-
-  /*formGroupSearch = new FormGroup( {
-    inputSearch: new FormControl()
-  });*/
-
   text: String;
   nextActived: boolean;
   prevActived: boolean;
+
   get torrentsIsShow(): boolean {
     return this.torrentService.torrentsIsShow;
   }
@@ -32,17 +30,21 @@ export class TorrentsComponent implements OnInit {
     return this.torrentService.torrents;
   }
 
-  constructor(private torrentService: TorrentService, private route: ActivatedRoute, private searchService: SearchService) { }
+  constructor(private torrentService: TorrentService,  private userService: UserService,
+              private route: ActivatedRoute, private searchService: SearchService) { }
 
   ngOnInit() {
-    const query = {
-      title: '*',
-      tri: 'pop_d',
-      genre: 'all',
-      page: 1
-    };
-    this.searchService.search(query, false, 'yts');
-    this.nextActived = true;
+    this.userService.getUser('').subscribe(resp => {
+      this.searchService.views = resp['views'];
+      const query = {
+        title: '*',
+        tri: 'pop_d',
+        genre: 'all',
+        page: 1
+      };
+      this.searchService.search(query, false, 'yts');
+      this.nextActived = true;
+    });
   }
 
   @HostListener('window:scroll', [])

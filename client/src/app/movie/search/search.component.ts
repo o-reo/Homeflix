@@ -1,8 +1,9 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {TorrentService} from "../../torrent.service";
-import {SearchService} from "../../search.service";
+import {TorrentService} from '../../torrent.service';
+import {SearchService} from '../../search.service';
 import {IonRangeSliderModule} from 'ng2-ion-range-slider';
+
 
 @Component({
   selector: 'app-search',
@@ -21,6 +22,7 @@ export class SearchComponent implements OnInit {
   maxYear: number;
   minRating: number;
   maxRating: number;
+  views: object;
 
   advancedSlider = {name: 'Advanced Slider'};
 

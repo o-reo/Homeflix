@@ -16,6 +16,8 @@ export class SearchService {
   maxYear: number;
   minRating: number;
   maxRating: number;
+  views: object;
+
 
   //   search(title, tri, genre, page, async: boolean, api: string) {
   search(query, async: boolean, api: string) {
@@ -41,33 +43,42 @@ export class SearchService {
     }
     this.torrentService.getTorrents(req)
       .subscribe(torrents => {
-        if (async) {
-          if (this.torrentService.torrents) {
-            const torrentService = this.torrentService;
-            if (api === 'yts') {
-              torrents.forEach(function (val) {
-                torrentService.torrents.push(val);
-              });
+          Object.values(this.views).forEach(function (view) {
+            const imdbid = view['imdbid'];
+            Object.values(torrents).forEach(function (torrent) {
+              if (imdbid === torrent['imdb_code']) {
+                torrent['already_seen'] = true;
+              }
+            });
+          });
+          if (async) {
+            if (this.torrentService.torrents) {
+              const torrentService = this.torrentService;
+              if (api === 'yts') {
+                torrents.forEach(function (val) {
+                  torrentService.torrents.push(val);
+                });
+              }
+            } else {
+              if (api === 'yts') {
+                this.torrentService.torrents = JSON.parse(torrents);
+              }
             }
           } else {
             if (api === 'yts') {
-              this.torrentService.torrents = JSON.parse(torrents);
+              this.torrentService.torrents = torrents;
             }
           }
-        } else {
-          if (api === 'yts') {
-            this.torrentService.torrents = torrents;
-          }
+          this.title = query.title;
+          this.genre = query.genre;
+          this.tri = query.tri;
+          this.minYear = query.minYear;
+          this.maxYear = query.maxYear;
+          this.minRating = query.minRating;
+          this.maxRating = query.maxRating;
+          this.torrentService.torrentsIsShow = true;
+          this.torrentService.loaded = Promise.resolve(true);
         }
-        this.title = query.title;
-        this.genre = query.genre;
-        this.tri = query.tri;
-        this.minYear = query.minYear;
-        this.maxYear = query.maxYear;
-        this.minRating = query.minRating;
-        this.maxRating = query.maxRating;
-        this.torrentService.torrentsIsShow = true;
-        this.torrentService.loaded = Promise.resolve(true);
-      });
+      );
   }
 }

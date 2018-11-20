@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Torrent} from "../torrent";
-import {Input} from "@angular/core";
-import {TorrentService} from "../torrent.service";
+import {Torrent} from '../torrent';
+import {Input} from '@angular/core';
+import {TorrentService} from '../torrent.service';
 
 @Component({
   selector: 'app-torrent',

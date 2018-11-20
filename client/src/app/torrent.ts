@@ -13,4 +13,5 @@ export class Torrent {
   summary: string;
   _id: string;
   hash: string;
+  already_seen: boolean;
 }

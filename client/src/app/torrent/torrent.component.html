@@ -1,11 +1,28 @@
 <div class="movie-card">
   <mat-card class="movie-header">
     <div [ngStyle]="getBgStyle()">
+
+      <div class="view">
+        <div *ngIf="torrent.already_seen; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+          <i class="material-icons view_logo">
+            visibility
+          </i>
+        </ng-template>
+        <ng-template #elseBlock>
+          <i class="material-icons">
+            visibility_off
+          </i>
+        </ng-template>
+      </div>
+
+
       <div class="material-icons button-container">
         <p class="play-button"></p>
       </div>
     </div>
   </mat-card><!--movie-header-->
+
   <mat-card class="movie-content">
     <mat-card-content class="movie-content-header">
       <a href="#">
@@ -23,12 +40,12 @@
         <span>{{ torrent.rating }}</span>
       </mat-card-content><!--screen-->
       <mat-card-content class="info-section">
-        <label>Lang</label>
+        <label>Language</label>
         <span>{{ torrent.language }}</span>
       </mat-card-content><!--row-->
       <mat-card-content class="info-section">
-        <label>Views</label>
-        <span>???</span>
+        <br>
+
       </mat-card-content><!--seat-->
     </mat-card-content>
   </mat-card><!--movie-content-->
