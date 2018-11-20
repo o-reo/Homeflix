@@ -24,16 +24,22 @@
         </mat-form-field>
         <mat-form-field>
           <mat-select formControlName="inputTri" placeholder="{{'Sort by' | translate}}">
+            <mat-option value="pop_a" selected>{{'Popularity' | translate}}
+              <span class="fa fa-sort-up"></span>
+            </mat-option>
+            <mat-option value="pop_d">{{'Popularity' | translate}}
+              <span class="fa fa-sort-down"></span>
+            </mat-option>
             <mat-option value="year_a" selected>{{'Year' | translate}}
               <span class="fa fa-sort-up"></span>
             </mat-option>
             <mat-option value="year_d">{{'Year' | translate}}
               <span class="fa fa-sort-down"></span>
             </mat-option>
-            <mat-option value="pop_a">{{'Popularity' | translate}}
+            <mat-option value="rating_a">{{'Rating' | translate}}
               <span class="fa fa-sort-up"></span>
             </mat-option>
-            <mat-option value="pop_d">{{'Popularity' | translate}}
+            <mat-option value="rating_d">{{'Rating' | translate}}
               <span class="fa fa-sort-down"></span>
             </mat-option>
             <mat-option value="runt_a">{{'Runtime' | translate}}
@@ -48,12 +54,11 @@
           <input matInput type="text" placeholder="{{'Author' | translate}}"/>
         </mat-form-field>
 
-
         <ion-range-slider #advancedSliderElement
                           type="double"
                           min="1870"
                           max="2018"
-                          from="2000"
+                          from="1870"
                           from_min="1870"
                           from_max="2017"
                           to="2018"
@@ -62,7 +67,6 @@
                           prefix="{{'Year'| translate}}: "
                           (onFinish)="getYears(advancedSlider, $event)">
         </ion-range-slider>
-
 
         <ion-range-slider #advancedSliderElement
                           type="double"
@@ -77,7 +81,6 @@
                           prefix="{{'Rating' | translate}}: "
                           (onFinish)="getRating(advancedSlider, $event)">
         </ion-range-slider>
-
 
         <mat-card-actions>
           <button mat-button type="submit" (click)="onSubmitSearch()">

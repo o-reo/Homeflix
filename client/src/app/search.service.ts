@@ -22,21 +22,23 @@ export class SearchService {
   //   search(title, tri, genre, page, async: boolean, api: string) {
   search(query, async: boolean, api: string) {
     const req = {};
-    req['minYear'] = query.minYear !== undefined ? query.minYear : 2000;
+    req['minYear'] = query.minYear !== undefined ? query.minYear : 1870;
     req['maxYear'] = query.maxYear !== undefined ? query.maxYear : 2018;
     req['minRating'] = query.minRating !== undefined ? query.minRating : 0;
     req['maxRating'] = query.maxRating !== undefined ? query.maxRating : 10;
     req['title'] = query.title;
-    req['sort_by'] = 'rating';
+    req['sort_by'] = 'pop';
     req['order_by'] = 'desc';
     req['page'] = query.page;
-    if (query.tri === 'year_a' || query.tri === 'pop_a' || query.tri === 'runt_a') {
+    if (query.tri === 'year_a' || query.tri === 'rating_a' || query.tri === 'runt_a' || query.tri === 'pop_a') {
       req['order_by'] = 'asc';
     }
     if (query.tri === 'year_a' || query.tri === 'year_d') {
       req['sort_by'] = 'year';
     } else if (query.tri === 'runt_a' || query.tri === 'runt_d') {
       req['sort_by'] = 'runtime';
+    } else if (query.tri === 'rating_a' || query.tri === 'rating_d') {
+      req['sort_by'] = 'rating';
     }
     if (query.genre !== 'all') {
       req['genre'] = query.genre;
