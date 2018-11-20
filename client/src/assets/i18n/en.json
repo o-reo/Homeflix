@@ -1,5 +1,11 @@
 {
-    "Title": "Translation example",
-    "Logout": "Logout",
-    "Connexion": "Connexion"
+  "Username": "Username",
+  "Firstname": "Firstname",
+  "Lastname": "Lastname",
+  "Language": "Language",
+  "Email": "Email",
+  "Update": "Update",
+  "Populate": "Populate",
+  "AddInfos": "Add Infos",
+  "Reset": "Reset"
 }

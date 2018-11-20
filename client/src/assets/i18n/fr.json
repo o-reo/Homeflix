@@ -1,5 +1,13 @@
 {
-    "Title": "Translation example",
-    "Logout": "Deconnection",
-    "Connexion": "Connection"
+  "Username": "Pseudonyme",
+  "Firstname": "Prénom",
+  "Lastname": "Nom",
+  "Language": "Langue",
+  "Email": "E-mail",
+  "Update": "Modifier",
+  "Profile": "Profil",
+  "Amount": "Nombre",
+  "Populate": "Peupler",
+  "AddInfos": "Infos",
+  "Reset": "Vider"
 }

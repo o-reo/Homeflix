@@ -3,25 +3,25 @@
 
     <mat-card-content>
       <div>
-        <h1>Profile</h1>
+        <h1 translate>Profile</h1>
         <div id="frame" [ngStyle]="{'background-image': getImg()}"></div>
         <br/>
         <br/>
 
 
-        <b>Username</b>
+        <b translate>Username</b>
         <p>{{username}}</p>
         <br/>
 
-        <b>Firstname</b>
+        <b translate>Firstname</b>
         <p>{{firstname}}</p>
         <br/>
 
-        <b>Lastname</b>
+        <b translate>Lastname</b>
         <p>{{lastname}}</p>
         <br/>
 
-        <b>Language</b>
+        <b translate>Language</b>
         <p>{{language}}</p>
         <br/>
 
@@ -29,11 +29,11 @@
         <div *ngIf="email; then thenBlock"></div>
         <ng-template #thenBlock>
 
-          <b>Email</b>
+          <b translate>Email</b>
           <p>{{email}}</p>
           <br/>
           <mat-card-actions>
-            <a href="/update" mat-raised-button color="primary">Update</a>
+            <a href="/update" mat-raised-button color="primary">{{'Update' | translate}}</a>
           </mat-card-actions>
 
         </ng-template>
@@ -44,15 +44,15 @@
   </mat-card>
   <mat-card *ngIf="grant" class="auth-container">
     <mat-card-content>
-      <h1>Admin</h1>
+      <h1 translate>Admin</h1>
       <form (submit)="populate()" method="post">
         <mat-form-field>
-          <input matInput type="number" placeholder="Amount" name="amount" [(ngModel)]="amount">
+          <input matInput type="number" placeholder="{{'Amount' | translate}}" name="amount" [(ngModel)]="amount">
         </mat-form-field>
         <mat-card-actions>
-          <button mat-raised-button color="warn">Populate</button>
-          <button mat-raised-button color="warn" type="button" (click)="getInfos()">Add Infos</button>
-          <button mat-raised-button color="info" type="button" (click)="CleanDB()">Reset</button>
+          <button mat-raised-button color="warn">{{'Populate'| translate}}</button>
+          <button mat-raised-button color="warn" type="button" (click)="getInfos()">{{'AddInfos' | translate}}</button>
+          <button mat-raised-button color="info" type="button" (click)="CleanDB()">{{'Reset' | translate}}</button>
         </mat-card-actions>
       </form>
     </mat-card-content>

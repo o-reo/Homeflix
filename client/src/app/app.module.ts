@@ -1,8 +1,8 @@
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatChipsModule} from '@angular/material/chips';
@@ -11,7 +11,7 @@ import {VgControlsModule} from 'videogular2/controls';
 import {VgOverlayPlayModule} from 'videogular2/overlay-play';
 import {VgBufferingModule} from 'videogular2/buffering';
 import {VgStreamingModule} from 'videogular2/streaming';
-import { IonRangeSliderModule } from "ng2-ion-range-slider";
+import {IonRangeSliderModule} from 'ng2-ion-range-slider';
 import {MatSliderModule} from '@angular/material/slider';
 import {
   MatButtonModule,
@@ -72,6 +72,10 @@ export function provideConfig() {
   return config;
 }
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 const appRoutes: Routes = [
   {path: 'auth', component: AuthComponent},
   {path: '', component: AuthComponent},
@@ -112,6 +116,13 @@ const appRoutes: Routes = [
     IonRangeSliderModule,
     BrowserModule,
     BrowserAnimationsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     MatButtonModule,
     MatCheckboxModule,
     MatMenuModule,
@@ -144,7 +155,13 @@ const appRoutes: Routes = [
     SocialLoginModule
   ],
   entryComponents: [DialogTemplateComponent],
-  providers: [HyperAuthService, {provide: AuthServiceConfig, useFactory: provideConfig}, AuthguardService],
+  providers: [
+    HyperAuthService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    },
+    AuthguardService],
   bootstrap: [AppComponent],
 })
 

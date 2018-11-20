@@ -83,7 +83,7 @@ function EztvToMovieInfo(res) {
 }
 
 function addEZTVTorrents(page, max_page) {
-    if (page > max_page) {
+    if (page > max_page + 1) {
         return;
     }
     let count = 0;
@@ -151,7 +151,7 @@ function checkIMDB(callback) {
                         // Get tv infos
                         if (infos && infos['tv_results'] && infos['tv_results'][0]) {
                             infos = infos['tv_results'][0];
-                            if (infos['first_air_data']) {
+                            if (infos['first_air_date']) {
                                 movie.year = infos['first_air_date'].substring(0, 4);
                             }
                             movie.synopsis = infos['overview'];
