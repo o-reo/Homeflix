@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Input} from '@angular/core';
-import {Router} from '@angular/router';
 import {CommentService} from '../../comment.service';
+import 'froala-editor/js/froala_editor.pkgd.min.js';
 
 declare var $: any;
 
