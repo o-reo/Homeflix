@@ -11,6 +11,8 @@ import {VgControlsModule} from 'videogular2/controls';
 import {VgOverlayPlayModule} from 'videogular2/overlay-play';
 import {VgBufferingModule} from 'videogular2/buffering';
 import {VgStreamingModule} from 'videogular2/streaming';
+import { IonRangeSliderModule } from "ng2-ion-range-slider";
+import {MatSliderModule} from '@angular/material/slider';
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -107,12 +109,14 @@ const appRoutes: Routes = [
     VgOverlayPlayModule,
     VgBufferingModule,
     VgStreamingModule,
+    IonRangeSliderModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
     MatMenuModule,
     MatCardModule,
+    MatSliderModule,
     MatIconModule,
     MatToolbarModule,
     MatInputModule,
