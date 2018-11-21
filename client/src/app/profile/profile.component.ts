@@ -82,4 +82,15 @@ export class ProfileComponent implements OnInit {
       duration: 2000
     });
   }
+
+  cleanDB() {
+    const headers = {};
+    headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
+    this.http.get(`http://${window.location.hostname}:3000/setup/reset`, {headers: headers})
+      .subscribe();
+    this.snackBar.open('Database data is resetting...', 'X', {
+      duration: 2000
+    });
+  }
 }
