@@ -49,7 +49,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {RegisterComponent} from './register/register.component';
 import {UpdateComponent} from './update/update.component';
 import {TorrentsComponent} from './torrents/torrents.component';
-import {TorrentComponent} from './torrent/torrent.component';
+import {TorrentComponent, DialogSelectComponent} from './torrent/torrent.component';
 import {MovieComponent, ErrorDialogTemplateComponent} from './movie/movie/movie.component';
 import {SearchComponent} from './movie/search/search.component';
 import {CommentsComponent} from './movie/comments/comments.component';
@@ -105,6 +105,8 @@ const appRoutes: Routes = [
     CommentComponent,
     PostCommentComponent,
     DialogTemplateComponent,
+    DialogSelectComponent,
+    DialogTemplateComponent,
     ErrorDialogTemplateComponent
   ],
   imports: [
@@ -155,7 +157,7 @@ const appRoutes: Routes = [
     NgxPaginationModule,
     SocialLoginModule
   ],
-  entryComponents: [DialogTemplateComponent, ErrorDialogTemplateComponent],
+  entryComponents: [DialogTemplateComponent, DialogSelectComponent, ErrorDialogTemplateComponent],
   providers: [
     HyperAuthService,
     {

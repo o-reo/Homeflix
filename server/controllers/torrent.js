@@ -25,8 +25,13 @@ exports.getTorrents = function (req, res) {
     // Options part.
     if (req.query.page)
         options['page'] = Math.max(0, req.query.page);
+
+    /*
     if (req.query.limit && req.query.limit <= 50 && req.query.limit >= 1)
         options['limit'] = req.query.limit;
+    */
+    options['limit'] = 20;
+
     if (req.query.order_by)
         order = (req.query.order_by === 'asc') ? 1 : -1;
     if (req.query.sort_by) {
