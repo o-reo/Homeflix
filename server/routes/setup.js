@@ -6,9 +6,9 @@ const setupController = require('../controllers/setup');
 const router = express.Router({});
 
 router.route('/populate')
-    .get(setupController.populate);
+    .get(authController.validJWT, setupController.populate);
 
 router.route('/informations')
-    .get(setupController.infos);
+    .get(authController.validJWT, setupController.infos);
 
 module.exports = router;

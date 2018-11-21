@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{data.msg}}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-select placeholder="Select another Torrent">
+      <mat-option>test</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onGoBackClick()">Return</button>
+  <button mat-button [mat-dialog-close]="">Select</button>
+</div>
