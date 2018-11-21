@@ -60,7 +60,7 @@ export class TorrentComponent implements OnInit {
         top: topMargin + 'px'
       },
       maxHeight: '250px',
-      width: '235px',
+      width: '250px',
       data: {torrent: this.torrent}
     });
   }
