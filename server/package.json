@@ -14,6 +14,7 @@
     "animepill-api": "^1.0.91",
     "bcrypt": "^3.0.1",
     "body-parser": "^1.18.3",
+    "cloudflare-bypasser": "0.0.3",
     "cors": "^2.8.4",
     "ejs": "^2.6.1",
     "express": "^4.16.3",

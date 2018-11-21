@@ -4,17 +4,18 @@ const credentials = require('../config/credentials');
 const EztvApi = require('eztv-api-pt');
 const fs = require('fs');
 const fse = require('fs-extra');
+const cloudflare = require('cloudflare-bypasser');
 
-function addYTSTorrents(page, max_page) {
+function addYTSTorrents(page, max_page, header) {
     if (page >= max_page)
         return;
     let count = 0;
     setTimeout(function () {
         let options = {
             url: 'https://yts.am/api/v2/list_movies.json?limit=40&page=' + page + '&with_images=true&with_cast=true',
+            jar: header.jar,
             headers: {
-                'user-agent': credentials.yts.useragent,
-                'cookie': credentials.yts.cookie
+                'user-agent': header['user-agent']
             }
         };
         request(options, function (error, response, body) {
@@ -48,10 +49,10 @@ function addYTSTorrents(page, max_page) {
             } else {
                 console.log('YTS: Could not get movie page', page);
             }
+            if (count) {
+                addYTSTorrents(page + 1, max_page, header);
+            }
         });
-        if (count) {
-            addYTSTorrents(page + 1);
-        }
     }, 1500);
 }
 
@@ -204,7 +205,9 @@ function checkIMDB(callback) {
                                     movie.cast = cast;
                                     movie.save((err, movie) => {
                                         if (err) {
-                                            console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
+                                            if (movie) {
+                                                console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
+                                            }
                                         } else {
                                             console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
                                         }
@@ -219,8 +222,11 @@ function checkIMDB(callback) {
                         }
                         // Handle Movie infos
                     } else if (movie.type === 'Movie') {
-                        if (infos && infos['movie_results'] && infos['movie_results'][0] && infos['movie_results'][0]['poster_path']) {
+                        if (infos && infos['movie_results'] && infos['movie_results'][0]) {
                             infos = infos['movie_results'][0];
+                            if (!infos['poster_path']){
+                                infos['poster_path'] = null;
+                            }
                             if (infos.poster_path) {
                                 movie.medium_cover_image = `https://image.tmdb.org/t/p/w300${infos['poster_path']}`;
                             }
@@ -247,12 +253,20 @@ function checkIMDB(callback) {
                                 movie.cast = cast;
                                 movie.save((err, movie) => {
                                     if (err) {
-                                        console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
+                                        if (movie) {
+                                            console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
+                                        }
                                     } else {
                                         console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
                                     }
                                 });
                             });
+                        } else {
+                            // Remove show because there is no info about it
+                            if (movie) {
+                                console.log('THEMOVIEDB: Removed ', movie.title);
+                                movie.remove();
+                            }
                         }
                     }
                 }); // 4 Requests per second
@@ -272,7 +286,18 @@ exports.populate = function (req, res) {
         page = 500;
     }
     addEZTVTorrents(1, page);
-    addYTSTorrents(1, page);
+    let cf = new cloudflare();
+    cf.request({
+        url: 'https://yts.am/api/',
+        headers: {
+            accept: 'application/json'
+        }
+    }).then((res) => {
+        addYTSTorrents(1, page, {
+            'user-agent': cf.userAgent,
+            'jar': cf.jar
+        });
+    });
     res.json({
         msg: 'Populating database...'
     })
@@ -292,10 +317,16 @@ exports.cleanMovies = function (req, res) {
         files.forEach((file) => {
             fs.stat('../films/' + file, (err, stat) => {
                 // mtime is modified time a month is 2592000000 seconds
-               if ((time - stat.mtimeMs) > 2592000000){
+                if ((time - stat.mtimeMs) > 2592000000) {
                     fse.remove('../films/' + file);
-               }
+                }
             });
         });
+    });
+};
+
+exports.reset = function(req, res){
+    MovieInfos.deleteMany({}, (err, res) => {
+        console.log('MONGOOSE: Database was cleaned');
     });
 };

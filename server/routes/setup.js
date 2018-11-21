@@ -11,4 +11,7 @@ router.route('/populate')
 router.route('/informations')
     .get(authController.validJWT, setupController.infos);
 
+router.route('/reset')
+    .get(authController.validJWT, setupController.reset);
+
 module.exports = router;
