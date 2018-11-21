@@ -3,7 +3,7 @@ import {Torrent} from '../torrent';
 import {Input} from '@angular/core';
 import {TorrentService} from '../torrent.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {DialogTemplateComponent} from "../auth/auth.component";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-torrent',
@@ -17,7 +17,7 @@ export class TorrentComponent implements OnInit {
 
   loaded: Promise<boolean>;
 
-  constructor(private torrentService: TorrentService, public dialog: MatDialog) {
+  constructor(private torrentService: TorrentService, public dialog: MatDialog, private router: Router) {
   }
 
   ngOnInit() {
@@ -54,18 +54,14 @@ export class TorrentComponent implements OnInit {
       el = el.parentElement;
     }
 
-    const dialogRef = this.dialog.open(DialogSelectComponent, {
+    this.dialog.open(DialogSelectComponent, {
       position: {
         left: leftMargin + 'px',
         top: topMargin + 'px'
       },
+      maxHeight: '250px',
       width: '235px',
       data: {torrent: this.torrent}
-    });
-    dialogRef.afterClosed().subscribe(data => {
-      if (data !== undefined) {
-        console.log('hash: ', data.torrent.torrents[data.index]['hash']);
-      }
     });
   }
 
@@ -77,7 +73,7 @@ export class TorrentComponent implements OnInit {
 
 @Component({
   selector: 'app-select-template',
-  templateUrl: 'dialog-select.html',
+  templateUrl: 'dialog-select.html'
 })
 
 export class DialogSelectComponent {
@@ -86,7 +82,4 @@ export class DialogSelectComponent {
     public dialogRef: MatDialogRef<DialogSelectComponent>, @Inject(MAT_DIALOG_DATA) public data) {
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }
