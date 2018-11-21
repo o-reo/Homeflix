@@ -1,0 +1,12 @@
+<div mat-dialog-title>Select a link</div>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-select [(ngModel)]="data.index">
+      <mat-option *ngFor="let torr of data.torrent.torrents | keyvalue" [value]="torr.key">Season {{torr.value.season}} Episode {{torr.value.episode}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Return</button>
+  <button mat-button [mat-dialog-close]="data">Send</button>
+</mat-dialog-actions>

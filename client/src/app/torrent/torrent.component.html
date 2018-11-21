@@ -1,4 +1,4 @@
-<div class="movie-card">
+<div class="movie-card" (click)="SelectTorrent($event)">
   <mat-card class="movie-header" [ngStyle]="getBgStyle()">
 
     <div class="view">
@@ -23,9 +23,7 @@
 
   <mat-card class="movie-content">
     <mat-card-content class="movie-content-header">
-      <a href="#">
-        <h3 class="movie-title">{{ torrent.title }}</h3>
-      </a>
+      <h3 class="movie-title">{{ torrent.title }}</h3>
       <!--div class="imax-logo"></div-->
     </mat-card-content>
     <mat-card-content class="movie-info">

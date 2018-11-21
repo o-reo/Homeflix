@@ -45,9 +45,12 @@ export class SearchService {
     }
     this.torrentService.getTorrents(req)
       .subscribe(torrents => {
+          let index = (req['page'] - 1) * 20;
           Object.values(this.views).forEach(function (view) {
             const imdbid = view['imdbid'];
             Object.values(torrents).forEach(function (torrent) {
+              torrent['index'] = index;
+              index++;
               if (imdbid === torrent['imdb_code']) {
                 torrent['already_seen'] = true;
               }
@@ -63,7 +66,7 @@ export class SearchService {
               }
             } else {
               if (api === 'yts') {
-                this.torrentService.torrents = JSON.parse(torrents);
+                // this.torrentService.torrents = JSON.parse(torrents);
               }
             }
           } else {
