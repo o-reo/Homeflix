@@ -105,7 +105,7 @@ const appRoutes: Routes = [
     CommentComponent,
     PostCommentComponent,
     DialogTemplateComponent,
-    DialogSelectComponent
+    DialogSelectComponent,
     DialogTemplateComponent,
     ErrorDialogTemplateComponent
   ],
