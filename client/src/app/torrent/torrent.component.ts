@@ -3,7 +3,6 @@ import {Torrent} from '../torrent';
 import {Input} from '@angular/core';
 import {TorrentService} from '../torrent.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {DialogTemplateComponent} from "../auth/auth.component";
 
 @Component({
   selector: 'app-torrent',
@@ -48,7 +47,7 @@ export class TorrentComponent implements OnInit {
       if (el.attributes.class !== undefined && el.attributes.class.nodeValue === 'movie-card') {
         const scrollTop = $(window).scrollTop();
         const elementOffset = el.offsetTop;
-        topMargin = (elementOffset - scrollTop) + 80;
+        topMargin = (elementOffset - scrollTop) + 100;
         leftMargin = el.offsetLeft + 40;
       }
       el = el.parentElement;
@@ -63,7 +62,14 @@ export class TorrentComponent implements OnInit {
       data: {torrent: this.torrent}
     });
     dialogRef.afterClosed().subscribe(data => {
-      if (data !== undefined) {
+
+
+
+
+
+
+
+      if (data !== undefined && data.index !== undefined) {
         console.log('hash: ', data.torrent.torrents[data.index]['hash']);
       }
     });

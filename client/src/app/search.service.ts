@@ -30,6 +30,12 @@ export class SearchService {
     req['sort_by'] = 'pop';
     req['order_by'] = 'desc';
     req['page'] = query.page;
+
+    if (query.type === 'Movie' || query.type === 'TV Show') {
+      req['type'] = [query.type];
+    } else {
+      req['type'] = ['Movie', 'TV Show'];
+    }
     if (query.tri === 'year_a' || query.tri === 'rating_a' || query.tri === 'runt_a' || query.tri === 'pop_a') {
       req['order_by'] = 'asc';
     }

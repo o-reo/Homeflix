@@ -29,7 +29,8 @@ export class SearchComponent implements OnInit {
   formGroupSearch = new FormGroup({
     inputTri: new FormControl(),
     input_query: new FormControl(),
-    inputGenre: new FormControl()
+    inputGenre: new FormControl(),
+    inputType: new FormControl()
   });
 
   constructor(private torrentService: TorrentService, private searchService: SearchService) {
@@ -56,6 +57,7 @@ export class SearchComponent implements OnInit {
       title: this.formGroupSearch.value.input_query !== null ? this.formGroupSearch.value.input_query : '*',
       tri: this.formGroupSearch.value.inputTri !== null ? this.formGroupSearch.value.inputTri : 'pop_d',
       genre: this.formGroupSearch.value.inputGenre != null ? this.formGroupSearch.value.inputGenre : 'all',
+      type: this.formGroupSearch.value.inputType != null ? this.formGroupSearch.value.inputType : 'both',
       page: 1,
       minYear: this.minYear,
       maxYear: this.maxYear,
@@ -64,6 +66,7 @@ export class SearchComponent implements OnInit {
     };
     this.torrentService.page = 1;
     this.searchService.search(req, false, this.torrentService.api);
+
   }
 
 }

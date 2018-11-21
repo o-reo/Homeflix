@@ -6,6 +6,14 @@
           <input matInput type="text" formControlName="input_query" placeholder="{{'Title' | translate}}"/>
         </mat-form-field>
         <mat-form-field>
+          <mat-select formControlName="inputType" placeholder="Type">
+            <mat-option value="Movie" select>{{'Movie' | translate}}</mat-option>
+            <mat-option value="TV Show">{{'TV Show' | translate}}</mat-option>
+            <mat-option value="Both">{{'Both' | translate}}</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
           <mat-select formControlName="inputGenre" placeholder="Genre">
             <mat-option value="all" select>{{'All' | translate}}</mat-option>
             <mat-option value="Comedy">{{'Comedy' | translate}}</mat-option>
