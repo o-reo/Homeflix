@@ -4,7 +4,6 @@ const authController = require('../controllers/auth');
 
 const torrentController = require('../controllers/torrent');
 const movieController = require('../controllers/movie');
-const streamController = require('../controllers/stream');
 
 const router = express.Router({});
 
@@ -15,11 +14,5 @@ router.route('/:id')
 router.route('/stream/:hash')
     .post(authController.validJWT, torrentController.streamTorrent)
     .put(authController.validJWT, torrentController.liveTorrent);
-
-// router.route('/streaming/:file')
-//     .get(streamController.getStream);
-
-// router.route('/streaming/:directory/:file')
-//     .get(streamController.getStreamDirectory);
 
 module.exports = router;

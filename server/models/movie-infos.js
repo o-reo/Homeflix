@@ -51,4 +51,4 @@ module.exports.getAll = (callback) => {
   Movie.find({}, (err, movies) => {
     callback(err, movies);
   })
-}
+};

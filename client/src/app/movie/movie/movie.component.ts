@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TorrentService} from '../../torrent.service';
 import {UserService} from '../../user.service';
@@ -8,7 +8,7 @@ import * as bytes from 'bytes';
 import {HyperAuthService} from '../../auth.service';
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/interval';
-
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-movie',
@@ -30,7 +30,7 @@ export class MovieComponent implements OnInit {
   torrent_id: number;
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: HyperAuthService,
-              private userService: UserService, private router: Router) {
+              private userService: UserService, private router: Router, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -79,9 +79,14 @@ export class MovieComponent implements OnInit {
               this.liveStreaming(this.torrent);
               this.torrentService.startStreaming(this.torrent, this.torrent_id)
                 .subscribe(data => {
-                  this.path = data.path;
-                  this.link = '/streams' + data.path;
-                  this.videoloaded = Promise.resolve(true);
+                  if (data.error) {
+                    // Could not parse torrent file
+                    this.openErrorDialog(data.msg);
+                  } else {
+                    this.path = data.path;
+                    this.link = '/streams' + data.path;
+                    this.videoloaded = Promise.resolve(true);
+                  }
                 });
             });
         });
@@ -99,4 +104,32 @@ export class MovieComponent implements OnInit {
       living.unsubscribe();
     });
   }
+
+  openErrorDialog(msg): void {
+    const dialogRef = this.dialog.open(ErrorDialogTemplateComponent, {
+      width: '300px',
+      data: {msg: msg}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['/watch']);
+    });
+  }
+}
+
+@Component({
+  selector: 'app-errordialog-template',
+  templateUrl: 'errordialog-template.html',
+})
+
+export class ErrorDialogTemplateComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<ErrorDialogTemplateComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onGoBackClick(): void {
+    this.dialogRef.close();
+  }
+
 }

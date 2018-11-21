@@ -50,7 +50,7 @@ import {RegisterComponent} from './register/register.component';
 import {UpdateComponent} from './update/update.component';
 import {TorrentsComponent} from './torrents/torrents.component';
 import {TorrentComponent, DialogSelectComponent} from './torrent/torrent.component';
-import {MovieComponent} from './movie/movie/movie.component';
+import {MovieComponent, ErrorDialogTemplateComponent} from './movie/movie/movie.component';
 import {SearchComponent} from './movie/search/search.component';
 import {CommentsComponent} from './movie/comments/comments.component';
 import {CommentComponent} from './movie/comment/comment.component';
@@ -106,6 +106,8 @@ const appRoutes: Routes = [
     PostCommentComponent,
     DialogTemplateComponent,
     DialogSelectComponent
+    DialogTemplateComponent,
+    ErrorDialogTemplateComponent
   ],
   imports: [
     VgCoreModule,
@@ -155,7 +157,7 @@ const appRoutes: Routes = [
     NgxPaginationModule,
     SocialLoginModule
   ],
-  entryComponents: [DialogTemplateComponent, DialogSelectComponent],
+  entryComponents: [DialogTemplateComponent, DialogSelectComponent, ErrorDialogTemplateComponent],
   providers: [
     HyperAuthService,
     {
