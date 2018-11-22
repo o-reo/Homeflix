@@ -119,7 +119,7 @@ exports.streamTorrent = function (req, res) {
             engine = torrentStream(magnet, {path: './../films/' + req.params.hash + '/torrent'});
             let stream;
             setTimeout(() => {
-                if (timeout > 1 and !sent) {
+                if (timeout > 1 && !sent) {
                     console.log('TORRENTSTREAM: Timeout');
                     stop(req.params.hash);
                     global.PROCESS_ARRAY[req.params.hash] = null;
