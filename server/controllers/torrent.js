@@ -89,13 +89,8 @@ exports.streamTorrent = function (req, res) {
         });
     }
 
-    // Parse magnet, should be done directly in the database as it's specific to yts
-    // let magnet = 'magnet:?xt=urn:btih:'
-    //     + req.params.hash
-    //     + '&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce';
     MovieInfos.get({'torrents.hash': req.params.hash}, (err, torrent) => {
         let magnet = '';
-        let folderstream = '';
         torrent.torrents.forEach((el) => {
             if (el.hash === req.params.hash) {
                 magnet = el.magnet;
