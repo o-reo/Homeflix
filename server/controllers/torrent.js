@@ -21,11 +21,11 @@ exports.getTorrents = function (req, res) {
     }
     query['year'] = {$gt: req.query.minYear, $lt: req.query.maxYear};
     query['rating'] = {$gt: req.query.minRating, $lt: req.query.maxRating};
+    query['type'] = {$in: req.query.type};
 
     // Options part.
     if (req.query.page)
         options['page'] = Math.max(0, req.query.page);
-
     /*
     if (req.query.limit && req.query.limit <= 50 && req.query.limit >= 1)
         options['limit'] = req.query.limit;
