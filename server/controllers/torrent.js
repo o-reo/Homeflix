@@ -82,6 +82,7 @@ exports.stopTorrent = function (req, res) {
 
 exports.streamTorrent = function (req, res) {
     let sent = false;
+    let timeout = true;
 
     // Adds a view to the user collection
     if (req.body.imdbid) {
@@ -114,6 +115,14 @@ exports.streamTorrent = function (req, res) {
         if (!global.PROCESS_ARRAY[req.params.hash] || global.PROCESS_ARRAY[req.params.hash].status === 'stopped') {
             engine = torrentStream(magnet, {path: './../films/' + req.params.hash + '/torrent'});
             let stream;
+            setTimeout(() => {
+                if (timeout) {
+                    console.log('TORRENTSTREAM: Timeout');
+                    stop(req.params.hash);
+                    global.PROCESS_ARRAY[req.params.hash] = null;
+                    res.json({error: true, msg: 'Torrent Timed out'});
+                }
+            }, 10000);
             engine.on('ready', function () {
                 // Find the video file
                 global.PROCESS_ARRAY[req.params.hash] = {engine: engine, status: 'ready'};
@@ -185,6 +194,8 @@ exports.streamTorrent = function (req, res) {
             });
 
             engine.on('download', function () {
+                // Don't throw timeout error
+                timeout = false;
                 console.log('TORRENT - progress:', engine.swarm.downloaded,
                     ', hash:', req.params.hash);
                 // Monitor last live on torrent to suspend download and conversion

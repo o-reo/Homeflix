@@ -108,7 +108,7 @@ export class MovieComponent implements OnInit {
   openErrorDialog(msg): void {
     const dialogRef = this.dialog.open(ErrorDialogTemplateComponent, {
       width: '300px',
-      data: {msg: msg}
+      data: {msg: msg, torrent: this.torrent}
     });
 
     dialogRef.afterClosed().subscribe(result => {
