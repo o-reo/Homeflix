@@ -59,7 +59,8 @@ export class TorrentsComponent implements OnInit {
         maxYear: this.searchService.maxYear,
         minRating: this.searchService.minRating,
         maxRating: this.searchService.maxRating,
-        page: this.torrentService.page
+        page: this.torrentService.page,
+        type: this.searchService.type
       };
       this.searchService.search(query, true, this.torrentService.api);
     }

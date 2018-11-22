@@ -17,6 +17,7 @@ export class SearchService {
   minRating: number;
   maxRating: number;
   views: object;
+  type: string;
 
 
   //   search(title, tri, genre, page, async: boolean, api: string) {
@@ -70,10 +71,6 @@ export class SearchService {
                   torrentService.torrents.push(val);
                 });
               }
-            } else {
-              if (api === 'yts') {
-                // this.torrentService.torrents = JSON.parse(torrents);
-              }
             }
           } else {
             if (api === 'yts') {
@@ -83,6 +80,7 @@ export class SearchService {
           this.title = query.title;
           this.genre = query.genre;
           this.tri = query.tri;
+          this.type = query.type;
           this.minYear = query.minYear;
           this.maxYear = query.maxYear;
           this.minRating = query.minRating;

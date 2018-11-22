@@ -12,7 +12,7 @@ var MovieInfosSchema = new mongoose.Schema({
     genres: {type: [String]},
     summary: {type: String},
     synopsis: {type: String},
-    medium_cover_image: {type: String, required: true},
+    medium_cover_image: {type: String},
     language: {type: String},
     cast: [],
     torrents: [{
