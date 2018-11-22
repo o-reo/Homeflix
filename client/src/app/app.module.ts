@@ -78,14 +78,14 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 const appRoutes: Routes = [
   {path: 'auth', component: AuthComponent},
-  {path: '**', redirectTo: 'auth'},
   {path: '', component: AuthComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'update', component: UpdateComponent},
   {path: 'profile', canActivate: [AuthguardService], component: ProfileComponent},
   {path: 'watch', canActivate: [AuthguardService], component: TorrentsComponent},
   // {path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
-  {path: 'watch/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent}
+  {path: 'watch/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent},
+  {path: '**', redirectTo: 'auth'}
 ];
 
 @NgModule({
