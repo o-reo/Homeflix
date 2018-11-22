@@ -1,7 +1,7 @@
 .container{
   position: absolute;
   top: 0;
-  background-image: url("/assets/img/background.jpg");
+  background-image: url("/assets/img/background.svg");
   background-size: cover;
   min-height: 100%;
   width: 100%;

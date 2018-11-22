@@ -5,8 +5,8 @@
   transform: translateX(-50%);
 }
 
-.search-container{
-  margin:20px 0 20px 0;
+.search-container {
+  margin: 20px 0 20px 0;
   text-align: center;
 }
 
@@ -22,18 +22,14 @@ form {
 }
 
 mat-form-field, ion-range-slider {
-  margin:  0 20px 0 20px;
+  margin: 0 20px 0 20px;
 }
 
 form {
   width: 100%;
 }
 
-
 ion-range-slider {
   width: 200px;
-}
-
-.irs-min {
-  visibility: hidden;
+  filter: invert(1) grayscale(1) brightness(1.3) contrast(1);
 }

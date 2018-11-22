@@ -62,7 +62,7 @@
           <input matInput type="text" placeholder="{{'Author' | translate}}"/>
         </mat-form-field>
 
-        <ion-range-slider #advancedSliderElement
+        <ion-range-slider
                           type="double"
                           min="1870"
                           max="2018"
@@ -76,7 +76,7 @@
                           (onFinish)="getYears(advancedSlider, $event)">
         </ion-range-slider>
 
-        <ion-range-slider #advancedSliderElement
+        <ion-range-slider
                           type="double"
                           min="0"
                           max="10"
