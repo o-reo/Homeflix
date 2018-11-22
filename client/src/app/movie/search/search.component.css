@@ -1,11 +1,13 @@
 .container {
   display: inline-block;
   position: relative;
-  width: calc(100% - 40px);
-  margin: 5px 20px 5px 10px;
+  width: calc(100% - 30px);
+  margin: 10px auto;
+  padding: 15px;
 }
 
 .search-container {
+  /*width: calc(100% - 40px);*/
   text-align: center;
   margin: auto;
 }
@@ -19,20 +21,13 @@
 
 .search-container mat-form-field, ion-range-slider{
   width: 180px;
-  margin: 10px;
+  margin: 5px 20px;
 }
 
 .search-container mat-card-actions{
-  width: 100%;
+  width: 180px;
+  margin: 5px 20px;
 }
-
-mat-form-field, ion-range-slider {
-  /*margin: 0 20px 0 20px;*/
-}
-
-/*form {*/
-  /*width: 100%;*/
-/*}*/
 
 ion-range-slider {
   width: 180px;
