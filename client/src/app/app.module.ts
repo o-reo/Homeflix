@@ -78,6 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 const appRoutes: Routes = [
   {path: 'auth', component: AuthComponent},
+  {path: '**', redirectTo: 'auth'},
   {path: '', component: AuthComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'update', component: UpdateComponent},
