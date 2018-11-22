@@ -224,7 +224,7 @@ function checkIMDB(callback) {
                     } else if (movie.type === 'Movie') {
                         if (infos && infos['movie_results'] && infos['movie_results'][0]) {
                             infos = infos['movie_results'][0];
-                            if (!infos['poster_path']){
+                            if (!infos['poster_path']) {
                                 infos['poster_path'] = null;
                             }
                             if (infos.poster_path) {
@@ -279,6 +279,7 @@ function checkIMDB(callback) {
 }
 
 exports.populate = function (req, res) {
+    if (req.userdata.grant === 1) {
     let page = 0;
     if (req.query.amount) {
         page = Math.ceil(req.query.amount / 40);
@@ -301,14 +302,21 @@ exports.populate = function (req, res) {
     res.json({
         msg: 'Populating database...'
     })
+    } else {
+        res.json({error: true, msg: "Your rights are not enough"});
+    }
 };
 
 exports.infos = function (req, res) {
-    checkIMDB(() => {
-        res.json({
-            msg: 'Adding infos...'
-        })
-    });
+    if (req.userdata.grant === 1) {
+        checkIMDB(() => {
+            res.json({
+                msg: 'Adding infos...'
+            })
+        });
+    } else {
+        res.json({error: true, msg: "Your rights are not enough"});
+    }
 };
 
 exports.cleanMovies = function (req, res) {
@@ -325,8 +333,13 @@ exports.cleanMovies = function (req, res) {
     });
 };
 
-exports.reset = function(req, res){
-    MovieInfos.deleteMany({}, (err, res) => {
-        console.log('MONGOOSE: Database was cleaned');
-    });
+exports.reset = function (req, res) {
+    if (req.userdata.grant === 1) {
+        MovieInfos.deleteMany({}, (err, res) => {
+            console.log('MONGOOSE: Database was cleaned');
+            res.json({error: false, msg: 'Database was cleaned'});
+        });
+    } else {
+        res.json({error: true, msg: "Your rights are not enough"});
+    }
 };
