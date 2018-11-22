@@ -119,19 +119,21 @@ exports.streamTorrent = function (req, res) {
             engine = torrentStream(magnet, {path: './../films/' + req.params.hash + '/torrent'});
             let stream;
             setTimeout(() => {
-                if (timeout > 1) {
+                if (timeout > 1 and !sent) {
                     console.log('TORRENTSTREAM: Timeout');
                     stop(req.params.hash);
                     global.PROCESS_ARRAY[req.params.hash] = null;
                     res.json({error: true, msg: 'Torrent Timed out'});
+                    sent = true;
                 }
             }, 10000);
             setTimeout(() => {
-                if (timeout > 0) {
+                if (timeout > 0 && !sent) {
                     console.log('FFMPEG: Timeout');
                     stop(req.params.hash);
                     global.PROCESS_ARRAY[req.params.hash] = null;
                     res.json({error: true, msg: 'Torrent Timed out'});
+                    sent = true;
                 }
             }, 20000);
             engine.on('ready', function () {
