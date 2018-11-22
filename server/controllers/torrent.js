@@ -14,23 +14,26 @@ exports.getTorrents = function (req, res) {
     // Query part.
     if (req.query.genre)
         genre = req.query.genre;
-    if (req.query.title.charAt(0) !== '*')
-        query = {title: {$regex: req.query.title, $options: 'i'}};
+    if (req.query.title && req.query.title.charAt(0) !== '*') {
+        query.title = {$regex: req.query.title, $options: 'i'}
+    }
     if (genre !== '*') {
         query.genres = {$all: [genre]};
     }
-    query['year'] = {$gt: req.query.minYear, $lt: req.query.maxYear};
-    query['rating'] = {$gt: req.query.minRating, $lt: req.query.maxRating};
-    query['type'] = {$in: req.query.type};
-
+    if (req.query.minYear && req.query.maxYear) {
+        query.year = {$gt: req.query.minYear, $lt: req.query.maxYear};
+    }
+    if (req.query.minRating && req.query.maxRating) {
+        query.rating = {$gt: req.query.minRating, $lt: req.query.maxRating};
+    }
+    if (req.query.type) {
+        query.type = {$in: req.query.type};
+    }
     // Options part.
-    if (req.query.page)
+    if (req.query.page) {
         options['page'] = Math.max(0, req.query.page);
-    /*
-    if (req.query.limit && req.query.limit <= 50 && req.query.limit >= 1)
-        options['limit'] = req.query.limit;
-    */
-    options['limit'] = 20;
+    }
+    options.limit = 20;
 
     if (req.query.order_by)
         order = (req.query.order_by === 'asc') ? 1 : -1;

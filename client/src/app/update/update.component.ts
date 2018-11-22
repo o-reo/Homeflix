@@ -40,7 +40,6 @@ export class UpdateComponent implements OnInit {
   collapsed7: boolean;
 
 
-
   public uploader: FileUploader = new FileUploader({
     url: URL,
     itemAlias: 'photo',
@@ -99,6 +98,9 @@ export class UpdateComponent implements OnInit {
           }
           if (key === 'last_name') {
             key = 'Last name';
+          }
+          if (key === 'language') {
+            this.userService.switchLanguage(req['newInfo']['language']);
           }
           this.snackBar.open(key.charAt(0).toUpperCase() + key.slice(1) + ' was successfully updated.', 'X', {
             duration: 3000,
