@@ -37,6 +37,7 @@ function addYTSTorrents(page, max_page, header) {
                     val.torrents.forEach((torrent) => {
                         torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce`;
                     });
+                    val.medium_cover_image = null;
                     const newMovie = MovieInfos(val);
                     newMovie.save((err, movie) => {
                         if (err) {
@@ -273,35 +274,35 @@ function checkIMDB(callback) {
                 if (key === movies.length) {
                     callback();
                 }
-            }, 800 * key);
+            }, 700 * key);
         });
     });
 }
 
 exports.populate = function (req, res) {
     if (req.userdata.grant === 1) {
-    let page = 0;
-    if (req.query.amount) {
-        page = Math.ceil(req.query.amount / 40);
-    } else {
-        page = 500;
-    }
-    addEZTVTorrents(1, page);
-    let cf = new cloudflare();
-    cf.request({
-        url: 'https://yts.am/api/',
-        headers: {
-            accept: 'application/json'
+        let page = 0;
+        if (req.query.amount) {
+            page = Math.ceil(req.query.amount / 40);
+        } else {
+            page = 500;
         }
-    }).then((res) => {
-        addYTSTorrents(1, page, {
-            'user-agent': cf.userAgent,
-            'jar': cf.jar
+        addEZTVTorrents(1, page);
+        let cf = new cloudflare();
+        cf.request({
+            url: 'https://yts.am/api/',
+            headers: {
+                accept: 'application/json'
+            }
+        }).then((res) => {
+            addYTSTorrents(1, page, {
+                'user-agent': cf.userAgent,
+                'jar': cf.jar
+            });
         });
-    });
-    res.json({
-        msg: 'Populating database...'
-    })
+        res.json({
+            msg: 'Populating database...'
+        })
     } else {
         res.json({error: true, msg: "Your rights are not enough"});
     }
@@ -309,10 +310,11 @@ exports.populate = function (req, res) {
 
 exports.infos = function (req, res) {
     if (req.userdata.grant === 1) {
+        res.json({
+            msg: 'Adding infos...'
+        });
         checkIMDB(() => {
-            res.json({
-                msg: 'Adding infos...'
-            })
+            console.log('Fetched all informations');
         });
     } else {
         res.json({error: true, msg: "Your rights are not enough"});
@@ -335,7 +337,7 @@ exports.cleanMovies = function (req, res) {
 
 exports.reset = function (req, res) {
     if (req.userdata.grant === 1) {
-        MovieInfos.deleteMany({}, (err, res) => {
+        MovieInfos.deleteMany({}, (err, conf) => {
             console.log('MONGOOSE: Database was cleaned');
             res.json({error: false, msg: 'Database was cleaned'});
         });
