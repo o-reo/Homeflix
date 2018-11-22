@@ -24,6 +24,9 @@ export class TorrentComponent implements OnInit {
   }
 
   getBgStyle() {
+    if (!this.torrent.medium_cover_image.includes('http://') && !this.torrent.medium_cover_image.includes('https://')) {
+      this.torrent.medium_cover_image = `http://${window.location.hostname}:3000/${this.torrent.medium_cover_image}`;
+    }
     const bgStyle = {
       'background': 'url("' + this.torrent.medium_cover_image + '")',
       'padding': 0,

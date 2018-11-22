@@ -37,7 +37,7 @@ function addYTSTorrents(page, max_page, header) {
                     val.torrents.forEach((torrent) => {
                         torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce`;
                     });
-                    val.medium_cover_image = null;
+                    val.medium_cover_image = '/default.png';
                     const newMovie = MovieInfos(val);
                     newMovie.save((err, movie) => {
                         if (err) {
