@@ -1,35 +1,40 @@
 .container {
   display: inline-block;
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  margin: 5px 20px 5px 10px;
 }
 
 .search-container {
-  margin: 20px 0 20px 0;
   text-align: center;
+  margin: auto;
 }
 
-form {
+.search-container form {
   display: flex;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-mat-form-field, ion-range-slider {
-  margin: 0 20px 0 20px;
+.search-container mat-form-field, ion-range-slider{
+  width: 180px;
+  margin: 10px;
 }
 
-form {
+.search-container mat-card-actions{
   width: 100%;
 }
 
+mat-form-field, ion-range-slider {
+  /*margin: 0 20px 0 20px;*/
+}
+
+/*form {*/
+  /*width: 100%;*/
+/*}*/
+
 ion-range-slider {
-  width: 200px;
+  width: 180px;
   filter: invert(1) grayscale(1) brightness(1.3) contrast(1);
 }
