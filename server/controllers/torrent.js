@@ -208,7 +208,9 @@ exports.streamTorrent = function (req, res) {
             });
 
             engine.on('download', function () {
-                timeout = 1;
+                if (timeout === 2) {
+                    timeout = 1;
+                }
                 // Don't throw timeout error
                 console.log('TORRENT - progress:', engine.swarm.downloaded,
                     ', hash:', req.params.hash);

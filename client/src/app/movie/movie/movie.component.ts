@@ -45,6 +45,9 @@ export class MovieComponent implements OnInit {
     this.torrentService.getTorrent(this.route.snapshot.params['id_movie'])
       .subscribe(torrent => {
         this.torrent = torrent;
+        if (!this.torrent.medium_cover_image.includes('http://') && !this.torrent.medium_cover_image.includes('https://')) {
+          this.torrent.medium_cover_image = `http://${window.location.hostname}:3000/${this.torrent.medium_cover_image}`;
+        }
         this.lang = 'eng';
         const subdata = {
           imdbid: torrent.imdb_code,

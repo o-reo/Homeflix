@@ -12,7 +12,7 @@ function addYTSTorrents(page, max_page, header) {
     let count = 0;
     setTimeout(function () {
         let options = {
-            url: 'https://yts.am/api/v2/list_movies.json?limit=40&page=' + page + '&with_images=true&with_cast=true',
+            url: 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=50&page=' + page,
             jar: header.jar,
             headers: {
                 'user-agent': header['user-agent']
@@ -30,30 +30,34 @@ function addYTSTorrents(page, max_page, header) {
                 error = err;
                 console.log('YTS: IDs need to be updated');
             }
-            count = data.data.movies.length;
-            if (!error) {
-                data.data.movies.forEach(function (val) {
-                    val.type = 'Movie';
-                    if (val.torrents){
-                        val.torrents.forEach((torrent) => {
-                            torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce`;
-                        });
-                    }
-                    val.medium_cover_image = '/default.png';
-                    const newMovie = MovieInfos(val);
-                    newMovie.save((err, movie) => {
-                        if (err) {
-                            console.log('MONGOOSE - Could not add movie');
-                        } else {
-                            console.log('MONGOOSE - Adding movie:', movie.title);
-                        }
-                    });
-                });
-            } else {
-                console.log('YTS: Could not get movie page', page);
+            if (data.data.movies) {
+                count = data.data.movies.length;
             }
-            if (count) {
-                addYTSTorrents(page + 1, max_page, header);
+            if (!error) {
+                if (data.data.movies) {
+                    data.data.movies.forEach(function (val) {
+                        val.type = 'Movie';
+                        if (val.torrents) {
+                            val.torrents.forEach((torrent) => {
+                                torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce`;
+                            });
+                        }
+                        val.medium_cover_image = '/default.png';
+                        const newMovie = MovieInfos(val);
+                        newMovie.save((err, movie) => {
+                            if (err) {
+                                console.log('MONGOOSE - Could not add movie');
+                            } else {
+                                console.log('MONGOOSE - Adding movie:', movie.title);
+                            }
+                        });
+                    });
+                } else {
+                    console.log('YTS: Could not get movie page', page);
+                }
+                if (count) {
+                    addYTSTorrents(page + 1, max_page, header);
+                }
             }
         });
     }, 1500);
@@ -86,7 +90,7 @@ function EztvToMovieInfo(res) {
     return tvinfo;
 }
 
-function EZTVPromise(res){
+function EZTVPromise(res) {
     return new Promise((resolve) => {
         MovieInfos.findOne({imdb_code: 'tt' + res.imdb_id}, (err, movie) => {
             if (err) {
@@ -135,10 +139,10 @@ function addEZTVTorrents(page, max_page) {
     const eztv = new EztvApi();
     eztv.getTorrents({
         page: page,
-        limit: 40
+        limit: 100
     }).then(async (result) => {
         count = result.torrents.length;
-        for (const res of result.torrents){
+        for (const res of result.torrents) {
             await EZTVPromise(res);
         }
         if (count) {
@@ -295,7 +299,7 @@ exports.populate = function (req, res) {
         if (req.query.amount) {
             page = Math.ceil(req.query.amount / 40);
         } else {
-            page = 500;
+            page = 9999999;
         }
         addEZTVTorrents(1, page);
         let cf = new cloudflare();
