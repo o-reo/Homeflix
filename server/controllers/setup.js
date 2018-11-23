@@ -34,9 +34,11 @@ function addYTSTorrents(page, max_page, header) {
             if (!error) {
                 data.data.movies.forEach(function (val) {
                     val.type = 'Movie';
-                    val.torrents.forEach((torrent) => {
-                        torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce`;
-                    });
+                    if (val.torrents){
+                        val.torrents.forEach((torrent) => {
+                            torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce`;
+                        });
+                    }
                     val.medium_cover_image = '/default.png';
                     const newMovie = MovieInfos(val);
                     newMovie.save((err, movie) => {
@@ -68,7 +70,7 @@ function EztvToMovieInfo(res) {
         genres: [],
         summary: `Season ${res.season}, episode ${res.episode}`,
         synopsis: `Season ${res.season}, episode ${res.episode}`,
-        medium_cover_image: res.small_screenshot,
+        medium_cover_image: '/default.png',
         language: 'english',
         cast: [],
         torrents: [{
@@ -84,6 +86,47 @@ function EztvToMovieInfo(res) {
     return tvinfo;
 }
 
+function EZTVPromise(res){
+    return new Promise((resolve) => {
+        MovieInfos.findOne({imdb_code: 'tt' + res.imdb_id}, (err, movie) => {
+            if (err) {
+                console.log('MONGOOSE - Could not fetch torrents');
+            } else if (!movie) {
+                // Add a new movie entry
+                let tvshow = EztvToMovieInfo(res);
+                const newMovie = MovieInfos(tvshow);
+                newMovie.save((err, savedmovie) => {
+                    if (err) {
+                        console.log('MONGOOSE - Could not add tvshow');
+                    } else {
+                        console.log('MONGOOSE - Adding tvshow:', savedmovie.title);
+                    }
+                    resolve();
+                });
+            } else {
+                // Append episode to tv show
+                movie.torrents.push({
+                    magnet: res.magnet_url,
+                    seeds: res.seeds,
+                    peers: res.peers,
+                    size: res.size_bytes,
+                    hash: res.hash,
+                    season: res.season,
+                    episode: res.episode
+                });
+                movie.save((err, movie) => {
+                    if (err) {
+                        console.log('MONGOOSE - Could not add episode');
+                    } else {
+                        console.log('MONGOOSE - Adding episode to:', movie.title);
+                    }
+                    resolve();
+                });
+            }
+        })
+    });
+}
+
 function addEZTVTorrents(page, max_page) {
     if (page > max_page + 1) {
         return;
@@ -93,44 +136,11 @@ function addEZTVTorrents(page, max_page) {
     eztv.getTorrents({
         page: page,
         limit: 40
-    }).then((result) => {
+    }).then(async (result) => {
         count = result.torrents.length;
-        result.torrents.forEach((res) => {
-            MovieInfos.findOne({imdb_code: 'tt' + res.imdb_id}, (err, movie) => {
-                if (err) {
-                    console.log('MONGOOSE - Could not fetch torrents');
-                } else if (!movie) {
-                    // Add a new movie entry
-                    let tvshow = EztvToMovieInfo(res);
-                    const newMovie = MovieInfos(tvshow);
-                    newMovie.save((err, movie) => {
-                        if (err) {
-                            console.log('MONGOOSE - Could not add tvshow');
-                        } else {
-                            console.log('MONGOOSE - Adding tvshow:', movie.title);
-                        }
-                    });
-                } else {
-                    // Append episode to tv show
-                    movie.torrents.push({
-                        magnet: res.magnet_url,
-                        seeds: res.seeds,
-                        peers: res.peers,
-                        size: res.size_bytes,
-                        hash: res.hash,
-                        season: res.season,
-                        episode: res.episode
-                    });
-                    movie.save((err, movie) => {
-                        if (err) {
-                            console.log('MONGOOSE - Could not add episode');
-                        } else {
-                            console.log('MONGOOSE - Adding episode to:', movie.title);
-                        }
-                    });
-                }
-            })
-        });
+        for (const res of result.torrents){
+            await EZTVPromise(res);
+        }
         if (count) {
             addEZTVTorrents(page + 1, max_page);
         }

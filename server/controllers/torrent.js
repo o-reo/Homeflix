@@ -21,10 +21,10 @@ exports.getTorrents = function (req, res) {
         query.genres = {$all: [genre]};
     }
     if (req.query.minYear && req.query.maxYear) {
-        query.year = {$gt: req.query.minYear, $lt: req.query.maxYear};
+        query.year = {$gte: req.query.minYear, $lte: req.query.maxYear};
     }
     if (req.query.minRating && req.query.maxRating) {
-        query.rating = {$gt: req.query.minRating, $lt: req.query.maxRating};
+        query.rating = {$gte: req.query.minRating, $lte: req.query.maxRating};
     }
     if (req.query.type) {
         query.type = {$in: req.query.type};
