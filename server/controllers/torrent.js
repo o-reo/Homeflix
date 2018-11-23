@@ -167,7 +167,7 @@ exports.streamTorrent = function (req, res) {
                             '-hls_time 10',
                             '-threads 3',
                             '-f hls',
-                            '-c:a libfdk_aac',
+                            '-c:a aac',
                             '-b:a 192k'
                         ])
                         .on('start', () => {
