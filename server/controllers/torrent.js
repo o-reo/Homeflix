@@ -135,7 +135,7 @@ exports.streamTorrent = function (req, res) {
                     res.json({error: true, msg: 'Torrent Timed out'});
                     sent = true;
                 }
-            }, 20000);
+            }, 30000);
             engine.on('ready', function () {
                 // Find the video file
                 global.PROCESS_ARRAY[req.params.hash] = {engine: engine, status: 'ready'};
