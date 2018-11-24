@@ -23,8 +23,8 @@ export class MovieComponent implements OnInit {
   link: String;
   lang: String;
   subtitle_default: boolean;
-  subtitle_defined_en: string;
-  subtitle_defined_lang: string;
+  subtitle_defined_en: boolean;
+  subtitle_defined_lang: boolean;
   @Input() subtitle_path_en;
   @Input() subtitle_path_lang;
   torrent_id: number;
@@ -66,15 +66,15 @@ export class MovieComponent implements OnInit {
           subdata['lang'] = this.lang;
           if (this.lang !== 'eng') {
             this.torrentService.getSubtitles('eng', subdata)
-              .subscribe(subtitles => {
-                this.subtitle_defined_en = subtitles.path;
-                this.subtitle_path_en = './../../../src/assets/' + subtitles.path;
+              .subscribe(subtitles1 => {
+                this.subtitle_defined_en = !!subtitles1.path;
+                this.subtitle_path_en = './../../../src/assets/' + subtitles1.path;
               });
           }
           this.torrentService.getSubtitles(this.lang, subdata)
-            .subscribe(subtitles => {
-              this.subtitle_defined_lang = subtitles.path;
-              this.subtitle_path_lang = './../../../src/assets/' + subtitles.path;
+            .subscribe(subtitles2 => {
+              this.subtitle_defined_lang = !!subtitles2.path;
+              this.subtitle_path_lang = './../../../src/assets/' + subtitles2.path;
               if (torrent.language && torrent.language.toLowerCase() !== resp['language']) {
                 this.subtitle_default = true;
               }

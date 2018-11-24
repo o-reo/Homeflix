@@ -34,6 +34,7 @@ export class TorrentService {
 
   getSubtitles(lang, data) {
     const headers = {};
+    data.lang = lang;
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
     return this.http.get<any>(`http://${window.location.hostname}:3000/subtitles`,
       {headers: headers, params: data});
