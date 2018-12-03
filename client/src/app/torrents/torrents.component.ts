@@ -38,6 +38,7 @@ export class TorrentsComponent implements OnInit {
       this.searchService.views = resp['views'];
       const query = {
         title: '*',
+        casting: '*',
         tri: 'pop_d',
         genre: 'all',
         page: 1
@@ -53,6 +54,7 @@ export class TorrentsComponent implements OnInit {
       this.torrentService.page++;
       const query = {
         title: this.searchService.title,
+        casting: this.searchService.casting,
         tri: this.searchService.tri,
         genre: this.searchService.genre,
         minYear: this.searchService.minYear,

@@ -10,13 +10,17 @@ exports.getTorrents = function (req, res) {
     let query = {};
     let options = {};
     let genre = '*';
+    let casting = '*';
 
     // Query part.
-    if (req.query.genre)
-        genre = req.query.genre;
     if (req.query.title && req.query.title.charAt(0) !== '*') {
         query.title = {$regex: req.query.title, $options: 'i'}
     }
+    if (req.query.casting && req.query.casting !== '*') {
+        query = Object.assign({"cast.name": {$regex: req.query.casting, $options: 'i'}}, query);
+    }
+    if (req.query.genre)
+        genre = req.query.genre;
     if (genre !== '*') {
         query.genres = {$all: [genre]};
     }
@@ -29,12 +33,11 @@ exports.getTorrents = function (req, res) {
     if (req.query.type) {
         query.type = {$in: req.query.type};
     }
-    // Options part.
+// Options part.
     if (req.query.page) {
         options['page'] = Math.max(0, req.query.page);
     }
     options.limit = 20;
-
     if (req.query.order_by)
         order = (req.query.order_by === 'asc') ? 1 : -1;
     if (req.query.sort_by) {
@@ -52,7 +55,8 @@ exports.getTorrents = function (req, res) {
     MovieInfos.paginate(query, options, function (err, movies) {
         res.json(movies.docs);
     });
-};
+}
+;
 
 function live(hash) {
     if (global.PROCESS_ARRAY[hash]) {

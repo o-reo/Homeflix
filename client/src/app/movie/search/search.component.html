@@ -5,14 +5,19 @@
         <mat-form-field>
           <input matInput type="text" formControlName="input_query" placeholder="{{'Title' | translate}}"/>
         </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="text" formControlName="inputCasting" placeholder="{{'Casting' | translate}}"/>
+        </mat-form-field>
+
         <mat-form-field>
           <mat-select formControlName="inputType" placeholder="Type">
             <mat-option value="Movie" select>{{'Movie' | translate}}</mat-option>
             <mat-option value="TV Show">{{'TV Show' | translate}}</mat-option>
             <mat-option value="Both">{{'Both' | translate}}</mat-option>
-
           </mat-select>
         </mat-form-field>
+
         <mat-form-field>
           <mat-select formControlName="inputGenre" placeholder="Genre">
             <mat-option value="all" select>{{'All' | translate}}</mat-option>
@@ -30,6 +35,7 @@
             <mat-option value="Fantasy">{{'Fantasy' | translate}}</mat-option>
           </mat-select>
         </mat-form-field>
+
         <mat-form-field>
           <mat-select formControlName="inputTri" placeholder="{{'Sort by' | translate}}">
             <mat-option value="pop_a" selected>{{'Popularity' | translate}}
@@ -57,9 +63,6 @@
               <span class="fa fa-sort-down"></span>
             </mat-option>
           </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput type="text" placeholder="{{'Author' | translate}}"/>
         </mat-form-field>
 
         <ion-range-slider

@@ -12,6 +12,7 @@ export class SearchService {
   tri: string;
   genre: string;
   title: string;
+  casting: string;
   minYear: number;
   maxYear: number;
   minRating: number;
@@ -28,6 +29,7 @@ export class SearchService {
     req['minRating'] = query.minRating !== undefined ? query.minRating : 0;
     req['maxRating'] = query.maxRating !== undefined ? query.maxRating : 10;
     req['title'] = query.title;
+    req['casting'] = query.casting;
     req['sort_by'] = 'pop';
     req['order_by'] = 'desc';
     req['page'] = query.page;
@@ -78,6 +80,7 @@ export class SearchService {
             }
           }
           this.title = query.title;
+          this.casting = query.casting;
           this.genre = query.genre;
           this.tri = query.tri;
           this.type = query.type;
