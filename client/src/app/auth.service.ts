@@ -17,8 +17,6 @@ export class HyperAuthService {
           if (res['success']) {
             this.authToken = res['token'];
             this.saveToken();
-          } else {
-            console.log(res['msg']);
           }
           callback(res);
         }
@@ -40,14 +38,7 @@ export class HyperAuthService {
 
   public register(user) {
     this.http.post(`http://${window.location.hostname}:3000/user/register`, user)
-      .subscribe(resp => {
-          if (resp['success']) {
-            console.log(resp);
-          } else {
-            console.log(resp['msg']);
-          }
-        }
-      );
+      .subscribe();
   }
 
   public setToken(token) {

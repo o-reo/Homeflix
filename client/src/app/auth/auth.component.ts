@@ -135,11 +135,8 @@ export class AuthComponent implements OnInit {
                 this.router.navigate(['/profile']);
               }
             });
-          }, err => {
-            console.log(err);
           });
       }, err => {
-        console.log(err);
         this.snackBar.open(err.statusText, 'X', {
           duration: 2000
         });
@@ -192,8 +189,6 @@ export class AuthComponent implements OnInit {
                     this.router.navigate(['/profile']);
                   }
                 });
-              }, (error) => {
-                console.log(error);
               });
           }
         }
