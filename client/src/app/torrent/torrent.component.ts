@@ -31,13 +31,11 @@ export class TorrentComponent implements OnInit {
       'background': 'url("' + this.torrent.medium_cover_image + '")',
       'padding': 0,
       'margin': 0,
-      'height': '367px',
+      'height': '450px',
       'width': '100%',
       'display': 'block',
-      'border-top-left-radius': '10px',
-      'border-top-right-radius': '10px',
-      'background-size': '100% 100%',
-      'background-position': '100% 80%'
+      'border-radius': '10px',
+      'background-size': '100% auto'
     };
     return bgStyle;
   }

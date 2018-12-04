@@ -46,9 +46,18 @@ a {
   justify-content: center;
 }
 
+.movie-card mat-card{
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.movie-card:hover mat-card{
+  background: rgba(0, 0, 0, 0.9);
+  transition: 0.5s;
+}
+
 .movie-card {
-  background: black;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+  position: relative;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 315px;
   margin: 2em;
@@ -61,7 +70,7 @@ a {
 .movie-header {
   padding: 0;
   margin: 0;
-  height: 367px;
+  /*height: 367px;*/
   width: 100%;
   display: block;
   border-top-left-radius: 10px;
@@ -82,7 +91,7 @@ a {
   margin: 10px;
   color: #d32f2f;
   font-size: 65px;
-  text-shadow: 0px 0px 30px black;
+  text-shadow: 0 0 30px black;
 }
 
 .button-container {
@@ -101,13 +110,18 @@ a {
 
 .movie-card:hover {
   filter: none;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
-.movie-content {
-  padding: 18px 18px 24px 18px;
-  margin: 0;
 
+.movie-content {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 36px);
+  padding: 5px 18px 10px 18px;
+  margin: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .movie-content-header, .movie-info {
@@ -184,7 +198,7 @@ a {
   height: 20px;
   padding: 10px;
   border-radius: 50px;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
