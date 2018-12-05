@@ -1,5 +1,5 @@
 const torrentStream = require('torrent-stream');
-const fs = require("fs"); //Load the filesystem module
+const fs = require('fs'); //Load the filesystem module
 const MovieInfos = require('../models/movie-infos');
 const User = require('../models/user');
 const ffmpeg = require('fluent-ffmpeg');

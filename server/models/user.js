@@ -236,4 +236,4 @@ module.exports.updateUser = function (id, data, callback) {
     }, (err, user) => {
         callback(err, user);
     });
-}
+};
