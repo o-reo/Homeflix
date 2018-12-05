@@ -6,6 +6,7 @@
 .froala {
   background-color: rgba(255, 255, 255, 0.1);
   height: 45px;
+  overflow-y: auto;
   margin: 5px;
   border-radius: 3px;
   padding-left: 10px;
