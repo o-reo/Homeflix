@@ -167,28 +167,42 @@ export class AuthComponent implements OnInit {
             const headers = new HttpHeaders();
             this.http.get<any>(`https://api.github.com/user?access_token=${access_token}`, {headers: headers})
               .subscribe((resp) => {
-                const name = resp.name.split(' ');
-                const user = {
-                  id: resp.id,
-                  firstname: name[0],
-                  lastname: name[name.length - 1],
-                  username: resp.login,
-                  path_picture: resp.avatar_url,
-                  email: resp.email,
-                  provider: 'github'
-                };
-                this.authService.oauth(user, (status, err) => {
-                  if (!status) {
-                    this.snackBar.open(err.msg, 'X', {
-                      duration: 2000
+                if (resp.name) {
+                  const name = resp.name.split(' ');
+                  const user = {
+                    id: resp.id,
+                    firstname: name[0],
+                    lastname: name[name.length - 1],
+                    username: resp.login,
+                    path_picture: resp.avatar_url,
+                    email: resp.email,
+                    provider: 'github'
+                  };
+                  this.authService.oauth(user, (status, err) => {
+                    if (!status) {
+                      this.snackBar.open(err.msg, 'X', {
+                        duration: 2000
+                      });
+                      setTimeout(() => {
+                        this.router.navigate(['/register'], {queryParams: err.user});
+                      }, 3000);
+                    } else {
+                      this.router.navigate(['/profile']);
+                    }
+                  });
+                } else {
+                  this.snackBar.open('Your Github Profile is incomplete', 'X', {
+                    duration: 2000
+                  });
+                  setTimeout(() => {
+                    this.router.navigate(['/register'], {
+                      queryParams:
+                        {
+                          username: resp.login
+                        }
                     });
-                    setTimeout(() => {
-                      this.router.navigate(['/register'], {queryParams: err.user});
-                    }, 3000);
-                  } else {
-                    this.router.navigate(['/profile']);
-                  }
-                });
+                  }, 3000);
+                }
               });
           }
         }
