@@ -21,6 +21,9 @@ export class CommentComponent implements OnInit {
     this.userService.getUser(this.comment.id_user)
       .subscribe(user => {
         this.user = user;
+        if (!this.user.photo.includes('http://') && !this.user.photo.includes('https://')) {
+          this.user.photo = `http://${window.location.hostname}:3000/${this.user.photo}`;
+        }
         this.loaded = Promise.resolve(true);
       });
   }
