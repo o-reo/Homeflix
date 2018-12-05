@@ -5,7 +5,7 @@
 <div class="container">
   <app-search></app-search>
   <br>
-  <!-- div class="row" -->
-  <app-torrent *ngFor="let torrent of torrents" [torrent]="torrent"></app-torrent>
+  <div class="torrents-container">
+    <app-torrent *ngFor="let torrent of torrents" [torrent]="torrent"></app-torrent>
+  </div>
 </div>
-<!-- /div -->

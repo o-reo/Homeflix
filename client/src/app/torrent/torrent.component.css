@@ -5,11 +5,6 @@ body {
   font-size: 14px;
 }
 
-* {
-  -webkit-transition: 100ms;
-  transition: 100ms;
-}
-
 .intro {
   text-align: center;
 }
@@ -31,26 +26,11 @@ a {
   color: inherit;
 }
 
-.container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  max-width: 100%;
-  margin-top: 10vh;
-  margin-left: auto;
-  margin-right: auto;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.movie-card mat-card{
+.movie-card mat-card {
   background: rgba(0, 0, 0, 0.6);
 }
 
-.movie-card:hover mat-card{
+.movie-card:hover mat-card {
   background: rgba(0, 0, 0, 0.9);
   transition: 0.5s;
 }
@@ -60,17 +40,16 @@ a {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 315px;
-  margin: 2em;
   border-radius: 10px;
   display: inline-block;
   cursor: pointer;
   filter: grayscale(60%);
+  transition: 0.5s;
 }
 
 .movie-header {
   padding: 0;
   margin: 0;
-  /*height: 367px;*/
   width: 100%;
   display: block;
   border-top-left-radius: 10px;
@@ -100,19 +79,19 @@ a {
   margin: calc(50% - 35px);
   width: 85px;
   height: 85px;
-  box-shadow: 0px 0px 15px #000000;
-  visibility: hidden;
+  box-shadow: 0 0 15px #000000;
+  opacity: 0;
+  transition: 0.5s;
 }
 
 .movie-card:hover .button-container {
-  visibility: visible;
+  opacity: 1;
 }
 
 .movie-card:hover {
   filter: none;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
-
 
 .movie-content {
   position: absolute;
