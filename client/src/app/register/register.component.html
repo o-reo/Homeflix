@@ -11,7 +11,7 @@
 
           <mat-form-field class="register-input">
             <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Firstname" name="first_name" required
+            <input matInput placeholder="Firstname" name="firstname" required
                    [(ngModel)]="firstname">
           </mat-form-field>
           <br/>
@@ -20,7 +20,7 @@
 
           <mat-form-field class="register-input">
             <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="lastname">
+            <input matInput placeholder="Lastname" name="lastname" required [(ngModel)]="lastname">
           </mat-form-field>
           <br/>
           <small class="error-msg">{{ err_lastname }}</small>

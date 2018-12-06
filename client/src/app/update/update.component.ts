@@ -77,20 +77,23 @@ export class UpdateComponent implements OnInit {
     });
   }
 
+
+  /* Function that prints error message. */
+  throwErrors(errors) {
+    let varName = Object.values(errors)[0];
+    this[String(varName)] = Object.values(errors)[1];
+    if (Object.keys(errors).length === 4) {
+      varName = Object.values(errors)[2];
+      this[String(varName)] = Object.values(errors)[3];
+    }
+  }
+
+
   /* Functions that updates everything except password and picture. */
   update(data, key) {
     this.cleanErrorMessage();
     this.userService.getUser('').subscribe(resp => {
-      const req = {};
-      if (key !== 'username') {
-        req['oldInfo'] = {'_id': resp['_id']};
-        req['newInfo'] = {[key]: data};
-      } else {
-        const oldPath = resp['photo'];
-        const newPath = 'profil_pictures/' + data + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
-        req['oldInfo'] = {'_id': resp['_id']};
-        req['newInfo'] = {[key]: data, 'photo': newPath};
-      }
+      const req = {'oldInfo': {'_id': resp['_id']}, 'newInfo': {[key]: data}};
       this.userService.updateMyUser(req).subscribe(res => {
         if (res['success'] === true) {
           if (key === 'first_name') {
@@ -109,15 +112,18 @@ export class UpdateComponent implements OnInit {
           this.throwErrors(res);
         }
       });
-
     });
   }
+
 
   /* Function that updates password. */
   update_password() {
     this.cleanErrorMessage();
     this.userService.getUser('').subscribe(resp => {
-      const req = {oldInfo: {'_id': resp['_id']}, newInfo: {['password']: this.password, ['password2']: this.password2}};
+      const req = {
+        oldInfo: {'_id': resp['_id']},
+        newInfo: {['password']: this.password, ['password2']: this.password2}
+      };
       this.userService.updateMyUser(req).subscribe(res => {
         if (res['success'] === true) {
           this.snackBar.open('Password' + ' was successfully updated.', 'X', {
@@ -158,7 +164,10 @@ export class UpdateComponent implements OnInit {
       }
       /* Request to uploads picture name to database. */
       this.userService.getUser('').subscribe(resp => {
-        const req = {oldInfo: {'_id': resp['_id']}, newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}};
+        const req = {
+          oldInfo: {'_id': resp['_id']},
+          newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}
+        };
         this.userService.updateMyUser(req).subscribe(res => {
           if (res['success'] === true) {
             this.snackBar.open('Photo' + ' was successfully updated.', 'X', {
@@ -175,15 +184,6 @@ export class UpdateComponent implements OnInit {
     }
   }
 
-  /* Function that prints error message. */
-  throwErrors(errors) {
-    let varName = Object.values(errors)[0];
-    this[String(varName)] = Object.values(errors)[1];
-    if (Object.keys(errors).length === 4) {
-      varName = Object.values(errors)[2];
-      this[String(varName)] = Object.values(errors)[3];
-    }
-  }
 
   /* Function that cleans errors message. */
   cleanErrorMessage() {
