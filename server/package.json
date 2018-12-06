@@ -16,7 +16,7 @@
     "body-parser": "^1.18.3",
     "cloudflare-bypasser": "0.0.3",
     "cors": "^2.8.4",
-    "diskusage": "^1.0.0",
+    "diskspace": "^2.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",

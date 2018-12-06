@@ -4,7 +4,7 @@ const MovieInfos = require('../models/movie-infos');
 const User = require('../models/user');
 const ffmpeg = require('fluent-ffmpeg');
 const parseTorrent = require('parse-torrent');
-const disk = require('diskusage');
+const diskspace = require('diskspace');
 
 exports.getTorrents = function (req, res) {
     let order = 1;
@@ -151,18 +151,14 @@ exports.streamTorrent = function (req, res) {
                 engine.files.forEach(function (file) {
                     file.deselect();
                     if (file.name.substr(file.name.length - 3) === 'mkv' || file.name.substr(file.name.length - 3) === 'mp4') {
-                        disk.check('./')
-                            .then(info => {
-                                if (info.free < 2 * file.length && !sent) {
-                                    res.json({error: true, msg: 'The server disk is full'});
-                                    stop(req.params.hash);
-                                    delete global.PROCESS_ARRAY[req.params.hash];
-                                    sent = true;
-                                }
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            });
+                        diskspace.check('./', function (err, info) {
+                            if (info.free < 2 * file.length && !sent) {
+                                res.json({error: true, msg: 'The server disk is full'});
+                                stop(req.params.hash);
+                                delete global.PROCESS_ARRAY[req.params.hash];
+                                sent = true;
+                            }
+                        });
                         if (!fs.existsSync('../films/' + req.params.hash)) {
                             fs.mkdirSync('../films/' + req.params.hash);
                         }
