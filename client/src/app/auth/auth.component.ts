@@ -31,25 +31,29 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.provider = localStorage.getItem('provider');
-    this.googleAuthService.authState.subscribe((user) => {
-      this.user = user;
-    });
-    this.activatedRoute.queryParams.subscribe(params => {
-      const code = params['code'];
-      if (code) {
-        if (this.provider === '42') {
-          this.Authorize42(code);
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['watch']);
+    } else {
+      this.provider = localStorage.getItem('provider');
+      this.googleAuthService.authState.subscribe((user) => {
+        this.user = user;
+      });
+      this.activatedRoute.queryParams.subscribe(params => {
+        const code = params['code'];
+        if (code) {
+          if (this.provider === '42') {
+            this.Authorize42(code);
+          }
+          if (this.provider === 'github') {
+            this.AuthorizeGithub(code);
+          }
+          if (this.provider === 'slack') {
+            this.AuthorizeSlack(code);
+          }
+          window.localStorage.removeItem('provider');
         }
-        if (this.provider === 'github') {
-          this.AuthorizeGithub(code);
-        }
-        if (this.provider === 'slack') {
-          this.AuthorizeSlack(code);
-        }
-        window.localStorage.removeItem('provider');
-      }
-    });
+      });
+    }
   }
 
   login() {
