@@ -92,7 +92,7 @@ exports.streamTorrent = function (req, res) {
     let sent = false;
     let timeout = 2;
     // PROCESS_ARRAY status is [init, ready, progress, stream, stop]
-    if (!global.PROCESS_ARRAY[req.params.hash]){
+    if (!global.PROCESS_ARRAY[req.params.hash]) {
         global.PROCESS_ARRAY[req.params.hash] = {status: 'init'};
     }
     // Adds a view to the user collection
@@ -149,12 +149,14 @@ exports.streamTorrent = function (req, res) {
                 global.PROCESS_ARRAY[req.params.hash].engine = engine;
                 global.PROCESS_ARRAY[req.params.hash].status = 'ready';
                 engine.files.forEach(function (file) {
+                    file.deselect();
                     if (file.name.substr(file.name.length - 3) === 'mkv' || file.name.substr(file.name.length - 3) === 'mp4') {
                         disk.check('./')
                             .then(info => {
-                                if (info.free < 2 * file.length && !sent){
+                                if (info.free < 2 * file.length && !sent) {
                                     res.json({error: true, msg: 'The server disk is full'});
                                     stop(req.params.hash);
+                                    delete global.PROCESS_ARRAY[req.params.hash];
                                     sent = true;
                                 }
                             })
@@ -168,8 +170,6 @@ exports.streamTorrent = function (req, res) {
 
                         // create stream to torrent file
                         stream = file.createReadStream();
-                    } else {
-                        file.deselect();
                     }
                 });
 
@@ -190,7 +190,9 @@ exports.streamTorrent = function (req, res) {
                             '-b:a 192k'
                         ])
                         .on('start', () => {
-                            global.PROCESS_ARRAY[req.params.hash].status = 'progress';
+                            if (global.PROCESS_ARRAY[req.params.hash]) {
+                                global.PROCESS_ARRAY[req.params.hash].status = 'progress';
+                            }
                         })
                         .on('progress', (data) => {
                             timeout = 0;
