@@ -91,7 +91,6 @@ export class MovieComponent implements OnInit {
                     } else {
                       this.path = data.path;
                       this.link = '/streams' + data.path;
-                      this.videoloaded = Promise.resolve(true);
                     }
                   });
               });
@@ -104,7 +103,11 @@ export class MovieComponent implements OnInit {
     const living = Observable.interval(10000)
       .subscribe(() => {
         this.torrentService.liveStreaming(movie, this.torrent_id)
-          .subscribe();
+          .subscribe((resp) => {
+            if (resp.status === 'stream' && !this.videoloaded) {
+              this.videoloaded = Promise.resolve(true);
+            }
+          });
       });
     const route_evt = this.router.events.subscribe(() => {
       route_evt.unsubscribe();
