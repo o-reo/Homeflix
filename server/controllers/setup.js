@@ -266,6 +266,13 @@ function checkIMDB(callback) {
                                     });
                                 }
                                 movie.cast = cast;
+                                let genres = [];
+                                if (moviedata.genres) {
+                                    movie.genres.forEach((genre) => {
+                                        genres.push(genre['name']);
+                                    });
+                                }
+                                movie.genres = genres;
                                 movie.save((err, movie) => {
                                     if (err) {
                                         if (movie) {
@@ -338,14 +345,16 @@ exports.infos = function (req, res) {
 exports.cleanMovies = function (req, res) {
     let time = new Date().getTime();
     fs.readdir('../films', (err, files) => {
-        files.forEach((file) => {
-            fs.stat('../films/' + file, (err, stat) => {
-                // mtime is modified time a month is 2592000000 seconds
-                if ((time - stat.mtimeMs) > 2592000000) {
-                    fse.remove('../films/' + file);
-                }
+        if (files) {
+            files.forEach((file) => {
+                fs.stat('../films/' + file, (err, stat) => {
+                    // mtime is modified time a month is 2592000000 seconds
+                    if ((time - stat.mtimeMs) > 2592000000) {
+                        fse.remove('../films/' + file);
+                    }
+                });
             });
-        });
+        }
     });
 };
 
