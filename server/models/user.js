@@ -194,13 +194,10 @@ module.exports.lookErrors = function (user) {
     this.checkPassword(user.password, user.password2, errors);
     /* Looks for errors in email. */
     this.checkEmail(user.email, errors);
-    /* Looks for other errors. */
-    if ((!user.firstname || user.firstname === null) && (!user.first_name || user.first_name === null))
-        errors['firstname_undefined'] = true;
-    if ((!user.lastname || user.lastname === null) && (!user.last_name || user.last_name === null))
-        errors['lastname_undefined'] = true;
-    if (!user.username || user.username === null)
-        errors['username_undefined'] = true;
+    /* Looks for errors in username, first name and last name. */
+    this.checkName('username', user.username, errors);
+    this.checkName('firstname', user.firstname, errors);
+    this.checkName('lastname', user.lastname, errors);
     if (user.language && user.language !== 'english' && user.language !== 'french' && user.language !== 'spanish')
         errors['language_uncorrect'] = true;
     if ((!user.path_picture || user.path_picture === null) && (!user.photo || user.photo === null))
@@ -215,9 +212,18 @@ module.exports.checkPassword = function (password, confirmation, errors) {
         errors['password2_empty'] = true;
     if (password !== null && confirmation !== null && password !== confirmation)
         errors['passwords_dont_match'] = true;
-    let regex = new RegExp('^(?=.*[^a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+    let regex = new RegExp('^(?=.*[^a-zA-Z])(?=.*[0-9])(?=.*[ `~!@#$%^&*()_+\\-=\[\\]{};\':"\\\\|,.<>\\/?])(?=.{8,})');
     if (Object.getOwnPropertyNames(errors).length === 0 && regex.test(password) === false)
         errors['password_uncorrect'] = true;
+    return (errors);
+};
+
+module.exports.checkName = function (key, name, errors) {
+    if (!name || name === null)
+        errors[key + '_undefined'] = true;
+    let regexp = new RegExp(/[ `~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/);
+    if (regexp.test(name))
+        errors[key + '_uncorrect'] = true;
     return (errors);
 };
 
@@ -236,4 +242,4 @@ module.exports.updateUser = function (id, data, callback) {
     }, (err, user) => {
         callback(err, user);
     });
-}
+};

@@ -115,13 +115,22 @@ export class RegisterComponent implements OnInit {
       this.err_photo = 'You must add a picture.';
     }
     if (errors['firstname_undefined'] === true) {
-      this.err_firstname = 'Firstname is empty.';
+      this.err_firstname = 'First name is empty.';
+    }
+    if (errors['firstname_uncorrect'] === true) {
+      this.err_firstname = 'First name should not contains any special characters.';
     }
     if (errors['lastname_undefined'] === true) {
-      this.err_lastname = 'Lastname is empty.';
+      this.err_lastname = 'Last name is empty.';
+    }
+    if (errors['lastname_uncorrect'] === true) {
+      this.err_lastname = 'Last name should not contains any special characters.';
     }
     if (errors['username_undefined'] === true) {
       this.err_username = 'Username is empty.';
+    }
+    if (errors['username_uncorrect'] === true) {
+      this.err_username = 'Username should not contains any special characters.';
     }
     if (errors['mail_uncorrect'] === true) {
       this.err_email = 'The format of the email is uncorrect.';

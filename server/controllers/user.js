@@ -80,40 +80,41 @@ exports.recovery = function (req, res) {
 exports.updateUser = function (req, res) {
     let errors = User.lookErrors(req.body.newInfo);
 
-    if ((req.body.newInfo.first_name && errors['firstname_undefined'] !== true) ||
-        (req.body.newInfo.last_name && errors['lastname_undefined'] !== true) ||
-        (req.body.newInfo.language && errors['language_uncorrect'] !== true) ||
-        (req.body.newInfo.username && errors['username_undefined'] !== true) ||
+    if ((req.body.newInfo.language && req.body.newInfo.language !== "" && errors['language_uncorrect'] !== true) ||
+        (req.body.newInfo.username && errors['username_undefined'] !== true && errors['username_uncorrect'] !== true) ||
+        (req.body.newInfo.lastname && errors['lastname_undefined'] !== true && errors['lastname_uncorrect'] !== true) ||
+        (req.body.newInfo.firstname && errors['firstname_undefined'] !== true && errors['firstname_uncorrect'] !== true) ||
         (req.body.newInfo.photo && errors['no_photo'] !== true) ||
         (req.body.newInfo.email && errors['mail_undefined'] !== true && errors['mail_uncorrect'] !== true)) {
         User.findOneAndUpdate(req.body.oldInfo, {$set: req.body.newInfo}, {new: false}, (err, doc) => {
             if (err) {
-                if (req.body.newInfo.username || req.body.newInfo.email)
-                    res.json({
-                        success: false,
-                        msg: "Something wrong when updating data! Username or email is probably already used."
-                    });
+                if (req.body.newInfo.username) {
+                    res.json({place: 'err_username', message: 'Username is already taken.'});
+                }
+                else if (req.body.newInfo.email) {
+                    res.json({place: 'err_email', message: 'Email is already taken.'});
+                }
                 else
                     res.json({success: false, msg: "Something wrong when updating data!"});
             }
             else {
                 /* Delete picture if update is a picture. */
-                if (req.body.newInfo.photo  && !req.body.newInfo.username) {
+                if (req.body.newInfo.photo) {
                     if (fs.existsSync('./public/' + doc['photo'])) {
                         fs.unlinkSync('./public/' + doc['photo']);
                     }
                 }
                 /* Rename on database and server photo path if username is changed. */
-                else if (req.body.newInfo.username) {
-                    const username = req.body.newInfo.username;
-                    const oldPath = doc['photo'];
-                    const newPath = 'profil_pictures/' + username + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
-                    fs.rename('./public/' + oldPath, './public/' + newPath, function (err) {
-                        if (err)
-                            console.log(err);
-                    });
-
-                }
+                // else if (req.body.newInfo.username) {
+                //     const username = req.body.newInfo.username;
+                //     const oldPath = doc['photo'];
+                //     const newPath = 'profil_pictures/' + username + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
+                //     fs.rename('./public/' + oldPath, './public/' + newPath, function (err) {
+                //         if (err)
+                //             console.log(err);
+                //     });
+                //
+                // }
                 if (doc)
                     res.json({success: true, msg: 'Profile is successfully updated.'});
             }
@@ -144,14 +145,23 @@ exports.updateUser = function (req, res) {
         /* Return errors as json. */
         let msg = {};
 
-        if (req.body.newInfo.first_name === "") {
-            msg = {place: 'err_firstname', message: 'Firstname is empty.'};
+        if (req.body.newInfo.firstname === "") {
+            msg = {place: 'err_firstname', message: 'First name is empty.'};
         }
-        if (req.body.newInfo.last_name === "") {
-            msg = {place: 'err_lastname', message: 'Lastname is empty.'};
+        else if (errors['firstname_uncorrect'] === true) {
+            msg = {place: 'err_firstname', message: 'First name contains special characters.'};
+        }
+        if (req.body.newInfo.lastname === "") {
+            msg = {place: 'err_lastname', message: 'Last name is empty.'};
+        }
+        else if (errors['lastname_uncorrect'] === true) {
+            msg = {place: 'err_lastname', message: 'Last name contains special characters.'};
         }
         if (req.body.newInfo.username === "") {
             msg = {place: 'err_username', message: 'Username is empty.'};
+        }
+        else if (errors['username_uncorrect'] === true) {
+            msg = {place: 'err_username', message: 'Username contains special characters.'};
         }
         if (req.body.newInfo.email === "") {
             msg = {place: 'err_email', message: 'Email is empty.'};
