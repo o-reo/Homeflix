@@ -7,14 +7,16 @@
 
         <!-- Firstname -->
         <mat-card-actions>
-          <a mat-raised-button (click)="collapsed1 = button(collapsed1)">Firstname</a>
+          <a mat-raised-button (click)="collapsed1 = button(collapsed1)">{{'Firstname' | translate}}</a>
         </mat-card-actions>
 
         <mat-card-content *ngIf="collapsed1" class="inside">
           <mat-form-field class="register-input">
-            <input matInput placeholder="Firstname" name="first_name" required [(ngModel)]="first_name">
+            <input matInput placeholder="{{'Firstname' | translate}}" name="first_name" required
+                   [(ngModel)]="first_name">
           </mat-form-field>
-          <button mat-mini-fab type="button" color="warn" (click)="update(first_name, 'firstname')" id="firstname-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update(first_name, 'firstname')"
+                  id="firstname-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br>
@@ -25,12 +27,12 @@
 
         <!-- Lastname -->
         <mat-card-actions>
-          <a mat-raised-button (click)="collapsed2 = button(collapsed2)">Lastname</a>
+          <a mat-raised-button (click)="collapsed2 = button(collapsed2)">{{'Lastname' | translate}}</a>
         </mat-card-actions>
 
         <mat-card-content *ngIf="collapsed2" class="inside">
           <mat-form-field class="register-input">
-            <input matInput placeholder="Lastname" name="last_name" required [(ngModel)]="last_name">
+            <input matInput placeholder="{{'Lastname' | translate}}" name="last_name" required [(ngModel)]="last_name">
           </mat-form-field>
           <button mat-mini-fab type="button" color="warn" (click)="update(last_name, 'lastname')" id="lastname-upload">
             <mat-icon>edit</mat-icon>
@@ -43,12 +45,12 @@
 
         <!-- Username -->
         <mat-card-actions>
-          <a mat-raised-button (click)="collapsed3 = button(collapsed3)">Username</a>
+          <a mat-raised-button (click)="collapsed3 = button(collapsed3)">{{'Username' | translate}}</a>
         </mat-card-actions>
 
         <mat-card-content *ngIf="collapsed3" class="inside">
           <mat-form-field class="register-input">
-            <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
+            <input matInput placeholder="{{'Username' | translate}}" name="username" required [(ngModel)]="username">
           </mat-form-field>
           <button mat-mini-fab type="button" color="warn" (click)="update(username, 'username')" id="username-upload">
             <mat-icon>edit</mat-icon>
@@ -61,12 +63,12 @@
 
         <!-- Email -->
         <mat-card-actions>
-          <a mat-raised-button (click)="collapsed4 = button(collapsed4)">Email</a>
+          <a mat-raised-button (click)="collapsed4 = button(collapsed4)">{{'Email' | translate}}</a>
         </mat-card-actions>
 
         <mat-card-content *ngIf="collapsed4" class="inside">
           <mat-form-field class="register-input">
-            <input matInput placeholder="Email" name="email" required [(ngModel)]="email">
+            <input matInput placeholder="{{'Email' | translate}}" name="email" required [(ngModel)]="email">
           </mat-form-field>
           <button mat-mini-fab type="button" color="warn" (click)="update(email, 'email')" id="email-upload">
             <mat-icon>edit</mat-icon>
@@ -79,18 +81,20 @@
 
         <!-- Password -->
         <mat-card-actions>
-          <a mat-raised-button (click)="collapsed5 = button(collapsed5)">Password</a>
+          <a mat-raised-button (click)="collapsed5 = button(collapsed5)">{{'Password' | translate}}</a>
         </mat-card-actions>
 
         <mat-card-content *ngIf="collapsed5" class="inside">
           <mat-form-field class="register-input">
-            <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
+            <input matInput type="password" placeholder="{{'Password' | translate}}" name="password" required
+                   [(ngModel)]="password">
           </mat-form-field>
           <br>
           <small class="error-msg">{{ err_password }}</small>
           <br>
           <mat-form-field class="register-input">
-            <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password2">
+            <input matInput type="password" placeholder="{{'Password' | translate}}" name="password" required
+                   [(ngModel)]="password2">
           </mat-form-field>
           <br>
           <small class="error-msg">{{ err_password2 }}</small>
@@ -105,12 +109,12 @@
 
         <!--Language-->
         <mat-card-actions>
-          <a mat-raised-button (click)="collapsed7 = button(collapsed7)">Language</a>
+          <a mat-raised-button (click)="collapsed7 = button(collapsed7)">{{'Language' | translate}}</a>
         </mat-card-actions>
 
         <mat-card-content *ngIf="collapsed7" class="inside">
           <mat-form-field class="register-input">
-            <mat-select [(ngModel)]="language" name="language" placeholder="Language">
+            <mat-select [(ngModel)]="language" name="language" placeholder="{{'Language' | translate}}">
               <mat-option value="english">English</mat-option>
               <mat-option value="french">French</mat-option>
               <mat-option value="spanish">Spanish</mat-option>
@@ -123,7 +127,7 @@
 
 
         <!-- Photo-->
-        <a mat-raised-button style="margin: 10px 0 10px 0">Photo</a>
+        <a mat-raised-button style="margin: 10px 0 10px 0">{{'Photo' | translate}}</a>
         <div id="frame" [ngStyle]="{'background-image': getImg()}"></div>
 
         <mat-form-field>

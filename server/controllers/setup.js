@@ -43,6 +43,7 @@ function addYTSTorrents(page, max_page, header) {
                             });
                         }
                         val.medium_cover_image = '/default.png';
+                        val.genres = [];
                         const newMovie = MovieInfos(val);
                         newMovie.save((err, movie) => {
                             if (err) {
