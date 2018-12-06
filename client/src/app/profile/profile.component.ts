@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
   amount: number;
 
   constructor(private authService: HyperAuthService, public snackBar: MatSnackBar, private userService: UserService,
-              private activatedRoute: ActivatedRoute, private http: HttpClient) {
+              private activatedRoute: ActivatedRoute, private http: HttpClient, private router: Router) {
   }
 
   ngOnInit() {
@@ -33,16 +33,20 @@ export class ProfileComponent implements OnInit {
     });
 
     this.userService.getUser(this.id).subscribe(resp => {
-      this.photo = resp['photo'];
-      this.username = resp['username'];
-      this.firstname = resp['first_name'];
-      this.lastname = resp['last_name'];
-      this.language = resp['language'];
-      if (resp['email']) {
-        this.email = resp['email'];
+      if (typeof resp['success'] !== 'undefined' && resp['success'] === false) {
+        this.router.navigate(['watch']);
+      } else {
+        this.photo = resp['photo'];
+        this.username = resp['username'];
+        this.firstname = resp['first_name'];
+        this.lastname = resp['last_name'];
+        this.language = resp['language'];
+        if (resp['email']) {
+          this.email = resp['email'];
+        }
+        this.grant = resp['grant'];
+        this.userService.switchLanguage(this.language);
       }
-      this.grant = resp['grant'];
-      this.userService.switchLanguage(this.language);
     });
   }
 

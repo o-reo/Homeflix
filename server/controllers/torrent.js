@@ -1,9 +1,10 @@
 const torrentStream = require('torrent-stream');
-const fs = require("fs"); //Load the filesystem module
+const fs = require('fs'); //Load the filesystem module
 const MovieInfos = require('../models/movie-infos');
 const User = require('../models/user');
 const ffmpeg = require('fluent-ffmpeg');
 const parseTorrent = require('parse-torrent');
+const disk = require('diskusage');
 
 exports.getTorrents = function (req, res) {
     let order = 1;
@@ -61,9 +62,9 @@ exports.getTorrents = function (req, res) {
 function live(hash) {
     if (global.PROCESS_ARRAY[hash]) {
         global.PROCESS_ARRAY[hash].live = Math.floor(Date.now() / 1000);
-        return true;
+        return global.PROCESS_ARRAY[hash].status;
     }
-    return false;
+    return null;
 }
 
 exports.liveTorrent = function (req, res) {
@@ -90,7 +91,10 @@ exports.stopTorrent = function (req, res) {
 exports.streamTorrent = function (req, res) {
     let sent = false;
     let timeout = 2;
-
+    // PROCESS_ARRAY status is [init, ready, progress, stream, stop]
+    if (!global.PROCESS_ARRAY[req.params.hash]){
+        global.PROCESS_ARRAY[req.params.hash] = {status: 'init'};
+    }
     // Adds a view to the user collection
     if (req.body.imdbid) {
         User.addView({imdbid: req.body.imdbid, user_id: req.userdata._id}, (success, msg) => {
@@ -119,7 +123,7 @@ exports.streamTorrent = function (req, res) {
         }
         // Only if this torrent has not been downloaded and converted
         let engine = null;
-        if (!global.PROCESS_ARRAY[req.params.hash] || global.PROCESS_ARRAY[req.params.hash].status === 'stopped') {
+        if (global.PROCESS_ARRAY[req.params.hash].status === 'init' || global.PROCESS_ARRAY[req.params.hash].status === 'stopped') {
             engine = torrentStream(magnet, {path: './../films/' + req.params.hash + '/torrent'});
             let stream;
             setTimeout(() => {
@@ -139,12 +143,24 @@ exports.streamTorrent = function (req, res) {
                     res.json({error: true, msg: 'Torrent Timed out'});
                     sent = true;
                 }
-            }, 30000);
+            }, 60000);
             engine.on('ready', function () {
                 // Find the video file
-                global.PROCESS_ARRAY[req.params.hash] = {engine: engine, status: 'ready'};
+                global.PROCESS_ARRAY[req.params.hash].engine = engine;
+                global.PROCESS_ARRAY[req.params.hash].status = 'ready';
                 engine.files.forEach(function (file) {
                     if (file.name.substr(file.name.length - 3) === 'mkv' || file.name.substr(file.name.length - 3) === 'mp4') {
+                        disk.check('./')
+                            .then(info => {
+                                if (info.free < 2 * file.length && !sent){
+                                    res.json({error: true, msg: 'The server disk is full'});
+                                    stop(req.params.hash);
+                                    sent = true;
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
                         if (!fs.existsSync('../films/' + req.params.hash)) {
                             fs.mkdirSync('../films/' + req.params.hash);
                         }
@@ -152,7 +168,6 @@ exports.streamTorrent = function (req, res) {
 
                         // create stream to torrent file
                         stream = file.createReadStream();
-                        // initialize process entry
                     } else {
                         file.deselect();
                     }
@@ -175,13 +190,15 @@ exports.streamTorrent = function (req, res) {
                             '-b:a 192k'
                         ])
                         .on('start', () => {
-                            global.PROCESS_ARRAY[req.params.hash].status = 'in progress';
+                            global.PROCESS_ARRAY[req.params.hash].status = 'progress';
                         })
                         .on('progress', (data) => {
                             timeout = 0;
                             console.log('FFMPEG - progress:', data.frames,
                                 ', hash:', req.params.hash);
+                            // Save progress to launch stream on live
                             if (data.frames >= 1000 && !sent) {
+                                global.PROCESS_ARRAY[req.params.hash].status = 'stream';
                                 res.json({path: '/' + req.params.hash + '/output.m3u8'});
                                 sent = true;
                             }
@@ -190,7 +207,7 @@ exports.streamTorrent = function (req, res) {
                             }
                         })
                         .on('end', () => {
-                            global.PROCESS_ARRAY[req.params.hash].status = 'done';
+                            global.PROCESS_ARRAY[req.params.hash].status = 'stream';
                         })
                         .on('error', (err) => {
                                 if (!sent) {

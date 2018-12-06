@@ -1,6 +1,6 @@
-<form class="froala-container" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+<form class="froala-container">
   <div class="froala">
-    <textarea [froalaEditor]="options" formControlName="form1"></textarea>
+    <textarea [froalaEditor]="options" [(froalaModel)]="editorContent"></textarea>
   </div>
-  <button mat-raised-button color="warn" type="submit" class="froala-submit">{{'Send' | translate}}</button>
+  <button mat-raised-button color="warn" type="button" (click)="SubmitEditor()" class="froala-submit">{{'Send' | translate}}</button>
 </form>

@@ -1,5 +1,11 @@
 mat-list-item{
   position: relative;
+  overflow: hidden;
+}
+
+mat-list-item .comment{
+  overflow: hidden;
+  line-height: 8px;
 }
 
 mat-list-item .comment_time{

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Input } from "@angular/core";
 import { Comment } from "../../comment";
 import { UserService } from "../../user.service";
-import { User} from "../../user";
 
 @Component({
   selector: 'app-comment',

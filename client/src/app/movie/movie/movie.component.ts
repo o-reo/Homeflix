@@ -44,55 +44,58 @@ export class MovieComponent implements OnInit {
     this.subtitle_default = false;
     this.torrentService.getTorrent(this.route.snapshot.params['id_movie'])
       .subscribe(torrent => {
-        this.torrent = torrent;
-        if (!this.torrent.medium_cover_image.includes('http://') && !this.torrent.medium_cover_image.includes('https://')) {
-          this.torrent.medium_cover_image = `http://${window.location.hostname}:3000/${this.torrent.medium_cover_image}`;
-        }
-        this.lang = 'eng';
-        const subdata = {
-          imdbid: torrent.imdb_code,
-          filesize: bytes(torrent.torrents[this.torrent_id].size)
-        };
-        if (torrent.torrents[this.torrent_id].episode) {
-          subdata['episode'] = torrent.torrents[this.torrent_id].episode;
-          subdata['season'] = torrent.torrents[this.torrent_id].season;
-        }
-        this.userService.getUser('').subscribe(resp => {
-          if (resp['language'] === 'french') {
-            this.lang = 'fre';
-          } else if (resp['language'] === 'spanish') {
-            this.lang = 'spa';
+        if (!torrent || !torrent.torrents[this.torrent_id]) {
+          this.router.navigate(['watch']);
+        } else {
+          this.torrent = torrent;
+          if (!this.torrent.medium_cover_image.includes('http://') && !this.torrent.medium_cover_image.includes('https://')) {
+            this.torrent.medium_cover_image = `http://${window.location.hostname}:3000/${this.torrent.medium_cover_image}`;
           }
-          subdata['lang'] = this.lang;
-          if (this.lang !== 'eng') {
-            this.torrentService.getSubtitles('eng', subdata)
-              .subscribe(subtitles1 => {
-                this.subtitle_defined_en = !!subtitles1.path;
-                this.subtitle_path_en = './../../../src/assets/' + subtitles1.path;
-              });
+          this.lang = 'eng';
+          const subdata = {
+            imdbid: torrent.imdb_code,
+            filesize: bytes(torrent.torrents[this.torrent_id].size)
+          };
+          if (torrent.torrents[this.torrent_id].episode) {
+            subdata['episode'] = torrent.torrents[this.torrent_id].episode;
+            subdata['season'] = torrent.torrents[this.torrent_id].season;
           }
-          this.torrentService.getSubtitles(this.lang, subdata)
-            .subscribe(subtitles2 => {
-              this.subtitle_defined_lang = !!subtitles2.path;
-              this.subtitle_path_lang = './../../../src/assets/' + subtitles2.path;
-              if (torrent.language && torrent.language.toLowerCase() !== resp['language']) {
-                this.subtitle_default = true;
-              }
-              this.loaded = Promise.resolve(true);
-              this.liveStreaming(this.torrent);
-              this.torrentService.startStreaming(this.torrent, this.torrent_id)
-                .subscribe(data => {
-                  if (data.error) {
-                    // Could not parse torrent file
-                    this.openErrorDialog(data.msg);
-                  } else {
-                    this.path = data.path;
-                    this.link = '/streams' + data.path;
-                    this.videoloaded = Promise.resolve(true);
-                  }
+          this.userService.getUser('').subscribe(resp => {
+            if (resp['language'] === 'french') {
+              this.lang = 'fre';
+            } else if (resp['language'] === 'spanish') {
+              this.lang = 'spa';
+            }
+            subdata['lang'] = this.lang;
+            if (this.lang !== 'eng') {
+              this.torrentService.getSubtitles('eng', subdata)
+                .subscribe(subtitles1 => {
+                  this.subtitle_defined_en = !!subtitles1.path;
+                  this.subtitle_path_en = './../../../src/assets/' + subtitles1.path;
                 });
-            });
-        });
+            }
+            this.torrentService.getSubtitles(this.lang, subdata)
+              .subscribe(subtitles2 => {
+                this.subtitle_defined_lang = !!subtitles2.path;
+                this.subtitle_path_lang = './../../../src/assets/' + subtitles2.path;
+                if (torrent.language && torrent.language.toLowerCase() !== resp['language']) {
+                  this.subtitle_default = true;
+                }
+                this.loaded = Promise.resolve(true);
+                this.liveStreaming(this.torrent);
+                this.torrentService.startStreaming(this.torrent, this.torrent_id)
+                  .subscribe(data => {
+                    if (data.error) {
+                      // Could not parse torrent file
+                      this.openErrorDialog(data.msg);
+                    } else {
+                      this.path = data.path;
+                      this.link = '/streams' + data.path;
+                    }
+                  });
+              });
+          });
+        }
       });
   }
 
@@ -100,7 +103,11 @@ export class MovieComponent implements OnInit {
     const living = Observable.interval(10000)
       .subscribe(() => {
         this.torrentService.liveStreaming(movie, this.torrent_id)
-          .subscribe();
+          .subscribe((resp) => {
+            if (resp.status === 'stream' && !this.videoloaded) {
+              this.videoloaded = Promise.resolve(true);
+            }
+          });
       });
     const route_evt = this.router.events.subscribe(() => {
       route_evt.unsubscribe();

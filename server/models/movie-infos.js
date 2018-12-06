@@ -42,7 +42,7 @@ module.exports.get = (query, callback) => {
             });
         }
         else {
-            callback(true, '')
+            callback(false, '')
         }
     })
 };
