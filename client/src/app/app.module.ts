@@ -37,7 +37,6 @@ import {
 
 import {AppComponent} from './app.component';
 import {AuthComponent, DialogTemplateComponent} from './auth/auth.component';
-// import {StorageServiceModule} from 'angular-webstorage-service';
 import {Routes} from '@angular/router';
 import {RouterModule} from '@angular/router';
 import {NavbarComponent} from './navbar/navbar.component';
@@ -56,21 +55,8 @@ import {CommentsComponent} from './movie/comments/comments.component';
 import {CommentComponent} from './movie/comment/comment.component';
 import {PostCommentComponent} from './movie/post-comment/post-comment.component';
 import {HyperAuthService} from './auth.service';
-import {SocialLoginModule, AuthServiceConfig, GoogleLoginProvider} from 'angularx-social-login';
 import {AuthguardService} from './authguard.service';
-import {GOOGLE_API} from './credentials';
 import {FileUploadModule} from 'ng2-file-upload';
-
-const config = new AuthServiceConfig([
-  {
-    id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider(GOOGLE_API.clientID)
-  }
-]);
-
-export function provideConfig() {
-  return config;
-}
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -83,7 +69,6 @@ const appRoutes: Routes = [
   {path: 'update', component: UpdateComponent},
   {path: 'profile', canActivate: [AuthguardService], component: ProfileComponent},
   {path: 'watch', canActivate: [AuthguardService], component: TorrentsComponent},
-  // {path: 'torrents/:page', canActivate: [AuthguardService], component: TorrentComponent},
   {path: 'watch/movie/:id_movie', canActivate: [AuthguardService], component: MovieComponent},
   {path: '**', redirectTo: 'auth'}
 ];
@@ -150,22 +135,14 @@ const appRoutes: Routes = [
     MatChipsModule,
     HttpClientModule,
     FormsModule,
-    // StorageServiceModule,
     RouterModule.forRoot(appRoutes),
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     ReactiveFormsModule,
     NgxPaginationModule,
-    SocialLoginModule
   ],
   entryComponents: [DialogTemplateComponent, DialogSelectComponent, ErrorDialogTemplateComponent],
-  providers: [
-    HyperAuthService,
-    {
-      provide: AuthServiceConfig,
-      useFactory: provideConfig
-    },
-    AuthguardService],
+  providers: [AuthguardService],
   bootstrap: [AppComponent],
 })
 
