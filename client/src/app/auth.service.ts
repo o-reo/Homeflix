@@ -51,9 +51,7 @@ export class HyperAuthService {
   }
 
   public getToken(): string {
-    if (!this.authToken) {
-      this.authToken = localStorage.getItem('id_token');
-    }
+    this.authToken = localStorage.getItem('id_token');
     return this.authToken;
   }
 

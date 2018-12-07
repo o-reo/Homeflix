@@ -79,7 +79,6 @@ exports.recovery = function (req, res) {
 /* Method used to update username, firstname, lastname, email and language. */
 exports.updateUser = function (req, res) {
     let errors = User.lookErrors(req.body.newInfo);
-
     if ((req.body.newInfo.language && req.body.newInfo.language !== "" && errors['language_uncorrect'] !== true) ||
         (req.body.newInfo.username && errors['username_undefined'] !== true && errors['username_uncorrect'] !== true) ||
         (req.body.newInfo.lastname && errors['lastname_undefined'] !== true && errors['lastname_uncorrect'] !== true) ||
@@ -105,16 +104,16 @@ exports.updateUser = function (req, res) {
                     }
                 }
                 /* Rename on database and server photo path if username is changed. */
-                // else if (req.body.newInfo.username) {
-                //     const username = req.body.newInfo.username;
-                //     const oldPath = doc['photo'];
-                //     const newPath = 'profil_pictures/' + username + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
-                //     fs.rename('./public/' + oldPath, './public/' + newPath, function (err) {
-                //         if (err)
-                //             console.log(err);
-                //     });
-                //
-                // }
+                else if (req.body.newInfo.username) {
+                    const username = req.body.newInfo.username;
+                    const oldPath = doc['photo'];
+                    const newPath = 'profil_pictures/' + username + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
+                    fs.rename('./public/' + oldPath, './public/' + newPath, function (err) {
+                        if (err)
+                            console.log(err);
+                    });
+
+                }
                 if (doc)
                     res.json({success: true, msg: 'Profile is successfully updated.'});
             }
@@ -167,7 +166,7 @@ exports.updateUser = function (req, res) {
             msg = {place: 'err_email', message: 'Email is empty.'};
         }
         if (req.body.newInfo.email && errors['mail_uncorrect'] === true) {
-            msg = {place: 'err_email', message: 'Email is uncorrect.'};
+            msg = {place: 'err_email', message: 'Email format is uncorrect.'};
         }
         if (errors['password1_empty'] !== true && errors['password2_empty'] !== true &&
             errors['passwords_dont_match'] !== true && errors['password_uncorrect'] === true) {

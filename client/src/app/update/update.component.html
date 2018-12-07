@@ -131,14 +131,14 @@
         <div id="frame" [ngStyle]="{'background-image': getImg()}"></div>
 
         <mat-form-field>
-          <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect
-                 [uploader]="uploader" id="file-upload_back" hidden>
+          <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect [uploader]="uploader" id="file-upload_back" hidden>
           <input matInput type="text" name="path" id="file-upload_file" disabled/>
         </mat-form-field>
         <button mat-mini-fab type="button" color="warn" id="file-upload">
           <mat-icon>add_a_photo</mat-icon>
         </button>
-        <button mat-mini-fab type="button" color="warn" (click)="update_photo()" id="photo-upload">
+        <!--<button mat-mini-fab type="button" color="warn" (click)="update_photo()" id="photo-upload">-->
+        <button [ngStyle]="{'visibility': enable()}" mat-mini-fab type="button" color="warn" (click)="uploader.uploadAll()" id="photo-upload">
           <mat-icon>edit</mat-icon>
         </button>
         <br>
