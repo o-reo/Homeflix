@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../user.service';
+import {HyperAuthService} from '../auth.service';
 import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
@@ -29,6 +30,8 @@ export class RegisterComponent implements OnInit {
   password2: string;
   language: string;
   photo: string;
+  id: string;
+  pathPicture: string;
   req: boolean;
   text: string;
 
@@ -39,6 +42,7 @@ export class RegisterComponent implements OnInit {
   });
 
   constructor(private userService: UserService,
+              private authService: HyperAuthService,
               public snackBar: MatSnackBar,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
@@ -50,6 +54,18 @@ export class RegisterComponent implements OnInit {
     };
     this.uploader.onBeforeUploadItem = (item) => {
       item.file.name = this.username;
+    };
+    this.uploader.onCompleteItem = (item, response) => {
+      const updatePhoto = new Promise((resolve) => {
+        this.authService.login({username: this.username, password: this.password}, function() {
+          resolve();
+        });
+      });
+      updatePhoto.then(() => {
+        let name = JSON.parse(response).filename;
+        const req = {'oldInfo': {'_id': this.id}, 'newInfo': {['photo']: name}};
+        this.userService.updateMyUser(req).subscribe();
+      });
     };
     $('#file-upload').click(() => {
       $('#file-upload_back').click();
@@ -92,20 +108,21 @@ export class RegisterComponent implements OnInit {
     this.cleanErrors();
     /* Sends object to router. */
     this.userService.addUser(newUser)
-      .subscribe(msg => {
-        if (msg['msg']) {
-          this.snackBar.open(msg['msg'], 'X', {
+      .subscribe(response => {
+        if (response['msg']) {
+          this.snackBar.open(response['msg'], 'X', {
             duration: 3000,
           });
         }
         /* If request succeeded upload picture and empty form, if not throw error messages.*/
-        if (msg['success'] === true) {
+        if (response['success'] === true) {
+          this.id = response['id'];
           this.uploader.uploadAll();
           setTimeout(() => {
             window.location.href = 'http://localhost:4200';
           }, 3000);
         } else {
-          this.throwError(msg['err']);
+          this.throwError(response['err']);
         }
       });
   }
