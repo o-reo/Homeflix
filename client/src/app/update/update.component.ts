@@ -83,6 +83,7 @@ export class UpdateComponent implements OnInit {
       this.language = resp['language'];
       this.path = resp['photo'];
       this.id = resp['_id'];
+      this.userService.switchLanguage(resp['language']);
     });
   }
 

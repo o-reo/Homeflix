@@ -67,9 +67,10 @@ module.exports.oauth = (req, res) => {
         password: Math.random().toString(36).slice(-12),
         path_picture: req.body.path_picture
     };
-    if (req.body.provider === 'GOOGLE') {
+    if (req.body.provider === 'google') {
         query = {token_google: req.body.id};
         newUser.token_google = req.body.id;
+        newUser.username = req.body.username;
     } else if (req.body.provider === '42') {
         query = {token_42: req.body.id};
         newUser.token_42 = req.body.id;

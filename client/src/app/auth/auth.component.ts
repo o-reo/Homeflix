@@ -4,9 +4,8 @@ import {UserService} from '../user.service';
 import {MatSnackBar} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
-import {API_42, API_GITHUB, API_SLACK} from '../credentials';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {API_42, API_GITHUB, API_SLACK, API_GOOGLE} from '../credentials';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',
@@ -16,13 +15,11 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 export class AuthComponent implements OnInit {
   username: string;
   password: string;
-  user: SocialUser;
   provider: string;
   email: string;
 
   constructor(private authService: HyperAuthService,
               private userService: UserService,
-              private googleAuthService: AuthService,
               public snackBar: MatSnackBar,
               private router: Router,
               private http: HttpClient,
@@ -35,29 +32,32 @@ export class AuthComponent implements OnInit {
       this.router.navigate(['watch']);
     } else {
       this.provider = localStorage.getItem('provider');
-      this.googleAuthService.authState.subscribe((user) => {
-        this.user = user;
-      });
       this.activatedRoute.queryParams.subscribe(params => {
         const code = params['code'];
         if (code) {
           if (this.provider === '42') {
             this.Authorize42(code);
-          }
-          if (this.provider === 'github') {
+          } else if (this.provider === 'github') {
             this.AuthorizeGithub(code);
-          }
-          if (this.provider === 'slack') {
+          } else if (this.provider === 'slack') {
             this.AuthorizeSlack(code);
           }
           window.localStorage.removeItem('provider');
         }
       });
+      this.activatedRoute.fragment.subscribe((frag) => {
+        if (frag) {
+          const token = frag.split('&')[0].substring(13);
+          if (token && this.provider === 'google') {
+            this.AuthorizeGoogle(token);
+          }
+        }
+      });
     }
   }
 
+
   login() {
-    this.user = null;
     window.localStorage.removeItem('provider');
     this.authService.login({username: this.username, password: this.password}, (res) => {
       if (res['msg']) {
@@ -71,24 +71,40 @@ export class AuthComponent implements OnInit {
   }
 
   signInWithGoogle(): void {
-    this.user = null;
-    this.googleAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
-      .then((resp) => {
+    localStorage.setItem('provider', 'google');
+    const redirect_uri = `http://${window.location.hostname}:4200/auth`;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth` +
+      `?client_id=${API_GOOGLE.client_id}&redirect_uri=${redirect_uri}&response_type=token&scope=profile email`;
+  }
+
+  AuthorizeGoogle(token: string): void {
+    const personFields = 'metadata,photos,emailAddresses,names,nicknames';
+    const headers = new HttpHeaders();
+    headers.append('access_token', token);
+    this.http.get<any>('https://people.googleapis.com/v1/people/me', {
+      params: {
+        access_token: token,
+        personFields: personFields
+      }
+    })
+      .subscribe(resp => {
         const user = {
-          id: resp.id,
-          firstname: resp.firstName,
-          lastname: resp.lastName,
-          username: resp.firstName,
-          path_picture: resp.photoUrl,
-          email: resp.email,
-          provider: 'GOOGLE'
+          id: resp.metadata ? resp.metadata.sources[0].id : null,
+          firstname: resp.names ? resp.names[0].givenName : null,
+          lastname: resp.names ? resp.names[0].familyName : null,
+          username: resp.nicknames ? resp.nicknames[0].value : null,
+          path_picture: resp.nicknames ? resp.photos[0].url : null,
+          email: resp.emailAddresses ? resp.emailAddresses[0].value : null,
+          provider: 'google'
         };
         this.authService.oauth(user, (status, err) => {
           if (!status) {
-            this.snackBar.open(err, 'X', {
+            this.snackBar.open(err.msg, 'X', {
               duration: 2000
             });
-            this.router.navigate(['/register']);
+            setTimeout(() => {
+              this.router.navigate(['/register'], {queryParams: err.user});
+            }, 3000);
           } else {
             this.router.navigate(['/profile']);
           }
@@ -96,8 +112,8 @@ export class AuthComponent implements OnInit {
       });
   }
 
+
   signInWith42(): void {
-    this.user = null;
     localStorage.setItem('provider', '42');
     const redirect_uri = `http%3A%2F%2F${window.location.hostname}%3A4200%2Fauth%2F`;
     window.location.href = `https://api.intra.42.fr/oauth/authorize` +
@@ -148,7 +164,6 @@ export class AuthComponent implements OnInit {
   }
 
   signInWithGithub(): void {
-    this.user = null;
     localStorage.setItem('provider', 'github');
     window.location.href = `https://github.com/login/oauth/authorize` +
       `?client_id=${API_GITHUB.client_id}&scope=read:user`;
@@ -214,7 +229,7 @@ export class AuthComponent implements OnInit {
   }
 
   signInWithSlack(): void {
-    this.user = null;
+    // this.user = null;
     localStorage.setItem('provider', 'slack');
     window.location.href = `https://slack.com/oauth/authorize` +
       `?client_id=${API_SLACK.client_id}&scope=users.profile:read&state=thisisasecret`;

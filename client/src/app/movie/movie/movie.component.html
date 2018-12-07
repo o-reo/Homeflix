@@ -41,7 +41,7 @@
                 <p>{{torrent.views}} {{'views' | translate}}</p>
                 <p></p>
                 <mat-chip-list>
-                  <mat-chip *ngFor="let genre of torrent.genres" color="warn" selected>{{genre | translate}}</mat-chip>
+                  <mat-chip style="cursor: pointer"  *ngFor="let genre of torrent.genres" (click)="showMoviesByGenre(genre)" color="warn" selected>{{genre | translate}}</mat-chip>
                 </mat-chip-list>
               </div>
             </div>
