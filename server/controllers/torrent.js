@@ -183,8 +183,9 @@ exports.streamTorrent = function (req, res) {
                             '-hls_time 10',
                             '-threads 3',
                             '-f hls',
-                            '-c:a aac',
-                            '-b:a 192k'
+                            '-c:a libmp3lame',
+                            '-b:a 192k',
+                            '-sn'
                         ])
                         .on('start', () => {
                             if (global.PROCESS_ARRAY[req.params.hash]) {
