@@ -35,7 +35,8 @@ let storage = multer.diskStorage({
         cb(null, DIR);
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname + '.' + file.mimetype.split('/')[1]);
+        const uniqid = (new Date().getTime() + Math.floor((Math.random() * 10000) + 1)).toString(28);
+        cb(null, uniqid + '.' + file.mimetype.split('/')[1]);
     }
 });
 
@@ -52,7 +53,8 @@ router.post('/upload', upload.single('photo'), function (req, res) {
         });
     } else {
         return res.send({
-            success: true
+            success: true,
+            filename: 'profil_pictures/' + req.file.filename
         })
     }
 });

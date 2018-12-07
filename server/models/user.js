@@ -212,7 +212,7 @@ module.exports.checkPassword = function (password, confirmation, errors) {
         errors['password2_empty'] = true;
     if (password !== null && confirmation !== null && password !== confirmation)
         errors['passwords_dont_match'] = true;
-    let regex = new RegExp('^(?=.*[^a-zA-Z])(?=.*[0-9])(?=.*[ `~!@#$%^&*()_+\\-=\[\\]{};\':"\\\\|,.<>\\/?])(?=.{8,})');
+    let regex = new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[ `~!@#$%^&*()_+\\-=\[\\]{};\':"\\\\|,.<>\\/?])(?=.{8,})');
     if (Object.getOwnPropertyNames(errors).length === 0 && regex.test(password) === false)
         errors['password_uncorrect'] = true;
     return (errors);

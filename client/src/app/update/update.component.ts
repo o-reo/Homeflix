@@ -30,6 +30,7 @@ export class UpdateComponent implements OnInit {
   language: string;
   photo: string;
   path: string;
+  id: string;
 
   collapsed1: boolean;
   collapsed2: boolean;
@@ -38,6 +39,7 @@ export class UpdateComponent implements OnInit {
   collapsed5: boolean;
   collapsed6: boolean;
   collapsed7: boolean;
+  hidden: boolean;
 
 
   public uploader: FileUploader = new FileUploader({
@@ -52,11 +54,17 @@ export class UpdateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.hidden = false;
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
     };
     this.uploader.onBeforeUploadItem = (item) => {
       item.file.name = this.username;
+    };
+    this.uploader.onCompleteItem = (item, response) => {
+      this.path = JSON.parse(response).filename;
+      this.getImg();
+      this.update_photo();
     };
     $('#file-upload').click(() => {
       $('#file-upload_back').click();
@@ -74,6 +82,7 @@ export class UpdateComponent implements OnInit {
       this.email = resp['email'];
       this.language = resp['language'];
       this.path = resp['photo'];
+      this.id = resp['_id'];
     });
   }
 
@@ -92,26 +101,24 @@ export class UpdateComponent implements OnInit {
   /* Functions that updates everything except password and picture. */
   update(data, key) {
     this.cleanErrorMessage();
-    this.userService.getUser('').subscribe(resp => {
-      const req = {'oldInfo': {'_id': resp['_id']}, 'newInfo': {[key]: data}};
-      this.userService.updateMyUser(req).subscribe(res => {
-        if (res['success'] === true) {
-          if (key === 'first_name') {
-            key = 'First name';
-          }
-          if (key === 'last_name') {
-            key = 'Last name';
-          }
-          if (key === 'language') {
-            this.userService.switchLanguage(req['newInfo']['language']);
-          }
-          this.snackBar.open(key.charAt(0).toUpperCase() + key.slice(1) + ' was successfully updated.', 'X', {
-            duration: 3000,
-          });
-        } else {
-          this.throwErrors(res);
+    const req = {'oldInfo': {'_id': this.id}, 'newInfo': {[key]: data}};
+    this.userService.updateMyUser(req).subscribe(res => {
+      if (res['success'] === true) {
+        if (key === 'first_name') {
+          key = 'First name';
         }
-      });
+        if (key === 'last_name') {
+          key = 'Last name';
+        }
+        if (key === 'language') {
+          this.userService.switchLanguage(req['newInfo']['language']);
+        }
+        this.snackBar.open(key.charAt(0).toUpperCase() + key.slice(1) + ' was successfully updated.', 'X', {
+          duration: 3000,
+        });
+      } else {
+        this.throwErrors(res);
+      }
     });
   }
 
@@ -158,24 +165,16 @@ export class UpdateComponent implements OnInit {
     this.cleanErrorMessage();
     /* Create path of the profil picture. */
     if (this.photo) {
-      let extension = this.photo.split('.')[this.photo.split('.').length - 1];
-      if (extension === 'JPG' || extension === 'jpg') {
-        extension = 'jpeg';
-      }
-      /* Request to uploads picture name to database. */
       this.userService.getUser('').subscribe(resp => {
         const req = {
           oldInfo: {'_id': resp['_id']},
-          newInfo: {['photo']: 'profil_pictures/' + this.username + '.' + extension}
+          newInfo: {['photo']: 'http://localhost:3000/' + this.path}
         };
         this.userService.updateMyUser(req).subscribe(res => {
           if (res['success'] === true) {
             this.snackBar.open('Photo' + ' was successfully updated.', 'X', {
               duration: 3000,
             });
-            /* Uploads picture into server repositorie. */
-            this.uploader.uploadAll();
-          } else {
           }
         });
       });
@@ -210,5 +209,15 @@ export class UpdateComponent implements OnInit {
       return 'url(\'' + this.path + '\')';
     }
     return 'url(\'http://localhost:3000/' + this.path + '\')';
+  }
+
+  /* Function that pu image to background css. */
+  enable() {
+    if (this.hidden === false) {
+      return ('visible');
+    }
+    else {
+      return ('hidden');
+    }
   }
 }

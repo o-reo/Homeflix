@@ -146,7 +146,7 @@ module.exports.register = (req, res) => {
         res.json({success: false, err: errors});
     /* Sends data to model if no errors were found. */
     else {
-        User.addUser(newUserData, (err) => {
+        User.addUser(newUserData, (err, user) => {
             /* Returns error if user couldn't register. */
             if (err)
                 res.json({
@@ -155,7 +155,7 @@ module.exports.register = (req, res) => {
                     err: err
                 });
             else
-                res.json({success: true, msg: 'User successfully registered.'});
+                res.json({success: true, msg: 'User successfully registered.', id: user._id});
         });
     }
 };
