@@ -2,7 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import { TorrentService } from '../torrent.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Torrent} from '../torrent';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SearchService} from '../search.service';
 import {UserService} from '../user.service';
 
@@ -31,16 +31,21 @@ export class TorrentsComponent implements OnInit {
   }
 
   constructor(private torrentService: TorrentService,  private userService: UserService,
-              private route: ActivatedRoute, private searchService: SearchService) { }
+              private route: ActivatedRoute, private searchService: SearchService, private router: Router) { }
 
   ngOnInit() {
+    let genre = 'all';
+    if (this.router.url.includes('/watch/genre')) {
+      genre = this.route.snapshot.params['genre'];
+      console.log('test');
+    } else { console.log(this.router.url); }
     this.userService.getUser('').subscribe(resp => {
       this.searchService.views = resp['views'];
       const query = {
         title: '*',
         casting: '*',
         tri: 'pop_d',
-        genre: 'all',
+        genre: genre,
         page: 1
       };
       this.searchService.search(query, false, 'yts');

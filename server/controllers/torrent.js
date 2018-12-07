@@ -74,7 +74,7 @@ exports.liveTorrent = function (req, res) {
 function stop(hash) {
     console.log(`FFMPEG - killing process of hash: ${hash}`);
     const process = global.PROCESS_ARRAY[hash];
-    if (process && process.engine) {
+    if (process && process.engine && process.process) {
         process.engine.destroy();
         process.process.kill('SIGSTOP');
         process.status = 'stopped';
