@@ -37,8 +37,7 @@ export class TorrentsComponent implements OnInit {
     let genre = 'all';
     if (this.router.url.includes('/watch/genre')) {
       genre = this.route.snapshot.params['genre'];
-      console.log('test');
-    } else { console.log(this.router.url); }
+    }
     this.userService.getUser('').subscribe(resp => {
       this.searchService.views = resp['views'];
       const query = {
