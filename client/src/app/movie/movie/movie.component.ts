@@ -125,7 +125,12 @@ export class MovieComponent implements OnInit {
       this.router.navigate(['/watch']);
     });
   }
+
+  showMoviesByGenre(genre): void {
+    this.router.navigate(['/watch/genre/' + genre]);
+  }
 }
+
 
 @Component({
   selector: 'app-errordialog-template',
