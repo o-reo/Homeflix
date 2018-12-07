@@ -145,30 +145,31 @@ exports.streamTorrent = function (req, res) {
                 }
             }, 60000);
             engine.on('ready', function () {
-                // Find the video file
-                global.PROCESS_ARRAY[req.params.hash].engine = engine;
-                global.PROCESS_ARRAY[req.params.hash].status = 'ready';
-                engine.files.forEach(function (file) {
-                    file.deselect();
-                    if (file.name.substr(file.name.length - 3) === 'mkv' || file.name.substr(file.name.length - 3) === 'mp4') {
-                        diskspace.check('./', function (err, info) {
-                            if (info.free < 2 * file.length && !sent) {
-                                res.json({error: true, msg: 'The server disk is full'});
-                                stop(req.params.hash);
-                                delete global.PROCESS_ARRAY[req.params.hash];
-                                sent = true;
+                if (global.PROCESS_ARRAY[req.params.hash]) {
+                    // Find the video file
+                    global.PROCESS_ARRAY[req.params.hash].engine = engine;
+                    global.PROCESS_ARRAY[req.params.hash].status = 'ready';
+                    engine.files.forEach(function (file) {
+                        file.deselect();
+                        if (file.name.substr(file.name.length - 3) === 'mkv' || file.name.substr(file.name.length - 3) === 'mp4') {
+                            diskspace.check('./', function (err, info) {
+                                if (info.free < 2 * file.length && !sent) {
+                                    res.json({error: true, msg: 'The server disk is full'});
+                                    stop(req.params.hash);
+                                    delete global.PROCESS_ARRAY[req.params.hash];
+                                    sent = true;
+                                }
+                            });
+                            if (!fs.existsSync('../films/' + req.params.hash)) {
+                                fs.mkdirSync('../films/' + req.params.hash);
                             }
-                        });
-                        if (!fs.existsSync('../films/' + req.params.hash)) {
-                            fs.mkdirSync('../films/' + req.params.hash);
+                            file.path = req.params.hash + '/' + file.name;
+
+                            // create stream to torrent file
+                            stream = file.createReadStream();
                         }
-                        file.path = req.params.hash + '/' + file.name;
-
-                        // create stream to torrent file
-                        stream = file.createReadStream();
-                    }
-                });
-
+                    });
+                }
                 // This torrent is now live for 20s
                 live(req.params.hash);
                 // Launch new process
