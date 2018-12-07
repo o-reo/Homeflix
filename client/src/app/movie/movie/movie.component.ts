@@ -34,7 +34,6 @@ export class MovieComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Catch torrent identifier if available
     this.route.queryParams.subscribe(params => {
       this.torrent_id = 0;
       if (params['torrent']) {

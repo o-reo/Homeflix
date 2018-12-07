@@ -218,7 +218,8 @@ exports.streamTorrent = function (req, res) {
                             }
                         )
                         .save('../films/' + req.params.hash + '/output.m3u8');
-                } else {
+                } else if (!sent)
+                {
                     console.log('TORRENT-STREAM: This torrent is not valid');
                     global.PROCESS_ARRAY[req.params.hash] = null;
                     stop(req.params.hash);
