@@ -9,6 +9,7 @@ import {HyperAuthService} from '../../auth.service';
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/interval';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {VgAPI} from 'videogular2/core';
 
 @Component({
   selector: 'app-movie',
@@ -28,9 +29,20 @@ export class MovieComponent implements OnInit {
   @Input() subtitle_path_en;
   @Input() subtitle_path_lang;
   torrent_id: number;
+  api: VgAPI;
 
   constructor(private route: ActivatedRoute, private torrentService: TorrentService, private authService: HyperAuthService,
               private userService: UserService, private router: Router, private dialog: MatDialog) {
+  }
+
+  onPlayerReady(api: VgAPI) {
+    this.api = api;
+    this.api.currentTime = 0;
+    this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(() => {
+      this.api.getDefaultMedia().currentTime = 0;
+    });
+    this.api.getDefaultMedia().subscriptions.abort.subscribe(() => {
+    });
   }
 
   ngOnInit() {

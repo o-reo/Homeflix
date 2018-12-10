@@ -134,7 +134,7 @@ exports.streamTorrent = function (req, res) {
                     res.json({error: true, msg: 'Torrent Timed out'});
                     sent = true;
                 }
-            }, 10000);
+            }, 25000);
             setTimeout(() => {
                 if (timeout > 0 && !sent) {
                     console.log('FFMPEG: Timeout');
@@ -176,13 +176,15 @@ exports.streamTorrent = function (req, res) {
                 if (stream) {
                     global.PROCESS_ARRAY[req.params.hash].process = ffmpeg(stream, {timeout: 432000})
                         .addOptions([
-                            '-profile:v baseline',
+                            '-profile:v main',
                             '-level 3.0',
                             '-start_number 0',
                             '-hls_list_size 0',
                             '-hls_time 10',
                             '-threads 3',
                             '-f hls',
+                            '-g 48',
+                            '-keyint_min 48',
                             '-c:a libmp3lame',
                             '-b:a 192k',
                             '-sn'

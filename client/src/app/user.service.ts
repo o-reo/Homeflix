@@ -27,6 +27,7 @@ export class UserService {
   getUsers() {
     const headers = {};
     headers['Authorization'] = 'Bearer ' + this.authService.getToken();
+    headers['Content-Type'] = 'application/json';
     return this.http.get<User[]>(`http://${window.location.hostname}:3000/users`, {headers: headers});
   }
 
