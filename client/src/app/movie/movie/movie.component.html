@@ -2,9 +2,9 @@
   <div class="container">
     <mat-card class="movie-card">
       <mat-card-content class="cinema">
-        <vg-player *ngIf="videoloaded | async; else progress_bar">
+        <vg-player *ngIf="videoloaded | async; else progress_bar" (onPlayerReady)="onPlayerReady($event)">
           <video [vgMedia]="media" #media preload="auto" id="video-player" #vgHLS="vgHls" [vgHls]="link"
-                 crossorigin controls>
+                 type="video/mp4" crossorigin controls>
             <track *ngIf="subtitle_defined_lang" [src]=subtitle_path_lang kind="subtitles" srclang="{{lang}}"
                    label="{{lang}}"
                    [attr.default]="subtitle_default ? '' : null"/>
