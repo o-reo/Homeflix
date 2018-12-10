@@ -81,8 +81,8 @@ exports.updateUser = function (req, res) {
     let errors = User.lookErrors(req.body.newInfo);
     if ((req.body.newInfo.language && req.body.newInfo.language !== "" && errors['language_uncorrect'] !== true) ||
         (req.body.newInfo.username && errors['username_undefined'] !== true && errors['username_uncorrect'] !== true) ||
-        (req.body.newInfo.lastname && errors['lastname_undefined'] !== true && errors['lastname_uncorrect'] !== true) ||
-        (req.body.newInfo.firstname && errors['firstname_undefined'] !== true && errors['firstname_uncorrect'] !== true) ||
+        (req.body.newInfo.last_name && errors['lastname_undefined'] !== true && errors['lastname_uncorrect'] !== true) ||
+        (req.body.newInfo.first_name && errors['firstname_undefined'] !== true && errors['firstname_uncorrect'] !== true) ||
         (req.body.newInfo.photo && errors['no_photo'] !== true) ||
         (req.body.newInfo.email && errors['mail_undefined'] !== true && errors['mail_uncorrect'] !== true)) {
         User.findOneAndUpdate(req.body.oldInfo, {$set: req.body.newInfo}, {new: false}, (err, doc) => {
@@ -144,13 +144,13 @@ exports.updateUser = function (req, res) {
         /* Return errors as json. */
         let msg = {};
 
-        if (req.body.newInfo.firstname === "") {
+        if (req.body.newInfo.first_name === "") {
             msg = {place: 'err_firstname', message: 'First name is empty.'};
         }
         else if (errors['firstname_uncorrect'] === true) {
             msg = {place: 'err_firstname', message: 'First name contains special characters.'};
         }
-        if (req.body.newInfo.lastname === "") {
+        if (req.body.newInfo.last_name === "") {
             msg = {place: 'err_lastname', message: 'Last name is empty.'};
         }
         else if (errors['lastname_uncorrect'] === true) {

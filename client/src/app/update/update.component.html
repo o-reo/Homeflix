@@ -15,7 +15,7 @@
             <input matInput placeholder="{{'Firstname' | translate}}" name="first_name" required
                    [(ngModel)]="first_name">
           </mat-form-field>
-          <button mat-mini-fab type="button" color="warn" (click)="update(first_name, 'firstname')"
+          <button mat-mini-fab type="button" color="warn" (click)="update(first_name, 'first_name')"
                   id="firstname-upload">
             <mat-icon>edit</mat-icon>
           </button>
@@ -34,7 +34,7 @@
           <mat-form-field class="register-input">
             <input matInput placeholder="{{'Lastname' | translate}}" name="last_name" required [(ngModel)]="last_name">
           </mat-form-field>
-          <button mat-mini-fab type="button" color="warn" (click)="update(last_name, 'lastname')" id="lastname-upload">
+          <button mat-mini-fab type="button" color="warn" (click)="update(last_name, 'last_name')" id="lastname-upload">
             <mat-icon>edit</mat-icon>
           </button>
           <br>
@@ -137,8 +137,7 @@
         <button mat-mini-fab type="button" color="warn" id="file-upload">
           <mat-icon>add_a_photo</mat-icon>
         </button>
-        <!--<button mat-mini-fab type="button" color="warn" (click)="update_photo()" id="photo-upload">-->
-        <button [ngStyle]="{'visibility': enable()}" mat-mini-fab type="button" color="warn" (click)="uploader.uploadAll()" id="photo-upload">
+        <button mat-mini-fab type="button" color="warn" (click)="uploader.uploadAll()" id="photo-upload">
           <mat-icon>edit</mat-icon>
         </button>
         <br>

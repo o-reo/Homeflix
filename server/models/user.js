@@ -155,8 +155,8 @@ module.exports.resetPassword = function (email, callback) {
 module.exports.addUser = function (newUserData, callback) {
     /* Creates object from data passed by router. */
     const newUser = User({
-        first_name: newUserData.firstname,
-        last_name: newUserData.lastname,
+        first_name: newUserData.first_name,
+        last_name: newUserData.last_name,
         username: newUserData.username,
         email: newUserData.email,
         password: newUserData.password,
@@ -196,8 +196,8 @@ module.exports.lookErrors = function (user) {
     this.checkEmail(user.email, errors);
     /* Looks for errors in username, first name and last name. */
     this.checkName('username', user.username, errors);
-    this.checkName('firstname', user.firstname, errors);
-    this.checkName('lastname', user.lastname, errors);
+    this.checkName('firstname', user.first_name, errors);
+    this.checkName('lastname', user.last_name, errors);
     if (user.language && user.language !== 'english' && user.language !== 'french' && user.language !== 'spanish')
         errors['language_uncorrect'] = true;
     if ((!user.path_picture || user.path_picture === null) && (!user.photo || user.photo === null))

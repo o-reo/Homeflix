@@ -22,8 +22,8 @@ export class RegisterComponent implements OnInit {
   err_password: string;
   err_password2: string;
   err_photo: string;
-  firstname: string;
-  lastname: string;
+  first_name: string;
+  last_name: string;
   username: string;
   email: string;
   password: string;
@@ -75,8 +75,8 @@ export class RegisterComponent implements OnInit {
       $('#file-upload_file').val(filelist[filelist.length - 1]);
     });
     this.activatedRoute.queryParams.subscribe(params => {
-      this.firstname = params.firstname;
-      this.lastname = params.lastname;
+      this.first_name = params.firstname;
+      this.last_name = params.lastname;
       this.username = params.username;
       this.email = params.email;
     });
@@ -85,8 +85,8 @@ export class RegisterComponent implements OnInit {
   register() {
     /* Puts all inputs into new object. */
     const newUser = {
-      firstname: this.firstname,
-      lastname: this.lastname,
+      first_name: this.first_name,
+      last_name: this.last_name,
       password: this.password,
       password2: this.password2,
       email: this.email,
@@ -119,7 +119,7 @@ export class RegisterComponent implements OnInit {
           this.id = response['id'];
           this.uploader.uploadAll();
           setTimeout(() => {
-            window.location.href = 'http://localhost:4200';
+            window.location.href = 'http://localhost:4200/profile';
           }, 3000);
         } else {
           this.throwError(response['err']);
