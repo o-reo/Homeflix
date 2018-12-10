@@ -108,7 +108,7 @@ function EZTVPromise(res) {
                     }
                     resolve();
                 });
-            } else {
+            } else if (!movie.torrents.some(e => e.hash === res.hash)) {
                 // Append episode to tv show
                 movie.torrents.push({
                     magnet: res.magnet_url,
@@ -127,6 +127,9 @@ function EZTVPromise(res) {
                     }
                     resolve();
                 });
+            } else {
+                console.log('MONGOOSE - This torrent is already registered', movie.title);
+                resolve();
             }
         })
     });
@@ -154,15 +157,14 @@ function addEZTVTorrents(page, max_page) {
     });
 }
 
-function checkIMDB(callback) {
+function checkIMDB_Promise(movie) {
     let api_query = `api_key=${credentials.themoviedb.key}`;
     let query = `${api_query}&external_source=imdb_id`;
-    MovieInfos.find((err, movies) => {
-        movies.forEach((movie, key) => {
-            setTimeout(function () {
+    return new Promise((resolve) => {
+        if (movie.genres.length === 0) {
+            setTimeout(() => {
                 request(`https://api.themoviedb.org/3/find/${movie.imdb_code}?${query}`, function (error, response, body) {
                     let infos = JSON.parse(body);
-
                     // Handle TV Shows infos
                     if (movie.type === 'TV Show') {
                         // Get tv infos
@@ -177,73 +179,78 @@ function checkIMDB(callback) {
                             if (infos.poster_path) {
                                 movie.medium_cover_image = `https://image.tmdb.org/t/p/w300${infos['poster_path']}`;
                             }
-                            request(`https://api.themoviedb.org/3/tv/${infos['id']}?${api_query}&append_to_response=credits`, function (error, response, body) {
-                                let tvdata = JSON.parse(body);
-                                let genres = [];
-                                if (tvdata.genres) {
-                                    tvdata.genres.forEach((genre) => {
-                                        if (genre["name"] === "Action & Adventure"){
-                                            genres.push("Action");
-                                            genres.push("Adventure")
-                                        } else if (genre["name"] === "Sci-Fi & Fantasy"){
-                                            genres.push("Science Fiction");
-                                            genres.push("Fantasy")
-                                        } else if (genre["name"] === "War && Politics") {
-                                            genres.push("War");
-                                            genres.push("Politics")
-                                        }
-                                        else {
+                            setTimeout(() => {
+                                request(`https://api.themoviedb.org/3/tv/${infos['id']}?${api_query}&append_to_response=credits`, function (error, response, body) {
+                                    let tvdata = JSON.parse(body);
+                                    let genres = [];
+                                    if (tvdata.genres) {
+                                        tvdata.genres.forEach((genre) => {
+                                            if (genre["name"] === "Action & Adventure") {
+                                                genres.push("Action");
+                                                genres.push("Adventure")
+                                            } else if (genre["name"] === "Sci-Fi & Fantasy") {
+                                                genres.push("Science Fiction");
+                                                genres.push("Fantasy")
+                                            } else if (genre["name"] === "War && Politics") {
+                                                genres.push("War");
+                                                genres.push("Politics")
+                                            }
+                                            else {
                                                 genres.push(genre['name'])
-                                        }
-                                    });
-                                }
-                                movie.genres = genres;
-                                if (tvdata['episode_run_time']) {
-                                    movie.runtime = tvdata['episode_run_time'][0];
-                                }
-                                movie.language = tvdata['original_language'];
-                                if (movie.language === 'en') {
-                                    movie.language = 'english';
-                                } else if (movie.language === 'fr') {
-                                    movie.language = 'french';
-                                } else if (movie.language === 'sp') {
-                                    movie.language = 'spanish';
-                                } else {
-                                    movie.language = 'Other';
-                                }
-                                let castdata = tvdata.credits;
-                                let cast = [];
-                                if (castdata.crew) {
-                                    castdata.crew.slice(0, 3).forEach((crew) => {
-                                        cast.push({
-                                            name: crew['name'],
-                                            character_name: crew['job']
+                                            }
                                         });
-                                    });
-                                }
-                                if (castdata.cast) {
-                                    castdata.cast.slice(0, 10).forEach((actor) => {
-                                        cast.push({
-                                            name: actor['name'],
-                                            character_name: actor['character']
-                                        });
-                                    });
-                                }
-                                movie.cast = cast;
-                                movie.save((err, movie) => {
-                                    if (err) {
-                                        if (movie) {
-                                            console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
-                                        }
-                                    } else {
-                                        console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
                                     }
+                                    movie.genres = genres;
+                                    if (tvdata['episode_run_time']) {
+                                        movie.runtime = tvdata['episode_run_time'][0];
+                                    }
+                                    movie.language = tvdata['original_language'];
+                                    if (movie.language === 'en') {
+                                        movie.language = 'english';
+                                    } else if (movie.language === 'fr') {
+                                        movie.language = 'french';
+                                    } else if (movie.language === 'sp') {
+                                        movie.language = 'spanish';
+                                    } else {
+                                        movie.language = 'Other';
+                                    }
+                                    let castdata = tvdata.credits;
+                                    let cast = [];
+                                    if (castdata.crew) {
+                                        castdata.crew.slice(0, 3).forEach((crew) => {
+                                            cast.push({
+                                                name: crew['name'],
+                                                character_name: crew['job']
+                                            });
+                                        });
+                                    }
+                                    if (castdata.cast) {
+                                        castdata.cast.slice(0, 10).forEach((actor) => {
+                                            cast.push({
+                                                name: actor['name'],
+                                                character_name: actor['character']
+                                            });
+                                        });
+                                    }
+                                    movie.cast = cast;
+                                    movie.save((err, movie) => {
+                                        if (err) {
+                                            if (movie) {
+                                                console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
+                                                resolve(false);
+                                            }
+                                        } else {
+                                            console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
+                                            resolve(true);
+                                        }
+                                    });
                                 });
-                            });
+                            }, 250);
                         } else {
                             // Remove show because there is no info about it
                             console.log('THEMOVIEDB: Removed ', movie.title);
                             movie.remove();
+                            resolve(false);
 
                         }
                         // Handle Movie infos
@@ -256,58 +263,73 @@ function checkIMDB(callback) {
                             if (infos.poster_path) {
                                 movie.medium_cover_image = `https://image.tmdb.org/t/p/w300${infos['poster_path']}`;
                             }
-                            request(`https://api.themoviedb.org/3/movie/${infos['id']}?${api_query}&append_to_response=credits`, function (error, response, body) {
-                                const moviedata = JSON.parse(body);
-                                let genres = [];
-                                if (moviedata.genres) {
-                                    moviedata.genres.forEach((genre) => {
-                                        genres.push(genre['name']);
-                                    });
-                                }
-                                movie.genres = genres;
-                                // Get casting
-                                let cast = [];
-                                if (moviedata.credits.crew) {
-                                    moviedata.credits.crew.slice(0, 3).forEach((crew) => {
-                                        cast.push({
-                                            name: crew['name'],
-                                            character_name: crew['job']
+                            setTimeout(() => {
+                                request(`https://api.themoviedb.org/3/movie/${infos['id']}?${api_query}&append_to_response=credits`, function (error, response, body) {
+                                    const moviedata = JSON.parse(body);
+                                    let genres = [];
+                                    if (moviedata.genres) {
+                                        moviedata.genres.forEach((genre) => {
+                                            genres.push(genre['name']);
                                         });
-                                    });
-                                }
-                                if (moviedata.credits.cast) {
-                                    moviedata.credits.cast.slice(0, 10).forEach((actor) => {
-                                        cast.push({
-                                            name: actor['name'],
-                                            character_name: actor['character']
-                                        });
-                                    });
-                                }
-                                movie.cast = cast;
-                                movie.save((err, movie) => {
-                                    if (err) {
-                                        if (movie) {
-                                            console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
-                                        }
-                                    } else {
-                                        console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
                                     }
+                                    movie.genres = genres;
+                                    // Get casting
+                                    let cast = [];
+                                    if (moviedata.credits.crew) {
+                                        moviedata.credits.crew.slice(0, 3).forEach((crew) => {
+                                            cast.push({
+                                                name: crew['name'],
+                                                character_name: crew['job']
+                                            });
+                                        });
+                                    }
+                                    if (moviedata.credits.cast) {
+                                        moviedata.credits.cast.slice(0, 10).forEach((actor) => {
+                                            cast.push({
+                                                name: actor['name'],
+                                                character_name: actor['character']
+                                            });
+                                        });
+                                    }
+                                    movie.cast = cast;
+                                    movie.save((err, movie) => {
+                                        if (err) {
+                                            if (movie) {
+                                                console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
+                                                resolve(false);
+                                            }
+                                        } else {
+                                            console.log(`THEMOVIEDB: Adding data to ${movie.title}`);
+                                            resolve(true);
+                                        }
+                                    });
                                 });
-                            });
+                            }, 250);
                         } else {
                             // Remove show because there is no info about it
                             if (movie) {
                                 console.log('THEMOVIEDB: Removed ', movie.title);
                                 movie.remove();
+                                resolve(false);
                             }
                         }
                     }
-                }); // 4 Requests per second
-                if (key === movies.length) {
-                    callback();
-                }
-            }, 650 * key);
-        });
+                });
+            }, 250);
+        } else {
+            console.log('THEMOVIEDB: Info already fetched ', movie.title);
+            resolve(false);
+        }
+    });
+}
+
+function checkIMDB() {
+    MovieInfos.find((err, movies) => {
+        (async () => {
+            for (const movie of movies) {
+                await checkIMDB_Promise(movie);
+            }
+        })();
     });
 }
 
@@ -345,9 +367,7 @@ exports.infos = function (req, res) {
         res.json({
             msg: 'Adding infos...'
         });
-        checkIMDB(() => {
-            console.log('Fetched all informations');
-        });
+        checkIMDB();
     } else {
         res.json({error: true, msg: "Your rights are not enough"});
     }
