@@ -57,8 +57,8 @@ module.exports.login = (req, res) => {
 module.exports.oauth = (req, res) => {
     let query = '';
     let newUser = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
+        first_name: req.body.firstname,
+        last_name: req.body.lastname,
         email: req.body.email,
         username: Math.random().toString(36).substring(7),
         token_google: null,
@@ -86,8 +86,8 @@ module.exports.oauth = (req, res) => {
         newUser.username = req.body.username;
     }
     let public_user = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
+        first_name: req.body.firstname,
+        last_name: req.body.lastname,
         username: req.body.username,
         email: req.body.email
     };
@@ -131,8 +131,8 @@ module.exports.oauth = (req, res) => {
 // Register controller
 module.exports.register = (req, res) => {
     let newUserData = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         email: req.body.email,
         password: req.body.password,
         password2: req.body.password2,
@@ -143,20 +143,24 @@ module.exports.register = (req, res) => {
     /* Looks for errors into inputs. */
     let errors = User.lookErrors(newUserData);
     /* Return message containing all errors if some were found. */
-    if (Object.getOwnPropertyNames(errors).length !== 0)
+    if (Object.getOwnPropertyNames(errors).length !== 0) {
+        console.log(errors);
         res.json({success: false, err: errors});
+    }
     /* Sends data to model if no errors were found. */
     else {
         User.addUser(newUserData, (err, user) => {
             /* Returns error if user couldn't register. */
-            if (err)
+            if (err) {
                 res.json({
                     success: false,
                     msg: 'Failed to register user, your email or username must already be used.',
                     err: err
                 });
-            else
+            }
+            else {
                 res.json({success: true, msg: 'User successfully registered.', id: user._id});
+            }
         });
     }
 };

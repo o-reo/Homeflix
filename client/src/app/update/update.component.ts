@@ -39,7 +39,6 @@ export class UpdateComponent implements OnInit {
   collapsed5: boolean;
   collapsed6: boolean;
   collapsed7: boolean;
-  hidden: boolean;
 
 
   public uploader: FileUploader = new FileUploader({
@@ -54,7 +53,6 @@ export class UpdateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hidden = false;
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
     };
@@ -210,15 +208,5 @@ export class UpdateComponent implements OnInit {
       return 'url(\'' + this.path + '\')';
     }
     return 'url(\'http://localhost:3000/' + this.path + '\')';
-  }
-
-  /* Function that pu image to background css. */
-  enable() {
-    if (this.hidden === false) {
-      return ('visible');
-    }
-    else {
-      return ('hidden');
-    }
   }
 }
