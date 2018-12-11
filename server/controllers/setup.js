@@ -164,7 +164,12 @@ function checkIMDB_Promise(movie) {
         if (movie.genres.length === 0) {
             setTimeout(() => {
                 request(`https://api.themoviedb.org/3/find/${movie.imdb_code}?${query}`, function (error, response, body) {
-                    let infos = JSON.parse(body);
+                    let infos = null;
+                    try {
+                        infos = JSON.parse(body);
+                    } catch (err){
+                        console.log("THEMOVIEDB: Wrong input");
+                    }
                     // Handle TV Shows infos
                     if (movie.type === 'TV Show') {
                         // Get tv infos
