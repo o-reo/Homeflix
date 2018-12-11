@@ -76,6 +76,8 @@ export class MovieComponent implements OnInit {
               this.lang = 'fre';
             } else if (resp['language'] === 'spanish') {
               this.lang = 'spa';
+            } else {
+              this.lang = 'eng';
             }
             subdata['lang'] = this.lang;
             if (this.lang !== 'eng') {

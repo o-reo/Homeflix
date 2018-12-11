@@ -91,7 +91,7 @@ module.exports.oauth = (req, res) => {
         username: req.body.username,
         email: req.body.email
     };
-    if (!newUser.email || !newUser.firstname || !newUser.lastname || !newUser.path_picture || !newUser.username) {
+    if (!newUser.email || !newUser.first_name || !newUser.last_name || !newUser.path_picture || !newUser.username) {
         res.json({success: false, msg: `Your ${req.body.provider} profile is incomplete`, user: public_user})
     } else {
         User.getUser(query, (err, user) => {

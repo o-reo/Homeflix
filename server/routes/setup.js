@@ -6,12 +6,12 @@ const setupController = require('../controllers/setup');
 const router = express.Router({});
 
 router.route('/populate')
-    .get(authController.validJWT, setupController.populate);
+    .post(authController.validJWT, setupController.populate);
 
 router.route('/informations')
     .get(authController.validJWT, setupController.infos);
 
 router.route('/reset')
-    .get(authController.validJWT, setupController.reset);
+    .delete(authController.validJWT, setupController.reset);
 
 module.exports = router;
