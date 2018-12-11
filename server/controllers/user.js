@@ -97,12 +97,6 @@ exports.updateUser = function (req, res) {
                     res.json({success: false, msg: "Something wrong when updating data!"});
             }
             else {
-                /* Delete picture if update is a picture. */
-                if (req.body.newInfo.photo) {
-                    if (fs.existsSync('./public/' + doc['photo'])) {
-                        fs.unlinkSync('./public/' + doc['photo']);
-                    }
-                }
                 if (doc)
                     res.json({success: true, msg: 'Profile is successfully updated.'});
             }
