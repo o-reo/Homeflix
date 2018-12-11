@@ -341,8 +341,8 @@ function checkIMDB() {
 exports.populate = function (req, res) {
     if (req.userdata.grant === 1) {
         let page = 0;
-        if (req.query.amount) {
-            page = Math.ceil(req.query.amount / 40);
+        if (req.params.amount) {
+            page = Math.ceil(req.params.amount / 40);
         } else {
             page = 9999999;
         }
