@@ -103,17 +103,6 @@ exports.updateUser = function (req, res) {
                         fs.unlinkSync('./public/' + doc['photo']);
                     }
                 }
-                /* Rename on database and server photo path if username is changed. */
-                else if (req.body.newInfo.username) {
-                    const username = req.body.newInfo.username;
-                    const oldPath = doc['photo'];
-                    const newPath = 'profil_pictures/' + username + '.' + oldPath.split('.')[oldPath.split('.').length - 1];
-                    fs.rename('./public/' + oldPath, './public/' + newPath, function (err) {
-                        if (err)
-                            console.log(err);
-                    });
-
-                }
                 if (doc)
                     res.json({success: true, msg: 'Profile is successfully updated.'});
             }
