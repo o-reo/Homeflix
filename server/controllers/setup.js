@@ -312,8 +312,9 @@ function checkIMDB_Promise(movie) {
                             // Remove show because there is no info about it
                             if (movie) {
                                 console.log('THEMOVIEDB: Removed ', movie.title);
-                                movie.remove();
-                                resolve(false);
+                                MovieInfos.remove(movie, () => {
+                                    resolve(false);
+                                });
                             }
                         }
                     }

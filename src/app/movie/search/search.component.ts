@@ -38,6 +38,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
+      this.torrentService.page = 1;
   }
 
   getYears(slider, event) {
