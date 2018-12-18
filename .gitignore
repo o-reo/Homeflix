@@ -6,3 +6,5 @@ src/assets/subtitles/*
 server/config/credentials.js
 src/app/credentials.ts
 data/*
+.idea/
+dist/*

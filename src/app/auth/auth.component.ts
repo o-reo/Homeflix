@@ -3,9 +3,7 @@ import {HyperAuthService} from '../auth.service';
 import {UserService} from '../user.service';
 import {MatSnackBar} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {ActivatedRoute, Router} from '@angular/router';
-import {API_42, API_GITHUB, API_SLACK, API_GOOGLE} from '../credentials';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -22,8 +20,6 @@ export class AuthComponent implements OnInit {
               private userService: UserService,
               public snackBar: MatSnackBar,
               private router: Router,
-              private http: HttpClient,
-              private activatedRoute: ActivatedRoute,
               public dialog: MatDialog) {
   }
 

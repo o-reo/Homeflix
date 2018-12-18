@@ -1,10 +1,8 @@
-let express = require('express');
-let mongoose = require('mongoose');
-let bodyparser = require('body-parser');
-let cors = require('cors');
-let path = require('path');
-var schedule = require('node-schedule');
-const config = require('./config/database');
+const express = require('express');
+const bodyparser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
+const schedule = require('node-schedule');
 const setup = require('./controllers/setup');
 
 const route_user = require('./routes/user');

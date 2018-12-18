@@ -9,11 +9,11 @@
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
-      "targets": {
+      "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/client",
+            "outputPath": "server/public",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -25,9 +25,6 @@
             "styles": [
               "src/styles.css",
               "src/theme.scss",
-              "src/vendor/froala/css/dark.min.css",
-              "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
-              "./node_modules/froala-editor/css/froala_style.min.css",
               "./node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/videogular2/fonts/videogular.css",
               "./node_modules/ion-rangeslider/css/ion.rangeSlider.css",
@@ -36,7 +33,6 @@
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/ion-rangeslider/js/ion.rangeSlider.min.js",
-              "./node_modules/froala-editor/js/froala_editor.pkgd.min.js",
               "./node_modules/hls.js/dist/hls.min.js"
             ]
           },

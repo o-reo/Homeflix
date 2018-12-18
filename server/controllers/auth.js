@@ -1,13 +1,13 @@
 const User = require('../models/user');
-const config = require('../config/database');
 const jwt = require("jsonwebtoken");
+const credentials = require("../config/credentials");
 
 // Middleware to get JsonWebToken data
 module.exports.validJWT = (req, res, next) => {
     if (!req.headers.authorization) {
         res.json({success: false, msg: 'No Authorization was sent'});
     } else {
-        jwt.verify(req.headers.authorization.substring(7), config.secret, (err, decoded) => {
+        jwt.verify(req.headers.authorization.substring(7), credentials.session.secret, (err, decoded) => {
             if (err) {
                 res.json({success: false, msg: err})
             }
@@ -33,7 +33,7 @@ module.exports.login = (req, res) => {
         if (!user) {
             return res.json({success: false, msg: 'User not found'});
         }
-        const token = jwt.sign(user, config.secret, {
+        const token = jwt.sign(user, credentials.session.secret, {
             expiresIn: 604800
         });
         res.json({

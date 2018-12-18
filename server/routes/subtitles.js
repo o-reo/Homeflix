@@ -1,5 +1,4 @@
 const express = require('express');
-const config = require('../config/database');
 
 const authController = require('../controllers/auth');
 const subtitlesController = require('../controllers/subtitles');
