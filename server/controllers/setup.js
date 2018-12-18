@@ -42,7 +42,7 @@ function addYTSTorrents(page, max_page, header) {
                                 torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=Url+Encoded+Movie+Name&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.uw0.xyz:6969/announce&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.zer0day.to:1337/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://explodie.org:6969&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=http://mgtracker.org:6969/announce&tr=udp://ipv6.leechers-paradise.org:6969/announce&tr=http://nyaa.tracker.wf:7777/announce`;
                             });
                         }
-                        val.medium_cover_image = '/default.png';
+                        val.medium_cover_image = 'assets/img/default.png';
                         val.genres = [];
                         MovieInfos.save(val, (err, movie) => {
                             if (err) {
@@ -74,7 +74,7 @@ function EztvToMovieInfo(res) {
         genres: [],
         summary: `Season ${res.season}, episode ${res.episode}`,
         synopsis: `Season ${res.season}, episode ${res.episode}`,
-        medium_cover_image: '/default.png',
+        medium_cover_image: 'assets/img/default.png',
         language: 'english',
         cast: [],
         torrents: [{
@@ -92,14 +92,13 @@ function EztvToMovieInfo(res) {
 
 function EZTVPromise(res) {
     return new Promise((resolve) => {
-        MovieInfos.findOne({imdb_code: 'tt' + res.imdb_id}, (err, movie) => {
+        MovieInfos.get({imdb_code: 'tt' + res.imdb_id}, (err, movie) => {
             if (err) {
                 console.log('MONGOOSE - Could not fetch torrents');
             } else if (!movie) {
                 // Add a new movie entry
                 let tvshow = EztvToMovieInfo(res);
-                const newMovie = MovieInfos(tvshow);
-                MovieInfos.save(newMovie,  (err, savedmovie) => {
+                MovieInfos.save(tvshow, (err, savedmovie) => {
                     if (err) {
                         console.log('MONGOOSE - Could not add tvshow');
                     } else {
@@ -120,7 +119,7 @@ function EZTVPromise(res) {
                 });
                 MovieInfos.save(movie, (err, movie) => {
                     if (err) {
-                        console.log('MONGOOSE - Could not add episode');
+                        console.log('MONGOOSE - Could not add episode', err);
                     } else {
                         console.log('MONGOOSE - Adding episode to:', movie.title);
                     }
@@ -166,7 +165,7 @@ function checkIMDB_Promise(movie) {
                     let infos = null;
                     try {
                         infos = JSON.parse(body);
-                    } catch (err){
+                    } catch (err) {
                         console.log("THEMOVIEDB: Wrong input");
                     }
                     // Handle TV Shows infos
@@ -253,9 +252,9 @@ function checkIMDB_Promise(movie) {
                         } else {
                             // Remove show because there is no info about it
                             console.log('THEMOVIEDB: Removed ', movie.title);
-                            movie.remove();
-                            resolve(false);
-
+                            MovieInfos.remove(movie, (err, conf) => {
+                                resolve(false);
+                            });
                         }
                         // Handle Movie infos
                     } else if (movie.type === 'Movie') {
@@ -328,7 +327,7 @@ function checkIMDB_Promise(movie) {
 }
 
 function checkIMDB() {
-    MovieInfos.find((err, movies) => {
+    MovieInfos.getAll((err, movies) => {
         (async () => {
             for (const movie of movies) {
                 await checkIMDB_Promise(movie);
@@ -338,39 +337,35 @@ function checkIMDB() {
 }
 
 exports.populate = function (req, res) {
-        let page = 0;
-        if (req.body.amount) {
-            page = Math.ceil(req.body.amount / 40);
-        } else {
-            page = 9999999;
+    let page = 0;
+    if (req.body.amount) {
+        page = Math.ceil(req.body.amount / 40);
+    } else {
+        page = 9999999;
+    }
+    addEZTVTorrents(1, page);
+    let cf = new cloudflare();
+    cf.request({
+        url: 'https://yts.am/api/',
+        headers: {
+            accept: 'application/json'
         }
-        addEZTVTorrents(1, page);
-        let cf = new cloudflare();
-        cf.request({
-            url: 'https://yts.am/api/',
-            headers: {
-                accept: 'application/json'
-            }
-        }).then((res) => {
-            addYTSTorrents(1, page, {
-                'user-agent': cf.userAgent,
-                'jar': cf.jar
-            });
+    }).then((res) => {
+        addYTSTorrents(1, page, {
+            'user-agent': cf.userAgent,
+            'jar': cf.jar
         });
-        res.json({
-            msg: 'Populating database...'
-        })
+    });
+    res.json({
+        msg: 'Populating database...'
+    })
 };
 
 exports.infos = function (req, res) {
-    if (req.userdata.grant === 1) {
-        res.json({
-            msg: 'Adding infos...'
-        });
-        checkIMDB();
-    } else {
-        res.json({error: true, msg: "Your rights are not enough"});
-    }
+    res.json({
+        msg: 'Adding infos...'
+    });
+    checkIMDB();
 };
 
 exports.cleanMovies = function (req, res) {
@@ -390,8 +385,8 @@ exports.cleanMovies = function (req, res) {
 };
 
 exports.reset = function (req, res) {
-        MovieInfos.delete({}, (err, conf) => {
-            console.log('MONGOOSE: Database was cleaned');
-            res.json({error: false, msg: 'Database was cleaned'});
-        });
+    MovieInfos.delete({}, (err, conf) => {
+        console.log('MONGOOSE: Database was cleaned');
+        res.json({error: false, msg: 'Database was cleaned'});
+    });
 };

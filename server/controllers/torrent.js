@@ -54,7 +54,7 @@ exports.getTorrents = function (req, res) {
             options['sort'] = {'torrents.peers': order};
     }
     console.log(query, options);
-    MovieInfos.getAll(query, options, (err, movies) => {
+    MovieInfos.search(query, options, (err, movies) => {
         res.json(movies);
     });
 }

@@ -21,17 +21,28 @@ module.exports.get = (query, callback) => {
     })
 };
 
-module.exports.getAll = (query, options, callback) => {
+module.exports.search = (query, options, callback) => {
   db_movies.find({}).limit(20).exec((err, movies) => {
     callback(err, movies);
   })
 };
 
-module.exports.save = (object, callback) => {
-    db_movies.insert(object, (err, user) => {
-        callback(err, user);
+module.exports.getAll = (callback) => {
+    db_movies.find({}, (err, movies) => {
+        callback(err, movies);
     })
+};
 
+module.exports.save = (object, callback) => {
+    db_movies.update({imdb_code: object.imdb_code}, object, { upsert: true }, (err, user) => {
+        callback(err, object);
+    })
+};
+
+module.exports.remove = (object, callback) => {
+    db_movies.remove(object, (err, conf) => {
+        callback(err, conf)
+    })
 };
 
 module.exports.delete = (err, callback) => {
