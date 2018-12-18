@@ -1,0 +1,10 @@
+<mat-nav-list>
+  <a mat-list-item [href]="'/watch/movie/' + data.torrent._id + '?torrent=' + torr.key"
+     *ngFor="let torr of data.torrent.torrents | keyvalue">
+    <ng-container *ngIf="torr.value.episode && torr.value.season != 0">Season {{torr.value.season}} Episode
+      {{torr.value.episode}}
+    </ng-container>
+    <ng-container *ngIf="torr.value.season == 0">Source {{torr.key}}</ng-container>
+    <ng-container *ngIf="torr.value.quality">Quality {{torr.value.quality}}</ng-container>
+  </a>
+</mat-nav-list>

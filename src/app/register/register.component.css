@@ -1,0 +1,48 @@
+/* Credit to bootsnipp.com for the css for the color graph */
+.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+}
+
+
+.container{
+  position: absolute;
+  top: 0;
+  background-image: url("/assets/img/background.svg");
+  /*background-size: cover;*/
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+
+.auth-container{
+  position: absolute;
+  top: calc(50% - 340px);
+  left: calc(50% - 190px);
+  width: 350px;
+  height: 630px;
+  text-align: center;
+}
+
+mat-card-header{
+  margin: auto;
+  text-align: center;
+}
+
+.register-input {
+  margin-top: 10px;
+  margin-bottom: -15px;
+}
+
+.error-msg {
+  color: red;
+  margin-top: -30px;
+}
+
+cdk-global-overlay-wrapper {
+  margin-bottom: 500px;
+}

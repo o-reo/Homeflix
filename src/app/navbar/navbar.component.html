@@ -1,0 +1,22 @@
+<mat-toolbar class="navbar">
+  <div class="links left">
+    <a [routerLink]="['watch']">
+      <button mat-mini-fab color="primary">
+        <mat-icon
+          color="secondary">play_circle_filled_white
+        </mat-icon>
+      </button>
+    </a>
+  </div>
+  <span class="title">Hypertube</span>
+  <div class="links right">
+    <a [routerLink]="['profile']">
+      <button mat-mini-fab color="primary">
+        <mat-icon color="secondary">account_box</mat-icon>
+      </button>
+    </a>
+    <button mat-mini-fab (click)="authService.logout()" color="primary">
+      <mat-icon color="secondary">exit_to_app</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

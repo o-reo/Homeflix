@@ -1,0 +1,26 @@
+mat-list-item{
+  position: relative;
+  overflow: hidden;
+}
+
+mat-list-item .comment{
+  overflow: hidden;
+  line-height: 8px;
+}
+
+mat-list-item .comment_time{
+  position: absolute;
+  top:5px;
+  right: 5px;
+  font-size: 12px;
+}
+
+mat-list-item img{
+  width: 60px;
+  height: 60px;
+}
+
+mat-list-item a{
+  text-decoration: none;
+  color: white;
+}

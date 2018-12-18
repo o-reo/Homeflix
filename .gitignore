@@ -5,3 +5,4 @@ src/assets/subtitles/*
 !src/assets/subtitles/.empty
 server/config/credentials.js
 src/app/credentials.ts
+data/*

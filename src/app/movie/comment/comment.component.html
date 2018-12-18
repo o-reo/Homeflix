@@ -1,0 +1,9 @@
+<ng-container *ngIf="loaded | async">
+  <mat-list-item>
+    <img matListAvatar [src]="user.photo"/>
+    <div class="comment_time">{{ comment.time | date:'medium' }}</div>
+    <h3 matLine><a [href]="'/profile?id=' + user._id">{{user.username}}</a></h3>
+    <div [froalaView]="comment.content" matLine class="comment"></div>
+    <mat-divider matLine></mat-divider>
+  </mat-list-item>
+</ng-container>

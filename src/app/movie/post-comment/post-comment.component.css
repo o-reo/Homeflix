@@ -1,0 +1,21 @@
+.froala-container{
+  display: grid;
+  grid-template-columns: 1fr 100px;
+}
+
+.froala {
+  background-color: rgba(255, 255, 255, 0.1);
+  height: 45px;
+  overflow-y: auto;
+  margin: 5px;
+  border-radius: 3px;
+  padding-left: 10px;
+}
+
+.froala-container button{
+  margin: 5px 10px 5px 5px;
+}
+
+.froala textarea {
+  overflow-y: auto;
+}

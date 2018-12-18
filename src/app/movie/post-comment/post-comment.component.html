@@ -1,0 +1,6 @@
+<form class="froala-container">
+  <div class="froala">
+    <textarea [froalaEditor]="options" [(froalaModel)]="editorContent"></textarea>
+  </div>
+  <button mat-raised-button color="warn" type="button" (click)="SubmitEditor()" class="froala-submit">{{'Send' | translate}}</button>
+</form>

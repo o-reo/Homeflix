@@ -1,0 +1,12 @@
+{
+  "/login/oauth": {
+    "target": "https://github.com",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/streams": {
+    "target": "http://localhost:8000",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
