@@ -53,8 +53,9 @@ exports.getTorrents = function (req, res) {
         if (req.query.sort_by === 'pop')
             options['sort'] = {'torrents.peers': order};
     }
-    MovieInfos.paginate(query, options, function (err, movies) {
-        res.json(movies.docs);
+    console.log(query, options);
+    MovieInfos.getAll(query, options, (err, movies) => {
+        res.json(movies);
     });
 }
 ;

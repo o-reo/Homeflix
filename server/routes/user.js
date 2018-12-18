@@ -13,13 +13,6 @@ router.route('/register')
 // Login
 router.route('/login').post(authController.login);
 
-// OAuth
-router.route('/oauth').post(authController.oauth);
-
-// Sends a new password to the user
-router.route('/recovery')
-    .get(UserController.recovery);
-
 // User info
 router.route('/:id')
     .get(authController.validJWT, UserController.getUser);

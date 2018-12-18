@@ -44,8 +44,7 @@ function addYTSTorrents(page, max_page, header) {
                         }
                         val.medium_cover_image = '/default.png';
                         val.genres = [];
-                        const newMovie = MovieInfos(val);
-                        newMovie.save((err, movie) => {
+                        MovieInfos.save(val, (err, movie) => {
                             if (err) {
                                 console.log('MONGOOSE - Could not add movie');
                             } else {
@@ -100,7 +99,7 @@ function EZTVPromise(res) {
                 // Add a new movie entry
                 let tvshow = EztvToMovieInfo(res);
                 const newMovie = MovieInfos(tvshow);
-                newMovie.save((err, savedmovie) => {
+                MovieInfos.save(newMovie,  (err, savedmovie) => {
                     if (err) {
                         console.log('MONGOOSE - Could not add tvshow');
                     } else {
@@ -119,7 +118,7 @@ function EZTVPromise(res) {
                     season: res.season,
                     episode: res.episode
                 });
-                movie.save((err, movie) => {
+                MovieInfos.save(movie, (err, movie) => {
                     if (err) {
                         console.log('MONGOOSE - Could not add episode');
                     } else {
@@ -238,7 +237,7 @@ function checkIMDB_Promise(movie) {
                                         });
                                     }
                                     movie.cast = cast;
-                                    movie.save((err, movie) => {
+                                    MovieInfos.save(movie, (err, movie) => {
                                         if (err) {
                                             if (movie) {
                                                 console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
@@ -297,7 +296,7 @@ function checkIMDB_Promise(movie) {
                                         });
                                     }
                                     movie.cast = cast;
-                                    movie.save((err, movie) => {
+                                    MovieInfos.save(movie, (err, movie) => {
                                         if (err) {
                                             if (movie) {
                                                 console.log(`THEMOVIEDB: Error while adding data to ${movie.title}`);
@@ -339,7 +338,6 @@ function checkIMDB() {
 }
 
 exports.populate = function (req, res) {
-    if (req.userdata.grant === 1) {
         let page = 0;
         if (req.body.amount) {
             page = Math.ceil(req.body.amount / 40);
@@ -362,9 +360,6 @@ exports.populate = function (req, res) {
         res.json({
             msg: 'Populating database...'
         })
-    } else {
-        res.json({error: true, msg: "Your rights are not enough"});
-    }
 };
 
 exports.infos = function (req, res) {
@@ -395,12 +390,8 @@ exports.cleanMovies = function (req, res) {
 };
 
 exports.reset = function (req, res) {
-    if (req.userdata.grant === 1) {
-        MovieInfos.deleteMany({}, (err, conf) => {
+        MovieInfos.delete({}, (err, conf) => {
             console.log('MONGOOSE: Database was cleaned');
             res.json({error: false, msg: 'Database was cleaned'});
         });
-    } else {
-        res.json({error: true, msg: "Your rights are not enough"});
-    }
 };

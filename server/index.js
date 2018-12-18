@@ -11,8 +11,6 @@ const route_user = require('./routes/user');
 const route_torrent = require('./routes/torrent');
 const route_torrents = require('./routes/torrents');
 const route_subtitles = require('./routes/subtitles');
-const route_comments = require('./routes/comments');
-const route_comment = require('./routes/comment');
 const route_setup = require('./routes/setup');
 
 let app = express();
@@ -22,25 +20,6 @@ const port = 3000;
 //static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.set('useCreateIndex', true);
-
-//connect to mongodb
-mongoose.connect(config.database, {
-    useNewUrlParser: true
-});
-
-
-//on connection
-mongoose.connection.on('connected', () => {
-    console.log('Log: Mongodb connected on port:', '27017');
-});
-
-//on error connection
-mongoose.connection.on('error', (err) => {
-    if (err) {
-        console.log('Log: Mongodb connection error: ' + err);
-    }
-});
 
 //body - parser
 app.use(bodyparser.json({}));
@@ -55,11 +34,9 @@ app.use(cors());
 
 //routes
 app.use('/torrent', route_torrent);
+app.use('/user', route_user);
 app.use('/torrents', route_torrents);
 app.use('/subtitles', route_subtitles);
-app.use('/user', route_user);
-app.use('/comment', route_comment);
-app.use('/comments', route_comments);
 app.use('/setup', route_setup);
 
 // Empty current ffmpeg process array
