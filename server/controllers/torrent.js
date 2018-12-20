@@ -31,7 +31,8 @@ exports.getTorrents = function (req, res) {
         query.rating = {$gte: parseFloat(req.query.minRating), $lte: parseFloat(req.query.maxRating)};
     }
     if (req.query.type) {
-        query.type = {$in: req.query.type};
+        let type = Array.isArray(req.query.type) ? req.query.type : [req.query.type];
+        query.type = {$in: type};
     }
 // Options part.
     if (req.query.page) {
