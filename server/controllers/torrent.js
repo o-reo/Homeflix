@@ -11,25 +11,24 @@ exports.getTorrents = function (req, res) {
     let query = {};
     let options = {};
     let genre = '*';
-    let casting = '*';
 
     // Query part.
     if (req.query.title && req.query.title.charAt(0) !== '*') {
-        query.title = {$regex: req.query.title, $options: 'i'}
+        query.title = new RegExp(req.query.title, 'i');
     }
     if (req.query.casting && req.query.casting !== '*') {
-        query = Object.assign({"cast.name": {$regex: req.query.casting, $options: 'i'}}, query);
+        query['cast.name'] = new RegExp(req.query.casting, 'i');
     }
     if (req.query.genre)
         genre = req.query.genre;
     if (genre !== '*') {
-        query.genres = {$all: [genre]};
+        query.genres = {$elemMatch: genre};
     }
     if (req.query.minYear && req.query.maxYear) {
-        query.year = {$gte: req.query.minYear, $lte: req.query.maxYear};
+        query.year = {$gte: parseInt(req.query.minYear), $lte: parseInt(req.query.maxYear)};
     }
     if (req.query.minRating && req.query.maxRating) {
-        query.rating = {$gte: req.query.minRating, $lte: req.query.maxRating};
+        query.rating = {$gte: parseFloat(req.query.minRating), $lte: parseFloat(req.query.maxRating)};
     }
     if (req.query.type) {
         query.type = {$in: req.query.type};
@@ -53,7 +52,6 @@ exports.getTorrents = function (req, res) {
         if (req.query.sort_by === 'pop')
             options['sort'] = {'torrents.peers': order};
     }
-    console.log(query, options);
     MovieInfos.search(query, options, (err, movies) => {
         res.json(movies);
     });
