@@ -12,12 +12,10 @@ export class TorrentService {
   torrents: Torrent[];
   page: number;
   torrentsIsShow: boolean;
-  api: string;
 
   constructor(private http: HttpClient, private authService: HyperAuthService) {
     this.page = 1;
     this.torrentsIsShow = false;
-    this.api = 'yts';
   }
 
   getTorrents(query) {

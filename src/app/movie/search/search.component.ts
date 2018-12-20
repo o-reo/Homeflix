@@ -68,6 +68,6 @@ export class SearchComponent implements OnInit {
       maxRating: this.maxRating
     };
     this.torrentService.page = 1;
-    this.searchService.search(req, false, this.torrentService.api);
+    this.searchService.search(req, false);
   }
 }
