@@ -11,45 +11,12 @@
 
           <mat-form-field class="register-input">
             <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Firstname" name="firstname" required
-                   [(ngModel)]="first_name">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_firstname }}</small>
-          <br/>
-
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Lastname" name="lastname" required [(ngModel)]="last_name">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_lastname }}</small>
-          <br/>
-
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>account_box</mat-icon>
             <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
           </mat-form-field>
           <br/>
           <small class="error-msg">{{ err_username }}</small>
           <br/>
-
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Email" name="email" required [(ngModel)]="email">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_email }}</small>
-          <br/>
-
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>lock</mat-icon>
-            <input matInput type="password" placeholder="Password" name="password" required [(ngModel)]="password">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_password }}</small>
-          <br/>
-
+          
           <mat-form-field class="register-input">
             <mat-icon matSuffix>lock</mat-icon>
             <input matInput type="password" placeholder="Password confirmation" name="password2" required
