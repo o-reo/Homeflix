@@ -5,7 +5,8 @@
     "js": "node"
   },
   "ignore": [
-    "server/public/"
+    "server/public/",
+    "server/pictures/"
   ],
   "watch": [
     "server/"

@@ -52,10 +52,10 @@ module.exports.countViews = function (imdbid, callback) {
 
 
 module.exports.getUser = function (query, callback) {
-    db_user.findOne(query, (err, user) => {
+    db_user.findOne(query, (err, user) => {/* 
         if (user && !user.photo.includes('http://') && !user.photo.includes('https://')) {
             user.photo = 'http://localhost:3000/' + user.photo;
-        }
+        } */
         callback(err, user);
     });
 };
@@ -64,10 +64,10 @@ module.exports.getUser = function (query, callback) {
 module.exports.getUserByUsername = function (username, callback) {
     db_user.findOne({
         username: username
-    }, (err, user) => {
+    }, (err, user) => {/* 
         if (user && !user.photo.includes('http://') && !user.photo.includes('https://')) {
             user.photo = 'http://localhost:3000/' + user.photo;
-        }
+        } */
         callback(err, user);
     });
 };
@@ -76,7 +76,6 @@ module.exports.getUserByUsername = function (username, callback) {
 module.exports.addUser = function (newUserData, callback) {
     const newUser = {
         username: newUserData.username,
-        photo: newUserData.path_picture,
         language: newUserData.language
     };
     db_user.insert(newUser, (err, user) => {
@@ -91,8 +90,6 @@ module.exports.lookErrors = function (user) {
     this.checkName('username', user.username, errors);
     if (user.language && user.language !== 'english' && user.language !== 'french' && user.language !== 'spanish')
         errors['language_uncorrect'] = true;
-    if ((!user.path_picture || user.path_picture === null) && (!user.photo || user.photo === null))
-        errors['no_photo'] = true;
     return (errors);
 };
 

@@ -8,3 +8,4 @@ src/app/credentials.ts
 data/*
 .idea/
 server/public/*
+server/pictures/*

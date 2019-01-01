@@ -16,15 +16,6 @@
           <br/>
           <small class="error-msg">{{ err_username }}</small>
           <br/>
-          
-          <mat-form-field class="register-input">
-            <mat-icon matSuffix>lock</mat-icon>
-            <input matInput type="password" placeholder="Password confirmation" name="password2" required
-                   [(ngModel)]="password2">
-          </mat-form-field>
-          <br/>
-          <small class="error-msg">{{ err_password2 }}</small>
-          <br/>
 
           <mat-form-field>
             <input type="file" accept=".jpg, .jpeg, .png" name="photo" [(ngModel)]="photo" ng2FileSelect
