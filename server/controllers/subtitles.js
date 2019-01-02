@@ -30,13 +30,13 @@ exports.getSubtitles = function (req, res) {
             OpenSubtitles.search(search_array)
                 .then(subtitles => {
                     let uniqid = (new Date().getTime() + Math.floor((Math.random() * 10000) + 1)).toString(16);
-                    let sub_file = fs.createWriteStream('./server/public/subtitles/' + uniqid + '.vtt');
+                    let sub_file = fs.createWriteStream('server/public/assets/subtitles/' + uniqid + '.vtt');
                     req = http.get(subtitles[Object.keys(subtitles)[0]]['url'], function (response) {
                         response
                             .pipe(srt2vtt())
                             .pipe(sub_file);
                     });
-                    res.json({path: 'subtitles/' + uniqid + '.vtt', lang: lang});
+                    res.json({path: 'assets/subtitles/' + uniqid + '.vtt', lang: lang});
                 })
                 .catch(error => {
                     res.json({error: error, query: req.query});
