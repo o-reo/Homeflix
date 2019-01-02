@@ -15,17 +15,20 @@
   top: calc(50% - 125px);
   left: calc(50% - 115px);
   width: 230px;
-  height: 250px;
+  height: 280px;
   text-align: center;
+  padding: 0;
 }
 
 .link{
-  color: gainsboro;
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
 }
 
-.link:hover{
-  transition: 0.3s;
-  color: grey;
+.link:hover button{
+  transition: 0.5s;
+  background-color: #d32f2f;
 }
 
 .avatar-list{
