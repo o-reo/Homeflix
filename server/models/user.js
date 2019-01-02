@@ -16,6 +16,11 @@ module.exports.getUserById = function (id, callback) {
     });
 };
 
+module.exports.getUsers = function(callback) {
+  db_user.find({}, {username: 1, photo: 1}, (err, users) => {
+      callback(err, users);
+  });
+};
 
 module.exports.addView = function (info, callback) {
     db_user.findOne({

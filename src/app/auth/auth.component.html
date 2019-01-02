@@ -1,17 +1,17 @@
 <div class="container">
-  <mat-card class="auth-container">
-    <form (submit)="login()" method="post">
-      <mat-card-content>
-        <div>
-          <mat-form-field>
-            <mat-icon matSuffix>account_box</mat-icon>
-            <input matInput placeholder="Username" name="username" required [(ngModel)]="username">
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button type="submit" color="primary">Go</button>
-      </mat-card-actions>
-    </form>
-  </mat-card>
+    <mat-card class="auth-container">
+        <mat-card-header>
+            <mat-card-title><span>Select a user or </span><a class='link' href='/register'>Sign Up</a></mat-card-title>
+        </mat-card-header>
+        <form (submit)="login()" method="post">
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item *ngFor="let user of users" (click)="login(user.username)">
+                        <img matListAvatar src="{{user.photo}}">
+                        <h4 matLine>{{user.username}}</h4>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </form>
+    </mat-card>
 </div>

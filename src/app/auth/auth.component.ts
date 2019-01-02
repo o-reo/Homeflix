@@ -11,10 +11,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  username: string;
-  password: string;
-  provider: string;
-  email: string;
+  users;
+  username: String;
 
   constructor(private authService: HyperAuthService,
               private userService: UserService,
@@ -27,12 +25,14 @@ export class AuthComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['watch']);
     }
+    this.userService.getUsers().subscribe((res) => {
+      this.users = res['users'];
+    });
   }
 
 
-  login() {
-    window.localStorage.removeItem('provider');
-    this.authService.login({username: this.username}, (res) => {
+  login(username) {
+    this.authService.login({username: username}, (res) => {
       if (res['msg']) {
         this.snackBar.open(res['msg'], 'X', {
           duration: 2000

@@ -1,7 +1,6 @@
 const User = require('../models/user');
 
 exports.getUser = function (req, res) {
-    console.log(req.params);
     if (!req.params.id) {
         User.getUserById(req.userdata._id, function (err, result) {
                     res.json({
@@ -62,4 +61,10 @@ exports.updateUser = function (req, res) {
         }
         res.json(msg);
     }
+};
+
+exports.getUsers = function (req, res) {
+  User.getUsers((err, users) => {
+      res.json({success: true, users: users});
+  })
 };
