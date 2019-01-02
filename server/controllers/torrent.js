@@ -121,9 +121,9 @@ exports.streamTorrent = function (req, res) {
         }
         // Only if this torrent has not been downloaded
         let engine = null;
+        let stream = null;
         if (global.PROCESS_ARRAY[req.params.hash].status === 'init' || global.PROCESS_ARRAY[req.params.hash].status === 'stopped') {
             engine = torrentStream(magnet, {path: './server/streams/' + req.params['hash']});
-            let stream;
             setTimeout(() => {
                 if (timeout > 1 && !sent) {
                     console.log('TORRENTSTREAM: Timeout');

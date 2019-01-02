@@ -1,17 +1,15 @@
 <div class="container">
     <mat-card class="auth-container">
-        <mat-card-header>
-            <mat-card-title><span>Select a user or </span><a class='link' href='/register'>Sign Up</a></mat-card-title>
-        </mat-card-header>
         <form (submit)="login()" method="post">
             <mat-card-content>
-                <mat-list>
+                <mat-list class="avatar-list">
                     <mat-list-item *ngFor="let user of users" (click)="login(user.username)">
                         <img matListAvatar src="{{user.photo}}">
                         <h4 matLine>{{user.username}}</h4>
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
+            <mat-card-actions><a class='link' href='/register'>New user</a></mat-card-actions>
         </form>
     </mat-card>
 </div>

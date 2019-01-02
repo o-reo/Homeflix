@@ -19,11 +19,6 @@
   text-align: center;
 }
 
-mat-card-header{
-  margin: auto;
-  text-align: center;
-}
-
 .link{
   color: gainsboro;
 }
@@ -33,8 +28,25 @@ mat-card-header{
   color: grey;
 }
 
-button:hover{
-  transition: 0.4s;
-  background-color: #FF9900;
+.avatar-list{
+  height: 220px;
+  overflow-y: auto;
+}
+
+.avatar-list mat-list-item{
+  cursor: pointer;
+  color: gainsboro;
+}
+
+.avatar-list mat-list-item img{
+  filter: saturate(60%);
+}
+
+.avatar-list mat-list-item:hover h4{
   color: white;
+  text-shadow: crimson 0 0 5px;
+}
+
+.avatar-list mat-list-item:hover img{
+  filter: none;
 }

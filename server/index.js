@@ -2,8 +2,6 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const schedule = require('node-schedule');
-const setup = require('./controllers/setup');
 
 const route_user = require('./routes/user');
 const route_users = require('./routes/users');
@@ -49,10 +47,4 @@ app.get('*', function(req, res){
 
 app.listen(port, () => {
     console.log('Log: Server listening on port:', port);
-});
-
-
-schedule.scheduleJob({hour: 12, minute: 0}, () => {
-        console.log('TASK: Cleaning old movies');
-        setup.cleanMovies();
 });
