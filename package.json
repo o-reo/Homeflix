@@ -9,6 +9,7 @@
     "start": "concurrently -c \"yellow.bold,green.bold\" -n \"SERVER,BUILD\" \"nodemon server\" \"ng build --watch\"",
     "postinstall": "node after-install.js",
     "prod": "ng serve --proxy-config proxyconfig.json --prod",
+    "dev": "ng serve --proxy-config proxyconfig.json",
     "run": "ng serve --proxy-config proxyconfig.json --host 192.168.1.20",
     "build": "ng build --prod",
     "test": "ng test",

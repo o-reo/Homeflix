@@ -18,6 +18,7 @@ const port = 3000;
 
 //static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/pictures', express.static(path.join(__dirname, 'pictures')));
 
 
 //body - parser
@@ -39,6 +40,10 @@ app.use('/torrents', route_torrents);
 app.use('/subtitles', route_subtitles);
 app.use('/setup', route_setup);
 
+app.get('*', function(req, res){
+    res.sendfile('server/public/index.html');
+});
+
 // Empty current ffmpeg process array
 global.PROCESS_ARRAY = {};
 
@@ -54,7 +59,7 @@ let server = http.createServer();
 
 let hls = new HLSServer(server, {
     path: '/streams', // Base URI to output HLS streams
-    dir: '../films' // Directory that input files are stored
+    dir: 'films' // Directory that input files are stored
 });
 
 server.listen(8000, () => {

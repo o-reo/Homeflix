@@ -21,21 +21,20 @@ export class SearchService {
     type: string;
 
 
-    //   search(title, tri, genre, page, async: boolean, api: string) {
     search(query, async: boolean) {
         const req = {};
         req['minYear'] = query.minYear !== undefined ? query.minYear : 1870;
         req['maxYear'] = query.maxYear !== undefined ? query.maxYear : 2018;
         req['minRating'] = query.minRating !== undefined ? query.minRating : 0;
         req['maxRating'] = query.maxRating !== undefined ? query.maxRating : 10;
-        req['title'] = query.title;
-        req['casting'] = query.casting;
+        if (query.title) { req['title'] = query.title; }
+        if (query.casting) { req['casting'] = query.casting; }
         req['sort_by'] = 'pop';
         req['order_by'] = 'desc';
         req['page'] = query.page;
 
         if (query.type === 'Movie' || query.type === 'TV Show') {
-            req['type'] = [query.type];
+            req['type'] = query.type;
         } else {
             req['type'] = ['Movie', 'TV Show'];
         }
@@ -49,11 +48,12 @@ export class SearchService {
         } else if (query.tri === 'rating_a' || query.tri === 'rating_d') {
             req['sort_by'] = 'rating';
         }
-        if (query.genre !== 'all') {
+        if (query.genre && query.genre !== 'all') {
             req['genre'] = query.genre;
         }
         this.torrentService.getTorrents(req)
             .subscribe(torrents => {
+                // console.log(torrents);
                 // let index = (req['page'] - 1) * 20;
                 // Object.values(this.views).forEach(function (view) {
                 //   const imdbid = view['imdbid'];
@@ -65,26 +65,29 @@ export class SearchService {
                 //     }
                 //   });
                 // });
+                this.title = query.title;
+                this.casting = query.casting;
+                this.genre = query.genre;
+                this.tri = query.tri;
+                this.type = query.type;
+                this.minYear = query.minYear;
+                this.maxYear = query.maxYear;
+                this.minRating = query.minRating;
+                this.maxRating = query.maxRating;
                 if (async) {
                     if (this.torrentService.torrents) {
-                        const torrentService = this.torrentService;
+                        const newTorrents = this.torrentService.torrents;
                         torrents.forEach(function (val) {
-                            torrentService.torrents.push(val);
+                            newTorrents.push(val);
                         });
+                        this.torrentService.torrents = newTorrents;
                     } else {
                         this.torrentService.torrents = torrents;
                     }
-                    this.title = query.title;
-                    this.casting = query.casting;
-                    this.genre = query.genre;
-                    this.tri = query.tri;
-                    this.type = query.type;
-                    this.minYear = query.minYear;
-                    this.maxYear = query.maxYear;
-                    this.minRating = query.minRating;
-                    this.maxRating = query.maxRating;
                     this.torrentService.torrentsIsShow = true;
                     this.torrentService.loaded = Promise.resolve(true);
+                } else {
+                    this.torrentService.torrents = torrents;
                 }
             });
     }

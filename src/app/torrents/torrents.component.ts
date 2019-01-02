@@ -1,6 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {TorrentService} from '../torrent.service';
-import {FormControl, FormGroup} from '@angular/forms';
 import {Torrent} from '../torrent';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SearchService} from '../search.service';
@@ -15,7 +14,6 @@ import {UserService} from '../user.service';
 export class TorrentsComponent implements OnInit {
     text: String;
     nextActived: boolean;
-    prevActived: boolean;
 
     get torrentsIsShow(): boolean {
         return this.torrentService.torrentsIsShow;
@@ -40,7 +38,7 @@ export class TorrentsComponent implements OnInit {
             genre = this.route.snapshot.params['genre'];
         }
         this.userService.getUser('').subscribe(resp => {
-            this.searchService.views = resp['views'];
+           // this.searchService.views = resp['views'];
             const query = {
                 title: '*',
                 casting: '*',

@@ -11,28 +11,28 @@ exports.getTorrents = function (req, res) {
     let query = {};
     let options = {};
     let genre = '*';
-    let casting = '*';
 
     // Query part.
     if (req.query.title && req.query.title.charAt(0) !== '*') {
-        query.title = {$regex: req.query.title, $options: 'i'}
+        query.title = new RegExp(req.query.title, 'i');
     }
     if (req.query.casting && req.query.casting !== '*') {
-        query = Object.assign({"cast.name": {$regex: req.query.casting, $options: 'i'}}, query);
+        query['cast.name'] = new RegExp(req.query.casting, 'i');
     }
     if (req.query.genre)
         genre = req.query.genre;
     if (genre !== '*') {
-        query.genres = {$all: [genre]};
+        query.genres = {$elemMatch: genre};
     }
     if (req.query.minYear && req.query.maxYear) {
-        query.year = {$gte: req.query.minYear, $lte: req.query.maxYear};
+        query.year = {$gte: parseInt(req.query.minYear), $lte: parseInt(req.query.maxYear)};
     }
     if (req.query.minRating && req.query.maxRating) {
-        query.rating = {$gte: req.query.minRating, $lte: req.query.maxRating};
+        query.rating = {$gte: parseFloat(req.query.minRating), $lte: parseFloat(req.query.maxRating)};
     }
     if (req.query.type) {
-        query.type = {$in: req.query.type};
+        let type = Array.isArray(req.query.type) ? req.query.type : [req.query.type];
+        query.type = {$in: type};
     }
 // Options part.
     if (req.query.page) {
@@ -53,7 +53,6 @@ exports.getTorrents = function (req, res) {
         if (req.query.sort_by === 'pop')
             options['sort'] = {'torrents.peers': order};
     }
-    console.log(query, options);
     MovieInfos.search(query, options, (err, movies) => {
         res.json(movies);
     });
@@ -97,10 +96,10 @@ exports.streamTorrent = function (req, res) {
         global.PROCESS_ARRAY[req.params.hash] = {status: 'init'};
     }
     // Adds a view to the user collection
-    if (req.body.imdbid) {
-        User.addView({imdbid: req.body.imdbid, user_id: req.userdata._id}, (success, msg) => {
-        });
-    }
+    // if (req.body.imdbid) {
+    //     User.addView({imdbid: req.body.imdbid, user_id: req.userdata._id}, (success, msg) => {
+    //     });
+    // }
 
     MovieInfos.get({'torrents.hash': req.params.hash}, (err, torrent) => {
         let magnet = '';
@@ -125,7 +124,7 @@ exports.streamTorrent = function (req, res) {
         // Only if this torrent has not been downloaded and converted
         let engine = null;
         if (global.PROCESS_ARRAY[req.params.hash].status === 'init' || global.PROCESS_ARRAY[req.params.hash].status === 'stopped') {
-            engine = torrentStream(magnet, {path: './../films/' + req.params.hash + '/torrent'});
+            engine = torrentStream(magnet, {path: './films/' + req.params.hash + '/torrent'});
             let stream;
             setTimeout(() => {
                 if (timeout > 1 && !sent) {
@@ -161,8 +160,8 @@ exports.streamTorrent = function (req, res) {
                                     sent = true;
                                 }
                             });
-                            if (!fs.existsSync('../films/' + req.params.hash)) {
-                                fs.mkdirSync('../films/' + req.params.hash);
+                            if (!fs.existsSync('films/' + req.params.hash)) {
+                                fs.mkdirSync('films/' + req.params.hash);
                             }
                             file.path = req.params.hash + '/' + file.name;
 
@@ -221,7 +220,7 @@ exports.streamTorrent = function (req, res) {
                                 }
                             }
                         )
-                        .save('../films/' + req.params.hash + '/output.m3u8');
+                        .save('films/' + req.params.hash + '/output.m3u8');
                 } else if (!sent)
                 {
                     console.log('TORRENT-STREAM: This torrent is not valid');

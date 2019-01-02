@@ -22,7 +22,7 @@ module.exports.get = (query, callback) => {
 };
 
 module.exports.search = (query, options, callback) => {
-  db_movies.find({}).sort(options.sort).skip(20 * (options.page - 1)).limit(20).exec((err, movies) => {
+  db_movies.find(query).sort(options.sort).skip(20 * (options.page - 1)).limit(20).exec((err, movies) => {
     callback(err, movies);
   })
 };

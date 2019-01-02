@@ -4,8 +4,6 @@ const authController = require('../controllers/auth');
 const multer = require('multer');
 const router = express.Router({});
 
-const DIR = './public/profil_pictures';
-
 // Register
 router.route('/register')
     .post(authController.register);
@@ -25,7 +23,7 @@ router.route('/')
 /* Creates storage for uploader. */
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, DIR);
+        cb(null, './server/pictures');
     },
     filename: (req, file, cb) => {
         const uniqid = (new Date().getTime() + Math.floor((Math.random() * 10000) + 1)).toString(28);
@@ -43,11 +41,11 @@ router.post('/upload', upload.single('photo'), function (req, res) {
     if (!req.file) {
         return res.send({
             success: false
-        });
+        });                                                                          
     } else {
         return res.send({
             success: true,
-            filename: 'profil_pictures/' + req.file.filename
+            filename: 'pictures/' + req.file.filename
         })
     }
 });

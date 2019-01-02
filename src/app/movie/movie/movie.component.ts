@@ -84,13 +84,13 @@ export class MovieComponent implements OnInit {
               this.torrentService.getSubtitles('eng', subdata)
                 .subscribe(subtitles1 => {
                   this.subtitle_defined_en = !!subtitles1.path;
-                  this.subtitle_path_en = './../../../src/assets/' + subtitles1.path;
+                  this.subtitle_path_en = subtitles1.path;
                 });
             }
             this.torrentService.getSubtitles(this.lang, subdata)
               .subscribe(subtitles2 => {
                 this.subtitle_defined_lang = !!subtitles2.path;
-                this.subtitle_path_lang = './../../../src/assets/' + subtitles2.path;
+                this.subtitle_path_lang = subtitles2.path;
                 if (torrent.language && torrent.language.toLowerCase() !== resp['language']) {
                   this.subtitle_default = true;
                 }
