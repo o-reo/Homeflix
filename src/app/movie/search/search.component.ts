@@ -3,12 +3,26 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {TorrentService} from '../../torrent.service';
 import {SearchService} from '../../search.service';
 import {IonRangeSliderModule} from 'ng2-ion-range-slider';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrls: ['./search.component.css'],
+  animations: [
+    trigger(
+      'enterAnimation', [
+        transition(':enter', [
+          style({height: 0, opacity: 0}),
+          animate('200ms', style({height: '100px', opacity: 1}))
+        ]),
+        transition(':leave', [
+          style({height: '100px', opacity: 1}),
+          animate('200ms', style({height: 0, opacity: 0}))
+        ])
+      ])
+    ]
 })
 
 
@@ -23,6 +37,7 @@ export class SearchComponent implements OnInit {
   minRating: number;
   maxRating: number;
   views: object;
+  show = true;
 
   advancedSlider = {name: 'Advanced Slider'};
 

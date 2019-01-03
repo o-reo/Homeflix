@@ -9,3 +9,4 @@ data/*
 .idea/
 server/public/*
 server/pictures/*
+server/streams/*

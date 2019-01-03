@@ -1,3 +1,7 @@
+.scrollable {
+  overflow-y: auto;
+}
+
 .torrents-container {
   display: grid;
   /* autoprefixer: off */

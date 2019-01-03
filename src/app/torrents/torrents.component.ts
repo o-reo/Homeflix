@@ -4,6 +4,7 @@ import {Torrent} from '../torrent';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SearchService} from '../search.service';
 import {UserService} from '../user.service';
+import {MalihuScrollbarService} from 'ngx-malihu-scrollbar';
 
 
 @Component({
@@ -27,11 +28,16 @@ export class TorrentsComponent implements OnInit {
         return this.torrentService.torrents;
     }
 
-    constructor(private torrentService: TorrentService, private userService: UserService,
-                private route: ActivatedRoute, private searchService: SearchService, private router: Router) {
+    constructor(private torrentService: TorrentService, 
+                private userService: UserService,
+                private route: ActivatedRoute,
+                private searchService: SearchService, 
+                private router: Router, 
+                private mScrollbarService: MalihuScrollbarService) {
     }
 
     ngOnInit() {
+        this.mScrollbarService.initScrollbar(".scrollable", { axis: 'y', theme: 'minimal' });
         this.torrentService.page = 1;
         let genre = 'all';
         if (this.router.url.includes('/watch/genre')) {

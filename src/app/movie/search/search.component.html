@@ -1,5 +1,8 @@
 <div class="container">
-  <mat-card class="search-container">
+  <button class="hide-btn" (click)="show = !show" mat-icon-button>
+    <mat-icon color="warn">filter_list</mat-icon>
+  </button>
+  <mat-card class="search-container" *ngIf="show" [@enterAnimation]>
     <mat-card-content>
       <form role="form" [formGroup]="formGroupSearch" name="formSearch">
         <mat-form-field>
