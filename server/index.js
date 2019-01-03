@@ -17,9 +17,9 @@ global.PROCESS_ARRAY = {};
 const port = 3000;
 
 //static files
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/pictures', express.static(path.join(__dirname, 'pictures')));
-app.use('/streams', express.static(path.join(__dirname, 'streams')));
+app.use(express.static(path.join(process.cwd(), '/server/public')));
+app.use('/pictures', express.static(path.join(process.cwd(), '/server/pictures')));
+app.use('/streams', express.static(path.join(process.cwd(), '/server/streams')));
 
 
 //body - parser
@@ -42,7 +42,7 @@ app.use('/subtitles', route_subtitles);
 app.use('/setup', route_setup);
 
 app.get('*', function(req, res){
-    res.sendfile('server/public/index.html');
+    res.sendFile(path.join(process.cwd() + "/server/public/index.html"));
 });
 
 app.listen(port, () => {

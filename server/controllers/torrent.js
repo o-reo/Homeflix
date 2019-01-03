@@ -3,7 +3,8 @@ const fs = require('fs'); //Load the filesystem module
 const MovieInfos = require('../models/movie-infos');
 const User = require('../models/user');
 const parseTorrent = require('parse-torrent');
-const diskspace = require('diskspace');
+const checkDiskSpace = require('check-disk-space');
+
 
 exports.getTorrents = function (req, res) {
     let order = 1;
@@ -140,7 +141,7 @@ exports.streamTorrent = function (req, res) {
                     global.PROCESS_ARRAY[req.params.hash].status = 'ready';
                     engine.files.forEach(function (file) {
                         if (file.name.substr(file.name.length - 3) === 'mkv' || file.name.substr(file.name.length - 3) === 'mp4') {
-                            diskspace.check('./', function (err, info) {
+                             checkDiskSpace(process.cwd()).then(info => {
                                 if (info.free < file.length && !sent) {
                                     res.json({error: true, msg: 'The server disk is full'});
                                     stop(req.params.hash);

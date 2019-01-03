@@ -10,3 +10,4 @@ data/*
 server/public/*
 server/pictures/*
 server/streams/*
+client*
