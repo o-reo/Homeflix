@@ -15,11 +15,11 @@ import { trigger, style, animate, transition } from '@angular/animations';
       'enterAnimation', [
         transition(':enter', [
           style({height: 0, opacity: 0}),
-          animate('200ms', style({height: '100px', opacity: 1}))
+          animate('300ms', style({height: 'auto', opacity: 1}))
         ]),
         transition(':leave', [
-          style({height: '100px', opacity: 1}),
-          animate('200ms', style({height: 0, opacity: 0}))
+          style({height: 'auto', opacity: 1}),
+          animate('300ms', style({height: 0, opacity: 0}))
         ])
       ])
     ]
