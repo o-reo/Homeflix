@@ -4,6 +4,7 @@ import {UserService} from '../user.service';
 import {MatSnackBar} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {Router} from '@angular/router';
+import {MalihuScrollbarService} from 'ngx-malihu-scrollbar';
 
 @Component({
   selector: 'app-auth',
@@ -18,10 +19,13 @@ export class AuthComponent implements OnInit {
               private userService: UserService,
               public snackBar: MatSnackBar,
               private router: Router,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private mScrollbarService: MalihuScrollbarService
+              ) {
   }
 
   ngOnInit() {
+    this.mScrollbarService.initScrollbar(".avatar-list", { axis: 'y', theme: 'minimal' });
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['watch']);
     }

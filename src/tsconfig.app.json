@@ -2,7 +2,11 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": ["node"],
+    "types": [
+      "node",
+      "jquery",
+      "mcustomscrollbar"
+    ],
     "typeRoots": ["../node_modules/@types"]
   },
   "exclude": [

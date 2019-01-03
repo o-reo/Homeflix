@@ -28,12 +28,14 @@
               "./node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/videogular2/fonts/videogular.css",
               "./node_modules/ion-rangeslider/css/ion.rangeSlider.css",
-              "./node_modules/ion-rangeslider/css/ion.rangeSlider.skinFlat.css"
+              "./node_modules/ion-rangeslider/css/ion.rangeSlider.skinFlat.css",
+              "./node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/ion-rangeslider/js/ion.rangeSlider.min.js",
-              "./node_modules/hls.js/dist/hls.min.js"
+              "./node_modules/hls.js/dist/hls.min.js",
+              "./node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"
             ]
           },
           "configurations": {

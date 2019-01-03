@@ -52,6 +52,7 @@ import {MovieComponent, ErrorDialogTemplateComponent} from './movie/movie/movie.
 import {SearchComponent} from './movie/search/search.component';
 import {AuthguardService} from './authguard.service';
 import {FileUploadModule} from 'ng2-file-upload';
+import { MalihuScrollbarModule } from 'ngx-malihu-scrollbar';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -90,6 +91,7 @@ const appRoutes: Routes = [
     ],
     imports: [
         VgCoreModule,
+        MalihuScrollbarModule.forRoot(),
         FileUploadModule,
         VgControlsModule,
         VgOverlayPlayModule,
